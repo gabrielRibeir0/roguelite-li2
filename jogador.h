@@ -1,10 +1,8 @@
-typedef struct jogador {
-	int posX;
-	int posY;
-    int score;
-} JOGADOR;
+#include <estado.h>
 
-void mover_jogador(JOGADOR *jg, int dx, int dy) {
-	jg->playerX += dx;
-	jg->playerY += dy;
-}
+#ifndef JOGADOR_H
+#define JOGADOR_H
+
+void mover_jogador(JOGADOR *jg, int dx, int dy);
+
+#endif
