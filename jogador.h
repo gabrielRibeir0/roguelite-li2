@@ -1,7 +1,7 @@
 typedef struct jogador {
 	int posX;
 	int posY;
-    int 
+    int score;
 } JOGADOR;
 
 void mover_jogador(JOGADOR *jg, int dx, int dy) {

@@ -16,6 +16,8 @@
 typedef struct state {
 	int playerX;
 	int playerY;
+	struct Mapa;
+	int scoreMax;
 } STATE;
 
 
