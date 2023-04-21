@@ -7,4 +7,6 @@ int geramapa();
 
 int compactamapa(CASA mapa[][10]);
 
+int visibilidade(CASA mapa[][]);
+
 #endif

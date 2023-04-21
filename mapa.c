@@ -31,3 +31,16 @@ int compactamapa(CASA mapa[][10]){
     }
     return 0;
 }
+
+int visibilidade (visib[][]){
+    for (int i=0;i<45;i++){
+        for (int j=0;j<188;j++){
+            int distancia=sqrt((jogador->posx -j)^2+(jogador->posty-i)^2);
+            if(Mapa[i][j]== VAZIO && distancia<5){ //5 foi posto atoa, valor a verificar
+                visib[i][j]=1;
+            }
+            else visib[i][j]=0;
+        }
+    }
+    return 0;
+}
