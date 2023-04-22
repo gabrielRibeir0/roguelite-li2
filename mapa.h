@@ -1,12 +1,16 @@
-#include <estado.h>
+#include "estado.h"
 
 #ifndef MAPA_H
 #define MAPA_H
 
-int geramapa();
+void iniciarMapa(CASA mapa[yMAX][xMAX]);
 
-int compactamapa(CASA mapa[][10]);
+int contarMuros(CASA mapa[yMAX][xMAX], int y, int x);
 
-int visibilidade(CASA mapa[][]);
+int compactaMapa(CASA mapa[yMAX][xMAX]);
+
+void escreveMapa(CASA mapa[yMAX][xMAX]);
+
+int calcularVisivel(CASA mapa[yMAX][xMAX], JOGADOR jogador);
 
 #endif
