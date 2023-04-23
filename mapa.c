@@ -92,7 +92,7 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
             if(mapa[i][j].obs == MURO) 
                 mvaddch(i, j, '#');
             else
-                mvaddch(i, j, '.');
+                mvaddch(i, j, ' ');
         }
     }
 }
@@ -112,4 +112,14 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     }
 
     return 0;
+}
+
+void escreveVisivel (CASA **mapa, int yMAX, int xMAX){
+    attron(COLOR_PAIR(COLOR_BLACK));
+    for(int i = 0; i < yMAX; i++){
+        for(int j = 0; j < xMAX; j++){
+            if(mapa[i][j].visivel == 0) 
+                mvaddch(i, j, '#');
+        }
+    }
 }

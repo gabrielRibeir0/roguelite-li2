@@ -13,4 +13,6 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX);
 
 int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
 
+void escreveVisivel (CASA **mapa, int yMAX, int xMAX);
+
 #endif

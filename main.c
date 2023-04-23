@@ -91,6 +91,9 @@ int main() {
 	}
 		escreveMapa(mapa,nrows,ncols);
 	getch();
+	fazJogador(mapa,nrows,ncols);
+	calcularVisivel(mapa,JOGADOR jogador,nrows,ncols);
+	escreveVisivel(mapa,nrows,ncols);
 
 	/**
 	 * Este código está muito mal escrito!
