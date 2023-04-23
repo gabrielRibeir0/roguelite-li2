@@ -43,8 +43,8 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
 int contarMuros(CASA **mapa, int y, int x){
     int nMuros = 0;
 
-    for(int i = y - 1; i < y + 1; i++){
-        for(int j = x - 1; j < x + 1; j++){
+    for(int i = y - 1; i <= y + 1; i++){
+        for(int j = x - 1; j <= x + 1; j++){
             if(mapa[i][j].obs == MURO)
                 nMuros++;
         }
