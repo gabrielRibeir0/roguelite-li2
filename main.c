@@ -16,7 +16,7 @@
  * - o que está em cada casa
  *
  */
-typedef struct state {
+/*typedef struct state {
 	int playerX;
 	int playerY;
 	struct Mapa;
@@ -24,10 +24,10 @@ typedef struct state {
 } STATE;
 
 
-/**
+*
  *
  * Um pequeno exemplo que mostra o que se pode fazer
- */
+ *
 void do_movement_action(STATE *st, int dx, int dy) {
 	st->playerX += dx;
 	st->playerY += dy;
@@ -58,15 +58,20 @@ void update(STATE *st) {
 		case '3': do_movement_action(st, +1, +1); break;
 		case 'q': endwin(); exit(0); break;
 	}
-}
+}*/
 
 int main() {
-	STATE st = {20,20};
+	//STATE st = {20,20};
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
 	getmaxyx(wnd,nrows,ncols);
+	CASA *mapa[nrows];
+	for(int i = 0; i < nrows; i++){
+		mapa[i] = malloc(sizeof(CASA) * ncols);
+	}
 
-	srandom(time(NULL));
+
+	srand(time(NULL));
 	start_color();
 
 	cbreak();
@@ -79,6 +84,14 @@ int main() {
         init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
         init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 
+	
+	iniciarMapa(mapa, nrows,ncols);
+	for(int i = 0; i < 5; i++){
+		compactaMapa(mapa,nrows,ncols);
+	}
+		escreveMapa(mapa,nrows,ncols);
+	getch();
+
 	/**
 	 * Este código está muito mal escrito!
 	 * Deveria existir uma função chamada draw_player!
@@ -87,7 +100,7 @@ int main() {
 	 * deveria existir uma função chamada draw_light!
 	 *
 	 */
-	while(1) {
+	/*while(1) {
 		move(nrows - 1, 0);
 		attron(COLOR_PAIR(COLOR_BLUE));
 		printw("(%d, %d) %d %d", st.playerX, st.playerY, ncols, nrows);
@@ -107,7 +120,7 @@ int main() {
                 attroff(COLOR_PAIR(COLOR_YELLOW));
 		move(st.playerX, st.playerY);
 		update(&st);
-	}
+	}*/
 
 	return 0;
 }

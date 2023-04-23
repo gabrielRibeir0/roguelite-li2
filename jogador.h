@@ -3,6 +3,6 @@
 #ifndef JOGADOR_H
 #define JOGADOR_H
 
-void mover_jogador(JOGADOR *jg, int dx, int dy);
+void mover_jogador(JOGADOR jg, int dx, int dy);
 
 #endif

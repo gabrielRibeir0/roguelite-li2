@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "estado.h"
 #include "mapa.h"
 
@@ -7,7 +8,7 @@
 
 //TAMANHO DO MAPA A DEFINIR
 
-void iniciarMapa(CASA mapa[yMAX][xMAX]){
+void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     srand(time(NULL));
     //prencher o 'interior' com VAZIO ou MURO, 40% chance de ser MURO
     for(int i = 1; i < yMAX - 1; i++){
@@ -39,7 +40,7 @@ void iniciarMapa(CASA mapa[yMAX][xMAX]){
 }
 
 //função para contar os muros no quadrado 3x3
-int contarMuros(CASA mapa[yMAX][xMAX], int y, int x){
+int contarMuros(CASA **mapa, int y, int x){
     int nMuros = 0;
 
     for(int i = y - 1; i < y + 1; i++){
@@ -53,7 +54,7 @@ int contarMuros(CASA mapa[yMAX][xMAX], int y, int x){
 }
 
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros (versão só com a verificação >= 5)
-int compactaMapa(CASA mapa[yMAX][xMAX]){ // chamar na main ~4 vezes
+int compactaMapa(CASA **mapa, int yMAX, int xMAX){ // chamar na main ~4 vezes
     CASA mapaAux[yMAX][xMAX];
     int nMuros;
 
@@ -84,7 +85,8 @@ int compactaMapa(CASA mapa[yMAX][xMAX]){ // chamar na main ~4 vezes
 //função para adicionar os mobs e outras cousas ao mapa
 
 //função para escrever o mapa
-void escreveMapa(CASA mapa[yMAX][xMAX]){
+void escreveMapa(CASA **mapa, int yMAX , int xMAX){
+    attron(COLOR_PAIR(COLOR_YELLOW));
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].obs == MURO) 
@@ -96,10 +98,10 @@ void escreveMapa(CASA mapa[yMAX][xMAX]){
 }
 
 //Arranjar para a primeira linha do muro ser visivel (?)
-int calcularVisivel(CASA mapa[yMAX][xMAX], JOGADOR jogador){
+int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0;j < xMAX; j++){
-            int distancia = sqrt((jogador->posX - j)^2 + (jogador->posY - i)^2);
+            int distancia = sqrt(((jogador->posX - j)^2) + ((jogador->posY - i)^2));
 
             if(mapa[i][j].obs == VAZIO && distancia < 5){ //5 foi posto atoa, valor a verificar
                 mapa[i][j].visivel = 1;

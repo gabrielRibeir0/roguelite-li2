@@ -3,10 +3,6 @@
 #ifndef ESTADO_H
 #define ESTADO_H
 
-//TAMANHOS DO MAPA A DEFINIR
-int yMAX = 45;
-int xMAX = 189;
-
 //DADOS DO JOGADOR
 typedef struct jogador{
 	int posX; //posição X

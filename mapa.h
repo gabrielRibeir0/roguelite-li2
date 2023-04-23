@@ -3,14 +3,14 @@
 #ifndef MAPA_H
 #define MAPA_H
 
-void iniciarMapa(CASA mapa[yMAX][xMAX]);
+void iniciarMapa(CASA **mapa, int yMAX, int xMAX);
 
-int contarMuros(CASA mapa[yMAX][xMAX], int y, int x);
+int contarMuros(CASA **mapa, int y, int x);
 
-int compactaMapa(CASA mapa[yMAX][xMAX]);
+int compactaMapa(CASA **mapa, int yMAX, int xMAX);
 
-void escreveMapa(CASA mapa[yMAX][xMAX]);
+void escreveMapa(CASA **mapa, int yMAX , int xMAX);
 
-int calcularVisivel(CASA mapa[yMAX][xMAX], JOGADOR jogador);
+int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
 
 #endif
