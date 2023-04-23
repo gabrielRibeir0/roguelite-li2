@@ -74,7 +74,7 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX){ // chamar na main ~4 vezes
     }
 
     for(int i = 1; i < yMAX - 1; i++){
-        for(int j = 1; j < yMAX - 1; j++){
+        for(int j = 1; j < xMAX - 1; j++){
             mapa[i][j] = mapaAux[i][j];
         }
     }
