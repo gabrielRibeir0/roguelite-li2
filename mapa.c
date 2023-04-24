@@ -13,7 +13,7 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     //prencher o 'interior' com VAZIO ou MURO, 40% chance de ser MURO
     for(int i = 1; i < yMAX - 1; i++){
         for(int j = 1; j < xMAX -1; j++){
-            if(rand() % 100 < 40){
+            if(rand() % 100 < 43){
                 mapa[i][j].obs = MURO;
                 mapa[i][j].atravessavel = 0;
             }
@@ -40,35 +40,54 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
 }
 
 //função para contar os muros no quadrado 3x3
-int contarMuros(CASA **mapa, int y, int x){
-    int nMuros = 0;
+int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
+    int nObstaculo = 0;
 
     for(int i = y - 1; i <= y + 1; i++){
         for(int j = x - 1; j <= x + 1; j++){
-            if(mapa[i][j].obs == MURO)
-                nMuros++;
+            if(mapa[i][j].obs == obst)
+                nObstaculo++;
         }
     }
 
-    return nMuros;
+    return nObstaculo;
 }
 
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros (versão só com a verificação >= 5)
-int compactaMapa(CASA **mapa, int yMAX, int xMAX){ // chamar na main ~4 vezes
+int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~4 vezes
     CASA mapaAux[yMAX][xMAX];
-    int nMuros;
+    int nMuros, nEspacos;
 
-    for (int i = 1; i < yMAX - 1; i++){
-        for (int j = 1; j < xMAX - 1; j++){
-            nMuros = contarMuros(mapa, i, j);
-            
-            if(nMuros >= 5){
-                mapaAux[i][j].obs = MURO;
-                mapaAux[i][j].atravessavel = 0;
+    if(fase == 1){
+       for (int i = 1; i < yMAX - 1; i++){
+            for (int j = 1; j < xMAX - 1; j++){
+                nMuros = contarObstaculo(mapa, i, j, MURO);
+                nEspacos = contarObstaculo(mapa, i, j, VAZIO);
+                
+                if(nMuros >= 5 || nEspacos <= 2){
+                    mapaAux[i][j].obs = MURO;
+                    mapaAux[i][j].atravessavel = 0;
+                }
+                else{
+                    mapaAux[i][j].obs = VAZIO;
+                    mapaAux[i][j].atravessavel = 1;
+                }
             }
-            else{
-                mapaAux[i][j].obs = VAZIO;
-                mapaAux[i][j].atravessavel = 1;
+        }
+    }
+    else{
+        for (int i = 1; i < yMAX - 1; i++){
+            for (int j = 1; j < xMAX - 1; j++){
+                nMuros = contarObstaculo(mapa, i, j, MURO);
+                
+                if(nMuros >= 5){
+                    mapaAux[i][j].obs = MURO;
+                    mapaAux[i][j].atravessavel = 0;
+                }
+                else{
+                    mapaAux[i][j].obs = VAZIO;
+                    mapaAux[i][j].atravessavel = 1;
+                }
             }
         }
     }
@@ -81,6 +100,10 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX){ // chamar na main ~4 vezes
 
     return 0;
 }
+
+/*void verificaAcesso(Casa **mapa, int yMAX, int xMAX){
+    if()
+}*/
 
 //função para adicionar os mobs e outras cousas ao mapa
 

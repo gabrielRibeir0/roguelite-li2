@@ -5,9 +5,11 @@
 
 void iniciarMapa(CASA **mapa, int yMAX, int xMAX);
 
-int contarMuros(CASA **mapa, int y, int x);
+int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst);
 
-int compactaMapa(CASA **mapa, int yMAX, int xMAX);
+int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase);
+
+//void verificaAcesso(CASA **mapa);
 
 void escreveMapa(CASA **mapa, int yMAX , int xMAX);
 

@@ -86,14 +86,24 @@ int main() {
 
 	
 	iniciarMapa(mapa, nrows,ncols);
-	for(int i = 0; i < 5; i++){
-		compactaMapa(mapa,nrows,ncols);
+	escreveMapa(mapa, nrows, ncols);
+	for(int i = 0; i < 4; i++){
+		getch();
+		compactaMapa(mapa, nrows, ncols, 1);
+		escreveMapa(mapa, nrows, ncols);
 	}
-		escreveMapa(mapa,nrows,ncols);
+	for(int i = 0; i < 3; i++){
+		getch();
+		compactaMapa(mapa, nrows, ncols, 2);
+		escreveMapa(mapa, nrows, ncols);
+	}
+		escreveMapa(mapa, nrows, ncols);
 	getch();
-	fazJogador(mapa,nrows,ncols);
-	calcularVisivel(mapa,JOGADOR jogador,nrows,ncols);
-	escreveVisivel(mapa,nrows,ncols);
+
+	/*JOGADOR jogador;
+	jogador = fazJogador(mapa,nrows,ncols);
+	calcularVisivel(mapa, jogador, nrows, ncols);
+	escreveVisivel(mapa,nrows,ncols);*/
 
 	/**
 	 * Este código está muito mal escrito!

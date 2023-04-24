@@ -4,7 +4,7 @@
 #include "jogador.h"
 #include "mapa.h"
 
-int fazJogador(CASA **mapa,int yMAX,int xMAX){
+/*int fazJogador(CASA **mapa,int yMAX,int xMAX){
 	for(int i=0;i<1;){
 		if(mapa[int a=rand()%yMAX][int b=rand()%xMAX].obs==VAZIO){
 			JOGADOR->posY=a;
@@ -13,7 +13,7 @@ int fazJogador(CASA **mapa,int yMAX,int xMAX){
 		}
 	}
 	JOGADOR->score=0;
-}
+}*/
 
 void mover_jogador(JOGADOR jg, int dx, int dy) {
 	jg->posX += dx;

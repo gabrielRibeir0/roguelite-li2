@@ -39,6 +39,7 @@ typedef struct casa{
     AMBIENTE ambiente;
     int atravessavel;
     int visivel;
+    int acessivel;
 } CASA;
 // um mapa é um array de 2 dimensões de casas -> CASA mapa[linhas][colunas]
 
