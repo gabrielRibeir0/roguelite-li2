@@ -4,18 +4,30 @@
 #include "jogador.h"
 #include "mapa.h"
 
-/*int fazJogador(CASA **mapa,int yMAX,int xMAX){
-	for(int i=0;i<1;){
-		if(mapa[int a=rand()%yMAX][int b=rand()%xMAX].obs==VAZIO){
-			JOGADOR->posY=a;
-			JOGADOR->postX=b
-			i++;
+//função para incializar o jogador numa posição válida
+int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
+	int posInvalida = 1;
+
+	while(posInvalida){
+		int x = rand() % yMAX;
+		int y = rand() % xMAX;
+
+		if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1){
+			jogador->posY = y;
+			jogador->posX = x;
+
+			posInvalida = 0;
 		}
 	}
-	JOGADOR->score=0;
-}*/
 
-void mover_jogador(JOGADOR jg, int dx, int dy) {
-	jg->posX += dx;
-	jg->posY += dy;
+	jogador->score = 0;
+}
+
+void moverJogador(JOGADOR jogador, int dx, int dy) {
+	jogador->posX += dx;
+	jogador->posY += dy;
+}
+
+void escreveJogador(JOGADOR jogador){
+	mvaddch(jogador->posY, jogador->posX, '@' | A_BOLD);
 }

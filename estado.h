@@ -30,14 +30,12 @@ typedef enum{
     CAVERNA
 } AMBIENTE;
 
-//uma casa do mapa tem um obstaculo (ou falta dele), um tipo de terreno, um tipo de ambiente e uma flag que diz que dá para 
-//atravessar (0 ou 1)
+//uma casa do mapa tem um obstaculo (ou falta dele), um tipo de terreno, um tipo de ambiente e flags que dizem se é visivel e se é acessivel
 //->POR os mobs e loot nos obstaculos e assim desaparece o parametro do atravessavel (?)
 typedef struct casa{
     OBSTACULO obs;
     TERRENO terr;
     AMBIENTE ambiente;
-    int atravessavel;
     int visivel;
     int acessivel;
 } CASA;

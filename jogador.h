@@ -3,8 +3,10 @@
 #ifndef JOGADOR_H
 #define JOGADOR_H
 
-//int fazJogador(CASA **mapa,int yMAX,int xMAX);
+int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
 
-void mover_jogador(JOGADOR jg, int dx, int dy);
+void moverJogador(JOGADOR jogador, int dx, int dy);
+
+void escreveJogador(JOGADOR jogador);
 
 #endif
