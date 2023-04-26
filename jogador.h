@@ -5,7 +5,7 @@
 
 int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
 
-void moverJogador(JOGADOR jogador, int dx, int dy);
+void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino);
 
 void escreveJogador(JOGADOR jogador);
 

@@ -61,17 +61,35 @@ void update(STATE *st) {
 }*/
 
 int main() {
-	//STATE st = {20,20};
+	srand(time(NULL));
 	WINDOW *wnd = initscr();
 	int ncols, nrows;
 	getmaxyx(wnd,nrows,ncols);
+
 	CASA *mapa[nrows];
 	for(int i = 0; i < nrows; i++){
 		mapa[i] = malloc(sizeof(CASA) * ncols);
 	}
 
+	iniciarMapa(mapa, nrows,ncols);
+	for(int i = 0; i < 4; i++){
+		compactaMapa(mapa, nrows, ncols, 1);
+	}
+	for(int i = 0; i < 3; i++){
+		compactaMapa(mapa, nrows, ncols, 2);
+	}
 
-	srand(time(NULL));
+	int yRAND = rand() % nrows;
+	int xRAND = rand() % ncols;
+	while(mapa[yRAND][xRAND].obs != VAZIO){
+		yRAND = rand() % nrows;
+		xRAND = rand() % ncols;
+	}
+	verificaAcesso(mapa, yRAND, xRAND);
+
+	JOGADOR jogador = malloc(sizeof(jogador));
+	fazJogador(mapa, jogador, nrows, ncols);
+
 	start_color();
 
 	cbreak();
@@ -81,24 +99,39 @@ int main() {
 	keypad(stdscr, true);
 
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
-        init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
-        init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
+    init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 
-	
-	iniciarMapa(mapa, nrows,ncols);
 	escreveMapa(mapa, nrows, ncols);
-	for(int i = 0; i < 4; i++){
-		getch();
-		compactaMapa(mapa, nrows, ncols, 1);
-		escreveMapa(mapa, nrows, ncols);
+	escreveJogador(jogador);
+
+	int input;
+	while(1){
+		move(jogador->posY, jogador->posX);
+		
+		input = getch();
+		if(input == 27)
+			break;
+
+		switch(input){
+			case KEY_UP:
+				moverJogador(jogador, 0, -1, mapa[jogador->posY - 1][jogador->posX]);
+				break;
+			case KEY_DOWN:
+				moverJogador(jogador, 0, 1, mapa[jogador->posY + 1][jogador->posX]);
+				break;
+			case KEY_RIGHT:
+				moverJogador(jogador, 1, 0, mapa[jogador->posY][jogador->posX + 1]);
+				break;
+			case KEY_LEFT:
+				moverJogador(jogador, -1, 0, mapa[jogador->posY][jogador->posX - 1]);
+				break;
+			default:
+				break;
+		}
+		escreveMapa(mapa,nrows,ncols);
+		escreveJogador(jogador);
 	}
-	for(int i = 0; i < 3; i++){
-		getch();
-		compactaMapa(mapa, nrows, ncols, 2);
-		escreveMapa(mapa, nrows, ncols);
-	}
-		escreveMapa(mapa, nrows, ncols);
-	getch();
 
 	/*JOGADOR jogador;
 	jogador = fazJogador(mapa,nrows,ncols);

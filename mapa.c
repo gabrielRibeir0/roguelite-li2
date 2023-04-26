@@ -96,9 +96,10 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~
 /*Chamar com um y, x random em que o obstáculo nessa casa é VAZIO
 Ver como fazer isto sem recursiva (?)
 Ao spawnar o jogador e outras coisas tem de ser em casas com .obs = VAZIO e .acessivel = 1
+Verificar se todas as casas vazias estão acessiveis se for para preencher essas casas com muros, ou só evitar gerar coisas nessas casas
 */
-void verficaAcesso(CASA **mapa, int y, int x){
-		if(mapa[y][x].obs == MURO || mapa[x][y].acessivel == 1)
+void verificaAcesso(CASA **mapa, int y, int x){
+		if(mapa[y][x].obs == MURO || mapa[y][x].acessivel == 1)
 			return;
 		
 		mapa[y][x].acessivel = 1;
@@ -112,15 +113,25 @@ void verficaAcesso(CASA **mapa, int y, int x){
 //função para adicionar os mobs e outras cousas ao mapa
 
 //função para escrever o mapa
-void escreveMapa(CASA **mapa, int yMAX , int xMAX){
-    attron(COLOR_PAIR(COLOR_YELLOW));
-    
+void escreveMapa(CASA **mapa, int yMAX , int xMAX){    
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
-            if(mapa[i][j].obs == MURO) 
-                mvaddch(i, j, '#');
-            else
-                mvaddch(i, j, ' ');
+            if(mapa[i][j].acessivel == 1){
+                attron(COLOR_PAIR(COLOR_WHITE));
+                if(mapa[i][j].obs == MURO)
+                    mvaddch(i, j, '#');
+                else
+                    mvaddch(i, j, '.');
+                attroff(COLOR_PAIR(COLOR_WHITE));
+            }
+            else{
+                attron(COLOR_PAIR(COLOR_YELLOW));
+                if(mapa[i][j].obs == MURO)
+                    mvaddch(i, j, '#');
+                else
+                    mvaddch(i, j, '.');
+                attroff(COLOR_PAIR(COLOR_YELLOW));
+            }
         }
     }
 }
