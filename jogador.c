@@ -11,7 +11,7 @@ int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 	while(posInvalida){
 		int y = rand() % yMAX;
 		int x = rand() % xMAX;
-		printf("[%d / %d / %d]", x,y,   mapa[y][x].acessivel);
+
 		if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1){
 			jogador->posY = y;
 			jogador->posX = x;
@@ -33,5 +33,5 @@ void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
 }
 
 void escreveJogador(JOGADOR jogador){
-	mvaddch(jogador->posY, jogador->posX, '@');
+	mvaddch(jogador->posY, jogador->posX, 'G');
 }
