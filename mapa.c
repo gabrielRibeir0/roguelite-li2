@@ -133,12 +133,16 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
                 }
             }
             else{
-                attron(COLOR_PAIR(COLOR_YELLOW));
-                if(mapa[i][j].obs == MURO)
+                if(mapa[i][j].obs == MURO){
+                    attron(COLOR_PAIR(COLOR_YELLOW));
                     mvaddch(i, j, '#');
-                else
+                    attroff(COLOR_PAIR(COLOR_YELLOW));                    
+                }
+                else{
+                   attron(COLOR_PAIR(COLOR_YELLOW));
                     mvaddch(i, j, '.');
-                attroff(COLOR_PAIR(COLOR_YELLOW));
+                    attroff(COLOR_PAIR(COLOR_YELLOW)); 
+                }
             }
         }
     }
@@ -149,7 +153,7 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0;j < xMAX; j++){
             int distancia = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
-            if(mapa[i][j].obs == VAZIO && distancia < 5) //5 foi posto atoa, valor a verificar
+            if(mapa[i][j].obs == VAZIO && distancia < 9) //5 foi posto atoa, valor a verificar
                 mapa[i][j].visivel = 1;
             else
                 mapa[i][j].visivel = 0;
