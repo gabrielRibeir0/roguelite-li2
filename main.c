@@ -105,6 +105,7 @@ int main() {
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 
+	calcularVisivel(mapa,jogador,nrows,ncols);
 	escreveMapa(mapa,nrows,ncols);
 	escreveJogador(jogador);	
 
@@ -132,6 +133,8 @@ int main() {
 			default:
 				break;
 		}
+
+		calcularVisivel(mapa,jogador,nrows,ncols);
 		escreveMapa(mapa,nrows,ncols);
 		escreveJogador(jogador);
 	}

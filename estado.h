@@ -18,7 +18,7 @@ typedef enum{
     VAZIO //não ter obstáculos (pode ter um mob na mesma, não quer dizer que está totalmente vazio)
 } OBSTACULO;
 
-//tipo para repretentar o tipo de terreno da casa
+//tipo para representar o tipo de terreno da casa
 typedef enum{
     PEDRA,
     LAVA

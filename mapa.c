@@ -121,12 +121,16 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].acessivel == 1){
-                attron(COLOR_PAIR(COLOR_WHITE));
-                if(mapa[i][j].obs == MURO)
-                    mvaddch(i, j, '#');
-                else
+                if(mapa[i][j].visivel == 1){
+                    attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '.');
-                attroff(COLOR_PAIR(COLOR_WHITE));
+                    attroff(COLOR_PAIR(COLOR_WHITE));    
+                }
+                else{
+                    attron(COLOR_PAIR(COLOR_BLUE));
+                    mvaddch(i, j, '.');
+                    attroff(COLOR_PAIR(COLOR_BLUE));
+                }
             }
             else{
                 attron(COLOR_PAIR(COLOR_YELLOW));
@@ -144,8 +148,7 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
 int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0;j < xMAX; j++){
-            int distancia = sqrt(((jogador->posX - j)^2) + ((jogador->posY - i)^2));
-
+            int distancia = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
             if(mapa[i][j].obs == VAZIO && distancia < 5) //5 foi posto atoa, valor a verificar
                 mapa[i][j].visivel = 1;
             else
@@ -156,14 +159,4 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     return 0;
 }
 
-//pode ser feita na escreveMapa
-void escreveVisivel (CASA **mapa, int yMAX, int xMAX){
-    attron(COLOR_PAIR(COLOR_BLACK));
-    for(int i = 0; i < yMAX; i++){
-        for(int j = 0; j < xMAX; j++){
-            if(mapa[i][j].visivel == 0) 
-                mvaddch(i, j, '#');
-        }
-    }
-}
 
