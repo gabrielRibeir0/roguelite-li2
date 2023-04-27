@@ -52,7 +52,7 @@ int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros 
 int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~4 vezes
     CASA mapaAux[yMAX][xMAX];
-    int nMuros, nEspacos;
+    int nMuros, nEspacos,nVazias;
 
     if(fase == 1){
        for (int i = 1; i < yMAX - 1; i++){
@@ -70,6 +70,7 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~
         }
     }
     else{
+        nVazias=0;
         for (int i = 1; i < yMAX - 1; i++){
             for (int j = 1; j < xMAX - 1; j++){
                 nMuros = contarObstaculo(mapa, i, j, MURO);
@@ -77,8 +78,10 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~
                 if(nMuros >= 5)
                     mapaAux[i][j].obs = MURO;
                 
-                else
+                else{
                     mapaAux[i][j].obs = VAZIO;
+                    nVazias++;
+                }
                 
             }
         }
@@ -90,7 +93,7 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~
         }
     }
 
-    return 0;
+    return nVazias;
 }
 
 /*Chamar com um y, x random em que o obstáculo nessa casa é VAZIO
@@ -98,16 +101,17 @@ Ver como fazer isto sem recursiva (?)
 Ao spawnar o jogador e outras coisas tem de ser em casas com .obs = VAZIO e .acessivel = 1
 Verificar se todas as casas vazias estão acessiveis se for para preencher essas casas com muros, ou só evitar gerar coisas nessas casas
 */
-void verificaAcesso(CASA **mapa, int y, int x){
-		if(mapa[y][x].obs == MURO || mapa[y][x].acessivel == 1)
+void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis){
+        if(mapa[y][x].obs == MURO || mapa[y][x].acessivel == 1)
 			return;
 		
 		mapa[y][x].acessivel = 1;
+        (*nAcessiveis)++;
 		
-		verificaAcesso(mapa, y + 1, x);
-		verificaAcesso(mapa, y - 1, x);
-		verificaAcesso(mapa, y, x + 1);
-		verificaAcesso(mapa, y, x - 1);
+		verificaAcesso(mapa, y + 1, x,nAcessiveis);
+		verificaAcesso(mapa, y - 1, x,nAcessiveis);
+		verificaAcesso(mapa, y, x + 1,nAcessiveis);
+		verificaAcesso(mapa, y, x - 1,nAcessiveis);
 }
 
 //função para adicionar os mobs e outras cousas ao mapa
@@ -162,3 +166,4 @@ void escreveVisivel (CASA **mapa, int yMAX, int xMAX){
         }
     }
 }
+

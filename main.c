@@ -63,7 +63,7 @@ void update(STATE *st) {
 int main() {
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
-	int ncols, nrows;
+	int ncols, nrows,nVazias,nAcessiveis=0;
 	getmaxyx(wnd,nrows,ncols);
 
 	CASA *mapa[nrows];
@@ -71,21 +71,24 @@ int main() {
 		mapa[i] = malloc(sizeof(CASA) * ncols);
 	}
 
-	iniciarMapa(mapa, nrows,ncols);
-	for(int i = 0; i < 4; i++){
-		compactaMapa(mapa, nrows, ncols, 1);
-	}
-	for(int i = 0; i < 3; i++){
-		compactaMapa(mapa, nrows, ncols, 2);
-	}
+	do{
+		iniciarMapa(mapa, nrows,ncols);
+		for(int i = 0; i < 4; i++){
+			compactaMapa(mapa, nrows, ncols, 1);
+		}
+		for(int i = 0; i < 3; i++){
+			nVazias = compactaMapa(mapa, nrows, ncols, 2);
+		}
 
-	int yRAND = rand() % nrows;
-	int xRAND = rand() % ncols;
-	while(mapa[yRAND][xRAND].obs != VAZIO){
-		yRAND = rand() % nrows;
-		xRAND = rand() % ncols;
+		int yRAND = rand() % nrows;
+		int xRAND = rand() % ncols;
+		while(mapa[yRAND][xRAND].obs != VAZIO){
+			yRAND = rand() % nrows;
+			xRAND = rand() % ncols;
+		}
+		verificaAcesso(mapa, yRAND, xRAND,&nAcessiveis);
 	}
-	verificaAcesso(mapa, yRAND, xRAND);
+	while((nAcessiveis)<=(nVazias*0.7));
 
 	JOGADOR jogador = malloc(sizeof(jogador));
 	fazJogador(mapa, jogador, nrows, ncols);
@@ -102,8 +105,8 @@ int main() {
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 
-	escreveMapa(mapa, nrows, ncols);
-	escreveJogador(jogador);
+	escreveMapa(mapa,nrows,ncols);
+	escreveJogador(jogador);	
 
 	int input;
 	while(1){
