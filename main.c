@@ -61,16 +61,19 @@ void update(STATE *st) {
 }*/
 
 int main() {
+	//inicializar coisas
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
-	int ncols, nrows,nVazias,nAcessiveis=0;
+	int ncols, nrows, nVazias, nAcessiveis = 0;
 	getmaxyx(wnd,nrows,ncols);
 
+	//inicializar mapa
 	CASA *mapa[nrows];
 	for(int i = 0; i < nrows; i++){
 		mapa[i] = malloc(sizeof(CASA) * ncols);
 	}
 
+	//enquanto pelo menos 70% das casas vazias não forem acessíveis, continua a gerar um mapa
 	do{
 		iniciarMapa(mapa, nrows,ncols);
 		for(int i = 0; i < 4; i++){
@@ -86,15 +89,14 @@ int main() {
 			yRAND = rand() % nrows;
 			xRAND = rand() % ncols;
 		}
-		verificaAcesso(mapa, yRAND, xRAND,&nAcessiveis);
-	}
-	while((nAcessiveis)<=(nVazias*0.7));
+		verificaAcesso(mapa, yRAND, xRAND, &nAcessiveis);
+	} while((nAcessiveis)<=(nVazias*0.7));
 
+	//cria o jogador
 	JOGADOR jogador = malloc(sizeof(jogador));
 	fazJogador(mapa, jogador, nrows, ncols);
 
 	start_color();
-
 	cbreak();
 	noecho();
 	nonl();
@@ -105,6 +107,7 @@ int main() {
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 
+	//escrever o inicio e loop
 	calcularVisivel(mapa,jogador,nrows,ncols);
 	escreveMapa(mapa,nrows,ncols);
 	escreveJogador(jogador);	

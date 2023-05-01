@@ -148,13 +148,48 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
     }
 }
 
+void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino){
+    int dx = abs(xDestino - xAtual);
+    int dy = -abs(yDestino  - yAtual);
+    int sinalX = xAtual < xDestino ? 1 : -1;
+    int sinalY = yAtual < yDestino ? 1 : -1;
+    int erro = dx + dy; //erro em xy
+    int erroAux;
+
+    while(1){
+        //se encontrar um muro para
+        if(mapa[yAtual][xAtual].obs == MURO)
+            break;
+        
+        /*se chegarmos ao destino, marca a casa como visível e para, 
+        não é preciso ir marcando a linha em si, pois a função já é chamada para os pontos da linha, logo já estão marcados*/
+        if(xAtual == xDestino && yAtual == yDestino){
+            mapa[yAtual][xAtual].visivel = 1;
+            break;
+        }
+            
+        erroAux = 2 * erro; 
+
+        if (erroAux >= dy){ //se err_xy + err_x > 0 -> mover na dir X e atualizar o erro
+            erro += dy;
+            xAtual += sinalX;
+        }
+        if (erroAux <= dx){ //se err_xy + err_y < 0 -> mover na dir Y e atualizar o erro
+            erro += dx; 
+            yAtual += sinalY;
+        }
+    }
+}
+
 //Arranjar para a primeira linha do muro ser visivel (?)
 int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0;j < xMAX; j++){
             int distancia = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
-            if(mapa[i][j].obs == VAZIO && distancia < 9) //5 foi posto atoa, valor a verificar
-                mapa[i][j].visivel = 1;
+            if(distancia < 9){ 
+                mapa[i][j].visivel = 0;
+                linhaVisao(mapa, jogador->posX, jogador->posY, j, i);
+            }
             else
                 mapa[i][j].visivel = 0;
         }
@@ -162,5 +197,3 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 
     return 0;
 }
-
-

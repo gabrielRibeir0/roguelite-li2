@@ -13,8 +13,8 @@ void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis);
 
 void escreveMapa(CASA **mapa, int yMAX , int xMAX);
 
-int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
+void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino);
 
-void escreveVisivel (CASA **mapa, int yMAX, int xMAX);
+int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
 
 #endif
