@@ -11,6 +11,11 @@ typedef struct jogador{
     //outros stats
 } *JOGADOR;
 
+typedef struct monst{
+    int posX;
+    int posY;
+    int vida;
+} *MONSTRO;
 //DADOS DO MAPA
 //tipo de dados para representar obstáculos que uma casa pode ter
 typedef enum{
@@ -38,6 +43,8 @@ typedef struct casa{
     AMBIENTE ambiente;
     int visivel;
     int acessivel;
+    int temMonstro;
+    MONSTRO monstro;
 } CASA;
 // um mapa é um array de 2 dimensões de casas -> CASA mapa[linhas][colunas]
 

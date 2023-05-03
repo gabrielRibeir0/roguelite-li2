@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
 #include "estado.h"
 #include "jogador.h"
 #include "mapa.h"

@@ -6,6 +6,7 @@
 #include "estado.h"
 #include "jogador.h"
 #include "mapa.h"
+#include "monstros.h"
 
 /**
  *
@@ -93,7 +94,7 @@ int main() {
 	} while((nAcessiveis)<=(nVazias*0.7));
 
 	//cria o jogador
-	JOGADOR jogador = malloc(sizeof(jogador));
+	JOGADOR jogador = malloc(sizeof(struct jogador));
 	fazJogador(mapa, jogador, nrows, ncols);
 
 	start_color();

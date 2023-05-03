@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
 #include <math.h>
 #include "estado.h"
 #include "mapa.h"
