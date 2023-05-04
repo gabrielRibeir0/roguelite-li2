@@ -2,6 +2,7 @@
 #include "estado.h"
 #include "jogador.h"
 #include "mapa.h"
+#include "monstros.h"
 
 //função para incializar o jogador numa posição válida
 int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
@@ -11,7 +12,7 @@ int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 		int y = rand() % yMAX;
 		int x = rand() % xMAX;
 
-		if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1){
+		if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1 && !(monstrosPerto(mapa, y , x, yMAX, xMAX)) ){
 			jogador->posY = y;
 			jogador->posX = x;
 
@@ -19,7 +20,8 @@ int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 		}
 	}
 
-	jogador->score = 0;
+	jogador->score = jogador->vida = jogador->vidaMax = jogador->expAtual = 0;
+	jogador->lvl = 1;
 
 	return 0;
 }

@@ -2,9 +2,9 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pedantic -std=c99
 LDFLAGS = -lncurses -lm
 
-SRCS = main.c jogador.c mapa.c
+SRCS = main.c jogador.c mapa.c monstros.c
 OBJS = $(SRCS:.c=.o)
-DEPS = estado.h jogador.h mapa.h
+DEPS = estado.h jogador.h mapa.h monstros.h
 
 .PHONY: all clean
 

@@ -65,37 +65,40 @@ int main() {
 	//inicializar coisas
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
-	int ncols, nrows, nVazias, nAcessiveis = 0;
-	getmaxyx(wnd,nrows,ncols);
+	int yMAX, xMAX, nVazias, nAcessiveis = 0;
+	getmaxyx(wnd,yMAX,xMAX);
 
+	yMAX -= 3;
 	//inicializar mapa
-	CASA *mapa[nrows];
-	for(int i = 0; i < nrows; i++){
-		mapa[i] = malloc(sizeof(CASA) * ncols);
+	CASA *mapa[yMAX];
+	for(int i = 0; i < yMAX; i++){
+		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
 
 	//enquanto pelo menos 70% das casas vazias não forem acessíveis, continua a gerar um mapa
 	do{
-		iniciarMapa(mapa, nrows,ncols);
+		iniciarMapa(mapa, yMAX,xMAX);
 		for(int i = 0; i < 4; i++){
-			compactaMapa(mapa, nrows, ncols, 1);
+			compactaMapa(mapa, yMAX, xMAX, 1);
 		}
 		for(int i = 0; i < 3; i++){
-			nVazias = compactaMapa(mapa, nrows, ncols, 2);
+			nVazias = compactaMapa(mapa, yMAX, xMAX, 2);
 		}
 
-		int yRAND = rand() % nrows;
-		int xRAND = rand() % ncols;
+		int yRAND = rand() % yMAX;
+		int xRAND = rand() % xMAX;
 		while(mapa[yRAND][xRAND].obs != VAZIO){
-			yRAND = rand() % nrows;
-			xRAND = rand() % ncols;
+			yRAND = rand() % yMAX;
+			xRAND = rand() % xMAX;
 		}
 		verificaAcesso(mapa, yRAND, xRAND, &nAcessiveis);
 	} while((nAcessiveis)<=(nVazias*0.7));
-
+	gerarObjetos(mapa,yMAX,xMAX);
+	iniciaMonstros(mapa, 1, yMAX, xMAX);
+	
 	//cria o jogador
 	JOGADOR jogador = malloc(sizeof(struct jogador));
-	fazJogador(mapa, jogador, nrows, ncols);
+	fazJogador(mapa, jogador, yMAX, xMAX);
 
 	start_color();
 	cbreak();
@@ -104,15 +107,18 @@ int main() {
 	intrflush(stdscr, false);
 	keypad(stdscr, true);
 
+    use_default_colors();
+    init_pair(1, COLOR_RED, -1);
+	init_pair(2, COLOR_BLACK, -1); 
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
+	init_pair(COLOR_CYAN, COLOR_GREEN, COLOR_BLACK);
 
 	//escrever o inicio e loop
 	
-	calcularVisivel(mapa,jogador,nrows,ncols);
-	gerarObjetos(mapa,nrows,ncols);
-	escreveMapa(mapa,nrows,ncols);
+	calcularVisivel(mapa,jogador,yMAX,xMAX);
+	escreveMapa(mapa,jogador,yMAX,xMAX);
 	escreveJogador(jogador);	
 
 	int input;
@@ -140,15 +146,10 @@ int main() {
 				break;
 		}
 
-		calcularVisivel(mapa,jogador,nrows,ncols);
-		escreveMapa(mapa,nrows,ncols);
+		calcularVisivel(mapa,jogador,yMAX,xMAX);
+		escreveMapa(mapa,jogador,yMAX,xMAX);
 		escreveJogador(jogador);
 	}
-
-	/*JOGADOR jogador;
-	jogador = fazJogador(mapa,nrows,ncols);
-	calcularVisivel(mapa, jogador, nrows, ncols);
-	escreveVisivel(mapa,nrows,ncols);*/
 
 	/**
 	 * Este código está muito mal escrito!
@@ -159,9 +160,9 @@ int main() {
 	 *
 	 */
 	/*while(1) {
-		move(nrows - 1, 0);
+		move(yMAX - 1, 0);
 		attron(COLOR_PAIR(COLOR_BLUE));
-		printw("(%d, %d) %d %d", st.playerX, st.playerY, ncols, nrows);
+		printw("(%d, %d) %d %d", st.playerX, st.playerY, xMAX, yMAX);
 		attroff(COLOR_PAIR(COLOR_BLUE));
 		attron(COLOR_PAIR(COLOR_WHITE));
 		mvaddch(st.playerX, st.playerY, '@' | A_BOLD);

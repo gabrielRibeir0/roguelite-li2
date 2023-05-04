@@ -15,22 +15,22 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
             else
                 mapa[i][j].obs = VAZIO;
 
-            mapa[i][j].acessivel = 0; 
+            mapa[i][j].acessivel = mapa[i][j].temMonstro = 0; 
         }
     }
 
     //Colocar MURO nas bordas do mapa
     for(int i = 0; i < yMAX; i++){
         mapa[i][0].obs = MURO;
-        mapa[i][0].acessivel = 0;
+        mapa[i][0].acessivel = mapa[i][0].temMonstro = 0;
         mapa[i][xMAX - 1].obs = MURO;
-        mapa[i][xMAX - 1].acessivel = 0;
+        mapa[i][xMAX - 1].acessivel = mapa[i][xMAX - 1].temMonstro = 0;
     }
     for(int i = 0; i < xMAX; i++){
         mapa[0][i].obs = MURO;
-        mapa[0][i].acessivel = 0;
+        mapa[0][i].acessivel = mapa[0][i].temMonstro = 0;
         mapa[yMAX - 1][i].obs = MURO;
-        mapa[yMAX - 1][i].acessivel = 0;
+        mapa[yMAX - 1][i].acessivel = mapa[yMAX - 1][i].temMonstro = 0;
     }
 }
 
@@ -49,9 +49,9 @@ int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
 }
 
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros 
-int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~4 vezes
+int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
     CASA mapaAux[yMAX][xMAX];
-    int nMuros, nEspacos,nVazias;
+    int nMuros, nEspacos, nVazias;
 
     if(fase == 1){
        for (int i = 1; i < yMAX - 1; i++){
@@ -76,7 +76,6 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){ // chamar na main ~
                 
                 if(nMuros >= 5)
                     mapaAux[i][j].obs = MURO;
-                
                 else{
                     mapaAux[i][j].obs = VAZIO;
                     nVazias++;
@@ -147,11 +146,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 }
 
 //função para escrever o mapa
-void escreveMapa(CASA **mapa, int yMAX , int xMAX){  
-    start_color();
-    use_default_colors();
-    init_pair(1, COLOR_RED, -1);
-    init_pair(2, COLOR_BLACK, -1); 
+void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].acessivel == 1){
@@ -182,8 +177,13 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
                     mvaddch(i, j, 'B');
                     attroff(COLOR_PAIR(COLOR_BLUE));
                 }
+                else if(mapa[i][j].temMonstro == 1){
+                    attron(COLOR_PAIR(COLOR_CYAN));
+                    mvaddch(i, j, 'M');
+                    attroff(COLOR_PAIR(COLOR_CYAN));
+                }
                 else{
-                   attron(COLOR_PAIR(COLOR_WHITE));
+                    attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '.');
                     attroff(COLOR_PAIR(COLOR_WHITE)); 
                 }
@@ -191,6 +191,12 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
             
         }
     }
+
+    attron(COLOR_PAIR(COLOR_WHITE));
+    mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
+    mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
+    attroff(COLOR_PAIR(COLOR_WHITE));
 }
 
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino){

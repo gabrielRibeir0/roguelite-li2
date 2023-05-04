@@ -8,7 +8,10 @@ typedef struct jogador{
 	int posX; //posição X
 	int posY; //posição Y
     int score; //score
-    //outros stats
+    int vida; //vida no momento
+    int vidaMax; //vida max
+    int expAtual; //exp no momento
+    int lvl; //nivel do jogador
 } *JOGADOR;
 
 typedef struct monst{

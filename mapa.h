@@ -13,7 +13,7 @@ void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis);
 
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX);
 
-void escreveMapa(CASA **mapa, int yMAX , int xMAX);
+void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX);
 
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino);
 
