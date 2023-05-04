@@ -117,52 +117,75 @@ void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis){
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     //traps, por enquanto tenta-se gerar só 10 traps, depois coloca-se uma percentagem
     int nTrapsGeradas = 0;
-    int y, x;
+    int yt, xt;
     
     while(nTrapsGeradas < 10){
-        y = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
-        x = rand() % (xMAX - 2) + 1;
+        yt = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
+        xt = rand() % (xMAX - 2) + 1;
 
-        if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1){
-            mapa[y][x].obs = TRAP;
+        if(mapa[yt][xt].obs == VAZIO && mapa[yt][xt].acessivel == 1){
+            mapa[yt][xt].obs = TRAP;
             nTrapsGeradas++;
+        }
+    }
+
+    //baus, a maneira como está gerada é fraca
+    int nBausGerados = 0;
+    int yb,xb;
+
+    while(nBausGerados < 6){
+        yb = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
+        xb = rand() % (xMAX - 2) + 1;
+
+        if(mapa[yb][xb].obs == VAZIO && mapa[yb][xb].obs != TRAP && mapa[yb][xb].acessivel == 1){
+            mapa[yb][xb].obs = BAU;
+            mapa[yb][xb].acessivel = 0;
+            nBausGerados++;
         }
     }
     return 0;
 }
 
 //função para escrever o mapa
-void escreveMapa(CASA **mapa, int yMAX , int xMAX){    
+void escreveMapa(CASA **mapa, int yMAX , int xMAX){  
+    start_color();
+    use_default_colors();
+    init_pair(1, COLOR_RED, -1);
+    init_pair(2, COLOR_BLACK, -1); 
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].acessivel == 1){
                  if(mapa[i][j].obs == TRAP){
-                    attron(COLOR_PAIR(COLOR_BLACK));
+                    attron(COLOR_PAIR(1));
                     mvaddch(i, j, 'T');
-                    attroff(COLOR_PAIR(COLOR_BLACK));
+                    attroff(COLOR_PAIR(1));
                 }
                 else if(mapa[i][j].visivel == 1){
-                    attron(COLOR_PAIR(COLOR_WHITE));
+                    attron(COLOR_PAIR(COLOR_YELLOW));
                     mvaddch(i, j, '.');
-                    attroff(COLOR_PAIR(COLOR_WHITE));    
+                    attroff(COLOR_PAIR(COLOR_YELLOW));    
                 }
                 else{
-                    attron(COLOR_PAIR(COLOR_BLUE));
+                    attron(COLOR_PAIR(2));
                     mvaddch(i, j, '.');
-                    attroff(COLOR_PAIR(COLOR_BLUE));
+                    attroff(COLOR_PAIR(2));
                 }
             }
             else{
                 if(mapa[i][j].obs == MURO){
-                    attron(COLOR_PAIR(COLOR_YELLOW));
+                    attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '#');
-                    attroff(COLOR_PAIR(COLOR_YELLOW));                    
+                    attroff(COLOR_PAIR(COLOR_WHITE));                    
                 }
-                
+                else if(mapa[i][j].obs == BAU){
+                    attron(COLOR_PAIR(COLOR_BLUE));
+                    mvaddch(i, j, 'B');
+                    attroff(COLOR_PAIR(COLOR_BLUE));
+                }
                 else{
-                   attron(COLOR_PAIR(COLOR_YELLOW));
+                   attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '.');
-                    attroff(COLOR_PAIR(COLOR_YELLOW)); 
+                    attroff(COLOR_PAIR(COLOR_WHITE)); 
                 }
             }
             
