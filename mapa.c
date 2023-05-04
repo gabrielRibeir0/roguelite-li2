@@ -118,7 +118,6 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     //traps, por enquanto tenta-se gerar só 10 traps, depois coloca-se uma percentagem
     int nTrapsGeradas = 0;
     int y, x;
-    int nivel, nTraps;
     
     while(nTrapsGeradas < 10){
         y = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
