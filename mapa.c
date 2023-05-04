@@ -113,14 +113,36 @@ void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis){
 		verificaAcesso(mapa, y, x - 1,nAcessiveis);
 }
 
-//função para adicionar os mobs e outras cousas ao mapa
+//função para adicionar os objetos do mapa
+int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
+    //traps, por enquanto tenta-se gerar só 10 traps, depois coloca-se uma percentagem
+    int nTrapsGeradas = 0;
+    int y, x;
+    int nivel, nTraps;
+    
+    while(nTrapsGeradas < 10){
+        y = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
+        x = rand() % (xMAX - 2) + 1;
+
+        if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1){
+            mapa[y][x].obs = TRAP;
+            nTrapsGeradas++;
+        }
+    }
+    return 0;
+}
 
 //função para escrever o mapa
 void escreveMapa(CASA **mapa, int yMAX , int xMAX){    
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].acessivel == 1){
-                if(mapa[i][j].visivel == 1){
+                 if(mapa[i][j].obs == TRAP){
+                    attron(COLOR_PAIR(COLOR_BLACK));
+                    mvaddch(i, j, 'T');
+                    attroff(COLOR_PAIR(COLOR_BLACK));
+                }
+                else if(mapa[i][j].visivel == 1){
                     attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '.');
                     attroff(COLOR_PAIR(COLOR_WHITE));    
@@ -137,12 +159,14 @@ void escreveMapa(CASA **mapa, int yMAX , int xMAX){
                     mvaddch(i, j, '#');
                     attroff(COLOR_PAIR(COLOR_YELLOW));                    
                 }
+                
                 else{
                    attron(COLOR_PAIR(COLOR_YELLOW));
                     mvaddch(i, j, '.');
                     attroff(COLOR_PAIR(COLOR_YELLOW)); 
                 }
             }
+            
         }
     }
 }
@@ -196,3 +220,5 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 
     return 0;
 }
+
+

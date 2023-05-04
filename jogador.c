@@ -25,7 +25,7 @@ int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 }
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
-	if(destino.obs == VAZIO){
+	if(destino.acessivel == 1){
 		jogador->posX += dx;
 		jogador->posY += dy;
 	}

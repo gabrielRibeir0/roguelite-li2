@@ -20,7 +20,8 @@ typedef struct monst{
 //tipo de dados para representar obstáculos que uma casa pode ter
 typedef enum{
     MURO, //a casa pode ter um muro
-    VAZIO //não ter obstáculos (pode ter um mob na mesma, não quer dizer que está totalmente vazio)
+    VAZIO, //não ter obstáculos (pode ter um mob na mesma, não quer dizer que está totalmente vazio)
+    TRAP
 } OBSTACULO;
 
 //tipo para representar o tipo de terreno da casa

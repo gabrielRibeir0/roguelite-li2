@@ -109,7 +109,9 @@ int main() {
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
 
 	//escrever o inicio e loop
+	
 	calcularVisivel(mapa,jogador,nrows,ncols);
+	gerarObjetos(mapa,nrows,ncols);
 	escreveMapa(mapa,nrows,ncols);
 	escreveJogador(jogador);	
 
