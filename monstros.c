@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <math.h>
+#include <unistd.h>
 #include "estado.h"
 #include "monstros.h"
 
@@ -45,5 +47,39 @@ void iniciaMonstros(CASA **mapa, int nivel, int yMAX, int xMAX){
         mapa[yRand][xRand].temMonstro = 1;
         mapa[yRand][xRand].monstro = malloc(sizeof(struct monst));
         //inicializar stats do monstros
+    }
+}
+
+void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
+    
+    for(int i = 0; i < yMAX ; i++){
+        for (int j = 0; j < xMAX ; j++){    
+            int dist = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
+            
+            if(mapa[i][j].temMonstro && dist<=5 && jogador->posX>j && mapa[i][j+1].acessivel){
+                CASA aux=mapa[i][j];
+                mapa[i][j]=mapa[i][j+1];
+                mapa[i][j+1]=aux;
+                sleep (1);
+            }
+            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posX<j && mapa[i][j-1].acessivel){
+                CASA aux=mapa[i][j];
+                mapa[i][j]=mapa[i][j-1];
+                mapa[i][j-1]=aux;
+                sleep (1);            
+            }
+            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY>i && mapa[i+1][j].acessivel){
+                CASA aux=mapa[i][j];
+                mapa[i][j]=mapa[i+1][j];
+                mapa[i+1][j]=aux;
+                sleep (1);
+            }
+            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY<i && mapa[i-1][j].acessivel){
+                CASA aux=mapa[i][j];
+                mapa[i][j]=mapa[i-1][j];
+                mapa[i-1][j]=aux;
+                sleep(1);
+            }
+        }
     }
 }

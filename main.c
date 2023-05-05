@@ -149,6 +149,7 @@ int main() {
 		calcularVisivel(mapa,jogador,yMAX,xMAX);
 		escreveMapa(mapa,jogador,yMAX,xMAX);
 		escreveJogador(jogador);
+		moveMonstros(mapa,jogador,yMAX,xMAX);
 	}
 
 	/**
