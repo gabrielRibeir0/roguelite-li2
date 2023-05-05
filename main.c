@@ -142,6 +142,8 @@ int main() {
 			case KEY_LEFT:
 				moverJogador(jogador, -1, 0, mapa[jogador->posY][jogador->posX - 1]);
 				break;
+			case ' ':
+				abreBau(mapa,jogador,yMAX);
 			default:
 				break;
 		}
@@ -149,38 +151,8 @@ int main() {
 		calcularVisivel(mapa,jogador,yMAX,xMAX);
 		escreveMapa(mapa,jogador,yMAX,xMAX);
 		escreveJogador(jogador);
-		moveMonstros(mapa,jogador,yMAX,xMAX);
+		//moveMonstros(mapa,jogador,yMAX,xMAX);
 	}
-
-	/**
-	 * Este código está muito mal escrito!
-	 * Deveria existir uma função chamada draw_player!
-	 *
-	 * Se estamos a desenhar uma luz à volta do jogador
-	 * deveria existir uma função chamada draw_light!
-	 *
-	 */
-	/*while(1) {
-		move(yMAX - 1, 0);
-		attron(COLOR_PAIR(COLOR_BLUE));
-		printw("(%d, %d) %d %d", st.playerX, st.playerY, xMAX, yMAX);
-		attroff(COLOR_PAIR(COLOR_BLUE));
-		attron(COLOR_PAIR(COLOR_WHITE));
-		mvaddch(st.playerX, st.playerY, '@' | A_BOLD);
-		attroff(COLOR_PAIR(COLOR_WHITE));
-		attron(COLOR_PAIR(COLOR_YELLOW));
-		mvaddch(st.playerX - 1, st.playerY - 1, '.' | A_BOLD);
-		mvaddch(st.playerX - 1, st.playerY + 0, '.' | A_BOLD);
-		mvaddch(st.playerX - 1, st.playerY + 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 0, st.playerY - 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 0, st.playerY + 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 1, st.playerY - 1, '.' | A_BOLD);
-		mvaddch(st.playerX + 1, st.playerY + 0, '.' | A_BOLD);
-		mvaddch(st.playerX + 1, st.playerY + 1, '.' | A_BOLD);
-                attroff(COLOR_PAIR(COLOR_YELLOW));
-		move(st.playerX, st.playerY);
-		update(&st);
-	}*/
 
 	return 0;
 }

@@ -250,3 +250,4 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 }
 
 
+

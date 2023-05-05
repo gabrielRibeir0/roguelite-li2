@@ -60,25 +60,25 @@ void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                 CASA aux=mapa[i][j];
                 mapa[i][j]=mapa[i][j+1];
                 mapa[i][j+1]=aux;
-                sleep (1);
+                //sleep (1);
             }
             else if(mapa[i][j].temMonstro && dist<=5 && jogador->posX<j && mapa[i][j-1].acessivel){
                 CASA aux=mapa[i][j];
                 mapa[i][j]=mapa[i][j-1];
                 mapa[i][j-1]=aux;
-                sleep (1);            
+                //sleep (1);            
             }
             else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY>i && mapa[i+1][j].acessivel){
                 CASA aux=mapa[i][j];
                 mapa[i][j]=mapa[i+1][j];
                 mapa[i+1][j]=aux;
-                sleep (1);
+                //sleep (1);
             }
             else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY<i && mapa[i-1][j].acessivel){
                 CASA aux=mapa[i][j];
                 mapa[i][j]=mapa[i-1][j];
                 mapa[i-1][j]=aux;
-                sleep(1);
+                //sleep(1);
             }
         }
     }
