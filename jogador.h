@@ -9,6 +9,8 @@ void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino);
 
 void escreveJogador(JOGADOR jogador);
 
+void danoTrap(CASA **mapa, JOGADOR jogador, int yMAX);
+
 void abreBau(CASA **mapa, JOGADOR jogador, int yMAX);
 
 #endif

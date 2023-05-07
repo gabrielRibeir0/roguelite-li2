@@ -151,6 +151,7 @@ int main() {
 		calcularVisivel(mapa,jogador,yMAX,xMAX);
 		escreveMapa(mapa,jogador,yMAX,xMAX);
 		escreveJogador(jogador);
+		danoTrap(mapa,jogador,yMAX);
 		//moveMonstros(mapa,jogador,yMAX,xMAX);
 	}
 

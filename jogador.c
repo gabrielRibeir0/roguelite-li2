@@ -38,25 +38,129 @@ void escreveJogador(JOGADOR jogador){
 	mvaddch(jogador->posY, jogador->posX, 'G');
 }
 
+void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
+	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
+		jogador->vida-=10;
+		mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+		mvprintw(yMAX, 35, "Patada na boca     	");
+	}
+}
+
 void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
-    if(mapa[jogador->posY - 1 ][jogador->posX - 1].obs == BAU || 
-       mapa[jogador->posY - 1 ][jogador->posX + 0].obs == BAU ||
-       mapa[jogador->posY - 1 ][jogador->posX + 1].obs == BAU ||
-       mapa[jogador->posY + 0 ][jogador->posX - 1].obs == BAU ||
-       mapa[jogador->posY + 0 ][jogador->posX + 0].obs == BAU ||
-       mapa[jogador->posY + 0 ][jogador->posX + 1].obs == BAU ||
-       mapa[jogador->posY + 1 ][jogador->posX - 1].obs == BAU ||
-       mapa[jogador->posY + 1 ][jogador->posX + 0].obs == BAU ||
-       mapa[jogador->posY + 1 ][jogador->posX + 1].obs == BAU )
-       {
-        
+    if(mapa[jogador->posY - 1 ][jogador->posX - 1].obs == BAU){
         if(jogador->vida + 30 >=jogador->vidaMax){
             jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX, 35, " Full vida campeão!!");
+			mvprintw(yMAX, 35, "Full vida campeão!!     ");
 		}
         else{
 			jogador->vida=jogador->vida + 30;
-			mvprintw(yMAX, 35, " + 30 de vida");
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
 		}
+		mapa[jogador->posY - 1 ][jogador->posX - 1].obs = VAZIO;
+		mapa[jogador->posY - 1 ][jogador->posX - 1].acessivel = 1;
+	}   
+
+    else if(mapa[jogador->posY - 1 ][jogador->posX + 0].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!     ");
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY - 1 ][jogador->posX + 0].obs = VAZIO;
+		mapa[jogador->posY - 1 ][jogador->posX + 0].acessivel = 1;
+	}   
+
+	else if(mapa[jogador->posY - 1 ][jogador->posX + 1].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!     ");
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY - 1 ][jogador->posX + 1].obs = VAZIO;
+		mapa[jogador->posY - 1 ][jogador->posX + 1].acessivel = 1;
+	}   
+
+    else if (mapa[jogador->posY + 0 ][jogador->posX - 1].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!"     );
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, " + 30 de vida   ");
+		}
+		mapa[jogador->posY + 0 ][jogador->posX - 1].obs = VAZIO;
+		mapa[jogador->posY + 0 ][jogador->posX - 1].acessivel = 1;
+	}   
+
+    else if (mapa[jogador->posY + 0 ][jogador->posX + 0].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!"      );
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY + 0 ][jogador->posX + 0].obs = VAZIO;
+		mapa[jogador->posY + 0 ][jogador->posX + 0].acessivel = 1;
+	}   
+
+    else if (mapa[jogador->posY + 0 ][jogador->posX + 1].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!"      );
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY + 0 ][jogador->posX + 1].obs = VAZIO;
+		mapa[jogador->posY + 0 ][jogador->posX + 1].acessivel = 1;
+	}   
+
+    else if (mapa[jogador->posY + 1 ][jogador->posX - 1].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!"       );
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY + 1 ][jogador->posX - 1].obs = VAZIO;
+		mapa[jogador->posY + 1 ][jogador->posX - 1].acessivel = 1;
+	}   
+
+    else if (mapa[jogador->posY + 1 ][jogador->posX + 0].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!"     );
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY + 1 ][jogador->posX + 0].obs = VAZIO;
+		mapa[jogador->posY + 1 ][jogador->posX + 0].acessivel = 1;
+	}   
+
+    else if (mapa[jogador->posY + 1 ][jogador->posX + 1].obs == BAU){
+        if(jogador->vida + 30 >=jogador->vidaMax){
+            jogador->vida=jogador->vidaMax;
+			mvprintw(yMAX, 35, "Full vida campeão!!"     );
+		}
+        else{
+			jogador->vida=jogador->vida + 30;
+			mvprintw(yMAX, 35, "+ 30 de vida   ");
+		}
+		mapa[jogador->posY + 1 ][jogador->posX + 1].obs = VAZIO;
+		mapa[jogador->posY + 1 ][jogador->posX + 1].acessivel = 1;
 	}   
 }
