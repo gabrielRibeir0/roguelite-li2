@@ -10,7 +10,7 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     //prencher o 'interior' com VAZIO ou MURO, 43% chance de ser MURO
     for(int i = 1; i < yMAX - 1; i++){
         for(int j = 1; j < xMAX -1; j++){
-            if(rand() % 100 < 43)
+            if(rand() % 100 < 43)  
                 mapa[i][j].obs = MURO;
             else
                 mapa[i][j].obs = VAZIO;

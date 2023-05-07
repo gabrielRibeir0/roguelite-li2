@@ -20,7 +20,8 @@ int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 		}
 	}
 
-	jogador->score = jogador->vida = jogador->expAtual = 0;
+	jogador->score = jogador->expAtual = 0;
+	jogador->vida=50;
 	jogador->vidaMax=50;
 	jogador->lvl = 1;
 
@@ -40,7 +41,8 @@ void escreveJogador(JOGADOR jogador){
 
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
-		jogador->vida-=10;
+		if (jogador->vida<10);
+		else jogador->vida-=10;
 		mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
 		mvprintw(yMAX, 35, "Patada na boca     	");
 	}
