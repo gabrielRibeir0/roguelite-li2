@@ -25,13 +25,13 @@ typedef enum{
     MURO, //a casa pode ter um muro
     VAZIO, //não ter obstáculos (pode ter um mob na mesma, não quer dizer que está totalmente vazio)
     TRAP,
-    BAU
+    BAU,
+    LAVA
 } OBSTACULO;
 
 //tipo para representar o tipo de terreno da casa
 typedef enum{
-    PEDRA,
-    LAVA
+    PEDRA
 } TERRENO;
 
 //tipo para representar o ambiente da casa (que é o mesmo para as outras casas, ou pelo menos algumas casas à volta)

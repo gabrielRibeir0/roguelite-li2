@@ -114,6 +114,8 @@ void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis){
 
 //função para adicionar os objetos do mapa
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
+
+
     //traps, por enquanto tenta-se gerar só 10 traps, depois coloca-se uma percentagem
     int nTrapsGeradas = 0;
     int yt, xt;
@@ -122,7 +124,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
         yt = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
         xt = rand() % (xMAX - 2) + 1;
 
-        if(mapa[yt][xt].obs == VAZIO && mapa[yt][xt].acessivel == 1){
+        if(mapa[yt][xt].obs == VAZIO && mapa[yt][xt].obs != LAVA && mapa[yt][xt].acessivel == 1){
             mapa[yt][xt].obs = TRAP;
             nTrapsGeradas++;
         }
@@ -136,10 +138,36 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
         yb = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
         xb = rand() % (xMAX - 2) + 1;
 
-        if(mapa[yb][xb].obs == VAZIO && mapa[yb][xb].obs != TRAP && mapa[yb][xb].acessivel == 1){
+        if(mapa[yb][xb].obs == VAZIO && mapa[yb][xb].obs != TRAP && mapa[yt][xt].obs != LAVA && mapa[yb][xb].acessivel == 1){
             mapa[yb][xb].obs = BAU;
             mapa[yb][xb].acessivel = 0;
             nBausGerados++;
+        }
+    }
+    // lava
+    int nLavaGerada = 0;
+    int yl, xl;
+
+    while (nLavaGerada < 12) {
+        yl = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
+        xl = rand() % (xMAX - 2) + 1;
+
+        if (mapa[yl][xl].obs == VAZIO && mapa[yl][xl].acessivel == 1) {
+             if (mapa[yl - 1][xl].obs != BAU && mapa[yl - 1][xl].obs != TRAP && mapa[yl-1][xl].acessivel ==1 &&
+                mapa[yl + 1][xl].obs != BAU && mapa[yl + 1][xl].obs != TRAP && mapa[yl+1][xl].acessivel ==1 &&
+                mapa[yl][xl - 1].obs != BAU && mapa[yl][xl - 1].obs != TRAP && mapa[yl][xl-1].acessivel ==1 &&
+                mapa[yl][xl + 1].obs != BAU && mapa[yl][xl + 1].obs != TRAP && mapa[yl][xl+1].acessivel ==1){
+            
+            
+                mapa[yl][xl].obs = LAVA;
+                mapa[yl-1][xl].obs = LAVA;
+                mapa[yl+1][xl].obs = LAVA;
+                mapa[yl][xl-1].obs = LAVA;
+                mapa[yl][xl+1].obs = LAVA;
+            
+
+            nLavaGerada ++;
+                }
         }
     }
     return 0;
@@ -147,7 +175,8 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 char obstac(int y, int x, CASA **mapa){
     if(mapa[y][x].obs == MURO)
         return 'M';
-
+    if(mapa[y][x].obs == LAVA)
+        return 'X';
     if(mapa[y][x].obs == VAZIO)
         return 'V';
     if(mapa[y][x].obs == TRAP)
@@ -168,6 +197,11 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                     attron(COLOR_PAIR(1));
                     mvaddch(i, j, 'T');
                     attroff(COLOR_PAIR(1));
+                }
+                if(mapa[i][j].obs == LAVA){
+                    attron(COLOR_PAIR(COLOR_YELLOW));
+                    mvaddch(i, j, 'X');
+                    attroff(COLOR_PAIR(COLOR_YELLOW));
                 }
                 else if(mapa[i][j].visivel == 1){
                     attron(COLOR_PAIR(COLOR_YELLOW));

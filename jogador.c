@@ -40,7 +40,7 @@ void escreveJogador(JOGADOR jogador){
 }
 
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
-	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
+	if (mapa[jogador->posY][jogador->posX].obs == TRAP || mapa[jogador->posY][jogador->posX].obs == LAVA){
 		if (jogador->vida<10);
 		else{ 
 			jogador->vida-=10;
