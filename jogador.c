@@ -41,10 +41,14 @@ void escreveJogador(JOGADOR jogador){
 
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
-		if (jogador->vida<10);
-		else jogador->vida-=10;
-		mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
-		mvprintw(yMAX, 35, "Patada na boca     	");
+		if (jogador->vida<10){
+			//end of the game
+		}
+		else{ 
+			jogador->vida-=10;
+			mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+			mvprintw(yMAX, 35, "Patada na boca     	");
+		}
 	}
 }
 

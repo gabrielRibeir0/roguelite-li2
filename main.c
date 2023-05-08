@@ -104,6 +104,7 @@ int main() {
 	cbreak();
 	noecho();
 	nonl();
+	curs_set(0);
 	intrflush(stdscr, false);
 	keypad(stdscr, true);
 
@@ -145,7 +146,7 @@ int main() {
 			case ' ':
 				abreBau(mapa,jogador,yMAX);
 			default:
-				break;
+				break;		
 		}
 
 		calcularVisivel(mapa,jogador,yMAX,xMAX);
@@ -153,7 +154,13 @@ int main() {
 		escreveJogador(jogador);
 		danoTrap(mapa,jogador,yMAX);
 		//moveMonstros(mapa,jogador,yMAX,xMAX);
+
+		if(jogador->vida<=0){
+			clear();
+			mvaddstr(yMAX/2,xMAX/2,"NAO");
+		}
 	}
+
 
 	return 0;
 }
