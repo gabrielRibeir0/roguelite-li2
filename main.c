@@ -148,7 +148,7 @@ int main() {
 			default:
 				break;		
 		}
-
+		moveMonstros(mapa,jogador,yMAX,xMAX);
 		calcularVisivel(mapa,jogador,yMAX,xMAX);
 		escreveMapa(mapa,jogador,yMAX,xMAX);
 		escreveJogador(jogador);

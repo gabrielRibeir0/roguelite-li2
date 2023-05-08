@@ -10,6 +10,7 @@ int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst);
 int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase);
 
 void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis);
+char obstac(int y, int x, CASA **mapa);
 
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX);
 

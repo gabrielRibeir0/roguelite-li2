@@ -144,6 +144,20 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     }
     return 0;
 }
+char obstac(int y, int x, CASA **mapa){
+    if(mapa[y][x].obs == MURO)
+        return 'M';
+
+    if(mapa[y][x].obs == VAZIO)
+        return 'V';
+    if(mapa[y][x].obs == TRAP)
+        return 'T';
+    if(mapa[y][x].obs == BAU)
+        return 'B';
+    else  
+        return 'S';
+
+}
 
 //função para escrever o mapa
 void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
@@ -187,8 +201,7 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                     mvaddch(i, j, '.');
                     attroff(COLOR_PAIR(COLOR_WHITE)); 
                 }
-            }
-            
+            }    
         }
     }
 
@@ -196,6 +209,10 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
     mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
     mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
     mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
+    mvprintw(0, 0, "Cima: obs:%c/vis:%s/aces:%s/mons:%s", obstac(jogador->posY-1,jogador->posX, mapa), mapa[jogador->posY-1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY-1][jogador->posX].acessivel == 1 ? "A" : "NA",mapa[jogador->posY-1][jogador->posX].temMonstro == 1 ? "M" : "NM");
+    mvprintw(0, 50, "Baxi: obs:%c / vis:%s / aces:%s / monst:%s", obstac(jogador->posY+1,jogador->posX, mapa), mapa[jogador->posY+1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY+1][jogador->posX].acessivel == 1 ? "A" : "NA",mapa[jogador->posY+1][jogador->posX].temMonstro == 1 ? "M" : "NM");
+    mvprintw(yMAX-1, 0, "Dir: obs:%c / vis:%s / aces:%s / monst:%s", obstac(jogador->posY,jogador->posX+1, mapa), mapa[jogador->posY][jogador->posX+1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX+1].acessivel == 1 ? "A" : "NA",mapa[jogador->posY][jogador->posX+1].temMonstro == 1 ? "M" : "NM");
+    mvprintw(yMAX-1, 50, "Esq: obs:%c / vis:%s / aces:%s / monst:%s", obstac(jogador->posY,jogador->posX-1, mapa), mapa[jogador->posY][jogador->posX-1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX-1].acessivel == 1 ? "A" : "NA",mapa[jogador->posY][jogador->posX-1].temMonstro == 1 ? "M" : "NM");
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 

@@ -56,30 +56,40 @@ void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
         for (int j = 0; j < xMAX ; j++){    
             int dist = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
             
-            if(mapa[i][j].temMonstro && dist<=5 && jogador->posX>j && mapa[i][j+1].acessivel){
-                CASA aux=mapa[i][j];
-                mapa[i][j]=mapa[i][j+1];
-                mapa[i][j+1]=aux;
+            if(mapa[i][j].temMonstro && dist<=5 && jogador->posX>j && mapa[i][j+1].obs == VAZIO){ //mexe pra direita
+                //CASA aux=mapa[i][j];
+                mapa[i][j].visivel = 1;
+                mapa[i][j].temMonstro = 0;
+                mapa[i][j+1].temMonstro = 1;
+                mapa[i][j+1].acessivel = 0;
                 //sleep (1);
             }
-            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posX<j && mapa[i][j-1].acessivel){
-                CASA aux=mapa[i][j];
-                mapa[i][j]=mapa[i][j-1];
-                mapa[i][j-1]=aux;
+            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posX<j && mapa[i][j-1].obs == VAZIO){ // mexe pra esquerda
+                //CASA aux=mapa[i][j];
+                mapa[i][j].visivel = 1;
+                mapa[i][j].temMonstro = 0;
+                mapa[i][j-1].temMonstro = 1;
+                mapa[i][j-1].acessivel = 0;
                 //sleep (1);            
             }
-            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY>i && mapa[i+1][j].acessivel){
-                CASA aux=mapa[i][j];
-                mapa[i][j]=mapa[i+1][j];
-                mapa[i+1][j]=aux;
+            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY>i && mapa[i+1][j].obs == VAZIO){ //
+               // CASA aux=mapa[i][j];    
+                mapa[i][j].visivel = 1;
+                mapa[i][j].temMonstro = 0;
+                mapa[i+1][j].temMonstro = 1;
+                mapa[i+1][j].acessivel = 0;
                 //sleep (1);
             }
-            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY<i && mapa[i-1][j].acessivel){
-                CASA aux=mapa[i][j];
-                mapa[i][j]=mapa[i-1][j];
-                mapa[i-1][j]=aux;
+            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY<i && mapa[i-1][j].obs == VAZIO){
+               // CASA aux=mapa[i][j];
+                mapa[i][j].visivel = 1;
+                mapa[i][j].temMonstro = 0;
+                mapa[i-1][j].temMonstro = 1;
+                mapa[i-1][j].acessivel = 0;
                 //sleep(1);
             }
         }
-    }
+    }   
 }
+
+// void ataquedeMonstro(CASA **mapa, JOGADOR jogador, )
