@@ -156,7 +156,15 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
              if (mapa[yl - 1][xl].obs != BAU && mapa[yl - 1][xl].obs != TRAP && mapa[yl-1][xl].acessivel ==1 &&
                 mapa[yl + 1][xl].obs != BAU && mapa[yl + 1][xl].obs != TRAP && mapa[yl+1][xl].acessivel ==1 &&
                 mapa[yl][xl - 1].obs != BAU && mapa[yl][xl - 1].obs != TRAP && mapa[yl][xl-1].acessivel ==1 &&
-                mapa[yl][xl + 1].obs != BAU && mapa[yl][xl + 1].obs != TRAP && mapa[yl][xl+1].acessivel ==1){
+                mapa[yl][xl + 1].obs != BAU && mapa[yl][xl + 1].obs != TRAP && mapa[yl][xl+1].acessivel ==1 &&
+                mapa[yl + 1][xl + 1].obs != BAU && mapa[yl + 1][xl + 1].obs != TRAP && mapa[yl + 1][xl+1].acessivel ==1 &&
+                mapa[yl - 1][xl + 1].obs != BAU && mapa[yl - 1][xl + 1].obs != TRAP && mapa[yl - 1][xl+1].acessivel ==1 &&
+                mapa[yl + 1][xl - 1].obs != BAU && mapa[yl + 1][xl - 1].obs != TRAP && mapa[yl + 1][xl-1].acessivel ==1 &&
+                mapa[yl- 1][xl - 1].obs != BAU && mapa[yl - 1][xl - 1].obs != TRAP && mapa[yl- 1][xl-1].acessivel ==1 && 
+                mapa[yl][xl +2].obs != BAU && mapa[yl][xl + 2].obs != TRAP && mapa[yl][xl+2].acessivel ==1 &&
+                mapa[yl][xl -2].obs != BAU && mapa[yl][xl -2].obs != TRAP && mapa[yl][xl-2].acessivel ==1 && 
+                mapa[yl + 2][xl].obs != BAU && mapa[yl + 2][xl].obs != TRAP && mapa[yl + 2][xl].acessivel ==1 && 
+                mapa[yl - 2][xl].obs != BAU && mapa[yl - 2][xl].obs != TRAP && mapa[yl- 2][xl].acessivel ==1){
             
             
                 mapa[yl][xl].obs = LAVA;
@@ -164,6 +172,15 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
                 mapa[yl+1][xl].obs = LAVA;
                 mapa[yl][xl-1].obs = LAVA;
                 mapa[yl][xl+1].obs = LAVA;
+                mapa[yl+1][xl+1].obs = LAVA;
+                mapa[yl-1][xl+1].obs = LAVA;
+                mapa[yl+1][xl-1].obs = LAVA;
+                mapa[yl-1][xl-1].obs = LAVA;
+                mapa[yl][xl+2].obs = LAVA;
+                mapa[yl][xl-2].obs = LAVA;
+                mapa[yl+2][xl].obs = LAVA;
+                mapa[yl-2][xl].obs = LAVA;
+
             
 
             nLavaGerada ++;
