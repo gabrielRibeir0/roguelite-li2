@@ -1,27 +1,23 @@
 #include <stdlib.h>
 #include <math.h>
 #include <unistd.h>
+#include <stdio.h>
 #include "estado.h"
 #include "monstros.h"
 
-int monstrosPerto(CASA **mapa, int y, int x, int yMAX, int xMAX){
-    //ajustar raio de procura de monstros
-    int yIni = y-5 > 0 ? y-5 : 0;
-    int yFim = y+5 < yMAX ? y+5 : yMAX - 1;
-    int xIni = x-5 > 0 ? x-5 : 0;
-    int xFim = x+5 < xMAX ? x+5 : xMAX - 1;
+int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
+    //ajustar raio de procura de monstro
+    for(int i = 0; i < nMonstros; i++){
+        int dist = sqrt(((listaMonstros[i].posX - x)*(listaMonstros[i].posX - x)) + ((listaMonstros[i].posY - y)*(listaMonstros[i].posY - y)));
 
-    for(int i = yIni; i <= yFim; i++){
-        for(int j = xIni; j <= xFim; j++){
-            if(mapa[i][j].temMonstro == 1)
-                return 1;
-        }
+        if(dist < 5)
+            return 1;
     }
 
     return 0;
 }
 
-void iniciaMonstros(CASA **mapa, int nivel, int yMAX, int xMAX){
+int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, int xMAX){
     int nMonstros, yRand, xRand;
     switch(nivel){
         case 1:
@@ -37,20 +33,23 @@ void iniciaMonstros(CASA **mapa, int nivel, int yMAX, int xMAX){
             break;
     }
 
-    for(int i = 0; i <= nMonstros; i++){
+    *listaMonstros = malloc(sizeof(struct monstro) * nMonstros);
+
+    for(int i = 0; i < nMonstros; i++){
         do{
             yRand = rand() % yMAX;
             xRand = rand() % xMAX;
-        }while(mapa[yRand][xRand].obs != VAZIO || mapa[yRand][xRand].acessivel == 0 || monstrosPerto(mapa, yRand, xRand, yMAX, xMAX));
-
+        }while(mapa[yRand][xRand].obs != VAZIO || mapa[yRand][xRand].acessivel == 0 || monstrosPerto(*listaMonstros, yRand, xRand, i));
         mapa[yRand][xRand].acessivel = 0;
-        mapa[yRand][xRand].temMonstro = 1;
-        mapa[yRand][xRand].monstro = malloc(sizeof(struct monst));
+        (*listaMonstros)[i].posX = xRand;
+        (*listaMonstros)[i].posY = yRand;
         //inicializar stats do monstros
     }
+
+    return nMonstros;
 }
 
-void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
+/*void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
     
     for(int i = 0; i < yMAX ; i++){
         for (int j = 0; j < xMAX ; j++){    
@@ -90,6 +89,6 @@ void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
             }
         }
     }   
-}
+}*/
 
 // void ataquedeMonstro(CASA **mapa, JOGADOR jogador, )

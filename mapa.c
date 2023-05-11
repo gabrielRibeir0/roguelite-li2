@@ -12,25 +12,21 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
         for(int j = 1; j < xMAX -1; j++){
             if(rand() % 100 < 43)  
                 mapa[i][j].obs = MURO;
-            else
+            else    
                 mapa[i][j].obs = VAZIO;
 
-            mapa[i][j].acessivel = mapa[i][j].temMonstro = 0; 
+            mapa[i][j].acessivel = 0; 
         }
     }
 
     //Colocar MURO nas bordas do mapa
     for(int i = 0; i < yMAX; i++){
-        mapa[i][0].obs = MURO;
-        mapa[i][0].acessivel = mapa[i][0].temMonstro = 0;
-        mapa[i][xMAX - 1].obs = MURO;
-        mapa[i][xMAX - 1].acessivel = mapa[i][xMAX - 1].temMonstro = 0;
+        mapa[i][0].obs = mapa[i][xMAX - 1].obs = MURO;
+        mapa[i][0].acessivel = mapa[i][xMAX - 1].acessivel = 0;
     }
     for(int i = 0; i < xMAX; i++){
-        mapa[0][i].obs = MURO;
-        mapa[0][i].acessivel = mapa[0][i].temMonstro = 0;
-        mapa[yMAX - 1][i].obs = MURO;
-        mapa[yMAX - 1][i].acessivel = mapa[yMAX - 1][i].temMonstro = 0;
+        mapa[0][i].obs = mapa[yMAX - 1][i].obs = MURO;
+        mapa[0][i].acessivel = mapa[yMAX - 1][i].acessivel = 0;
     }
 }
 
@@ -100,7 +96,7 @@ Ao spawnar o jogador e outras coisas tem de ser em casas com .obs = VAZIO e .ace
 Verificar se todas as casas vazias estão acessiveis se for para preencher essas casas com muros, ou só evitar gerar coisas nessas casas
 */
 void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis){
-        if(mapa[y][x].obs == MURO || mapa[y][x].acessivel == 1)
+        if(mapa[y][x].obs != VAZIO || mapa[y][x].acessivel == 1)
 			return;
 		
 		mapa[y][x].acessivel = 1;
@@ -255,7 +251,7 @@ char obstac(int y, int x, CASA **mapa){
 }
 
 //função para escrever o mapa
-void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
+void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, /*JOGADOR jogador,*/ int yMAX , int xMAX, int nMonstros){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].acessivel == 1){
@@ -292,11 +288,6 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                     mvaddch(i, j, 'B');
                     attroff(COLOR_PAIR(COLOR_BLUE));
                 }
-                else if(mapa[i][j].temMonstro == 1){
-                    attron(COLOR_PAIR(COLOR_CYAN));
-                    mvaddch(i, j, 'M');
-                    attroff(COLOR_PAIR(COLOR_CYAN));
-                }
                 else{
                     attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '.');
@@ -306,14 +297,21 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
         }
     }
 
+    //desenhar monstros
+    attron(COLOR_PAIR(COLOR_CYAN));
+    for(int i = 0; i < nMonstros; i++){
+        mvaddch(listaMonstros[i].posY, listaMonstros[i].posX, 'M');
+    }
+    attroff(COLOR_PAIR(COLOR_CYAN));
+
     attron(COLOR_PAIR(COLOR_WHITE));
-    mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
-    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
-    mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
-    mvprintw(0, 0, "Cima: obs:%c/vis:%s/aces:%s/mons:%s", obstac(jogador->posY-1,jogador->posX, mapa), mapa[jogador->posY-1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY-1][jogador->posX].acessivel == 1 ? "A" : "NA",mapa[jogador->posY-1][jogador->posX].temMonstro == 1 ? "M" : "NM");
-    mvprintw(0, 50, "Baxi: obs:%c / vis:%s / aces:%s / monst:%s", obstac(jogador->posY+1,jogador->posX, mapa), mapa[jogador->posY+1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY+1][jogador->posX].acessivel == 1 ? "A" : "NA",mapa[jogador->posY+1][jogador->posX].temMonstro == 1 ? "M" : "NM");
-    mvprintw(yMAX-1, 0, "Dir: obs:%c / vis:%s / aces:%s / monst:%s", obstac(jogador->posY,jogador->posX+1, mapa), mapa[jogador->posY][jogador->posX+1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX+1].acessivel == 1 ? "A" : "NA",mapa[jogador->posY][jogador->posX+1].temMonstro == 1 ? "M" : "NM");
-    mvprintw(yMAX-1, 50, "Esq: obs:%c / vis:%s / aces:%s / monst:%s", obstac(jogador->posY,jogador->posX-1, mapa), mapa[jogador->posY][jogador->posX-1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX-1].acessivel == 1 ? "A" : "NA",mapa[jogador->posY][jogador->posX-1].temMonstro == 1 ? "M" : "NM");
+   // mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+    //mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
+    //mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
+    mvprintw(0, 0, "Cima: obs:%c/vis:%s/aces:%s", obstac(yMAX-2,24, mapa), mapa[yMAX-2][24].visivel == 1 ? "V" : "NV",mapa[yMAX-2][24].acessivel == 1 ? "A" : "NA");
+    //mvprintw(0, 50, "Baxi: obs:%c / vis:%s / aces:%s", obstac(jogador->posY+1,jogador->posX, mapa), mapa[jogador->posY+1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY+1][jogador->posX].acessivel == 1 ? "A" : "NA");
+    //mvprintw(yMAX-1, 0, "Dir: obs:%c / vis:%s / aces:%s", obstac(jogador->posY,jogador->posX+1, mapa), mapa[jogador->posY][jogador->posX+1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX+1].acessivel == 1 ? "A" : "NA");
+   // mvprintw(yMAX-1, 50, "Esq: obs:%c / vis:%s / aces:%s", obstac(jogador->posY,jogador->posX-1, mapa), mapa[jogador->posY][jogador->posX-1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX-1].acessivel == 1 ? "A" : "NA");
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 

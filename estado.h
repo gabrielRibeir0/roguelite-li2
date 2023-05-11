@@ -14,11 +14,11 @@ typedef struct jogador{
     int lvl; //nivel do jogador
 } *JOGADOR;
 
-typedef struct monst{
+typedef struct monstro{
     int posX;
     int posY;
     int vida;
-} *MONSTRO;
+} MONSTRO;
 //DADOS DO MAPA
 //tipo de dados para representar obstáculos que uma casa pode ter
 typedef enum{
@@ -29,27 +29,12 @@ typedef enum{
     LAVA
 } OBSTACULO;
 
-//tipo para representar o tipo de terreno da casa
-typedef enum{
-    PEDRA
-} TERRENO;
-
-//tipo para representar o ambiente da casa (que é o mesmo para as outras casas, ou pelo menos algumas casas à volta)
-typedef enum{
-    ABERTO,
-    CAVERNA
-} AMBIENTE;
-
 //uma casa do mapa tem um obstaculo (ou falta dele), um tipo de terreno, um tipo de ambiente e flags que dizem se é visivel e se é acessivel
 //->POR os mobs e loot nos obstaculos e assim desaparece o parametro do atravessavel (?)
 typedef struct casa{
     OBSTACULO obs;
-    TERRENO terr;
-    AMBIENTE ambiente;
     int visivel;
     int acessivel;
-    int temMonstro;
-    MONSTRO monstro;
 } CASA;
 // um mapa é um array de 2 dimensões de casas -> CASA mapa[linhas][colunas]
 

@@ -3,10 +3,10 @@
 #ifndef MONSTROS_H
 #define MONSTROS_H
 
-int monstrosPerto(CASA **mapa, int y, int x, int yMAX, int xMAX);
+int monstrosPerto(MONSTRO *listaMontros, int y, int x, int nMonstros);
 
-void iniciaMonstros(CASA **mapa, int nivel, int yMAX, int xMAX);
+int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, int xMAX);
 
-void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX);
+//void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX);
 
 #endif

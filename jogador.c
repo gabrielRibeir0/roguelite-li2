@@ -1,31 +1,31 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "estado.h"
 #include "jogador.h"
 #include "mapa.h"
 #include "monstros.h"
 
 //função para incializar o jogador numa posição válida
-int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
+void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
 	int posInvalida = 1;
 
 	while(posInvalida){
 		int y = rand() % yMAX;
 		int x = rand() % xMAX;
+		if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1 && monstrosPerto(listaMonstros, y, x, nMonstros) == 0){
 
-		if(mapa[y][x].obs == VAZIO && mapa[y][x].acessivel == 1 && !(monstrosPerto(mapa, y , x, yMAX, xMAX)) ){
 			jogador->posY = y;
 			jogador->posX = x;
 
 			posInvalida = 0;
 		}
+
 	}
 
 	jogador->score = jogador->expAtual = 0;
 	jogador->vida=50;
 	jogador->vidaMax=50;
 	jogador->lvl = 1;
-
-	return 0;
 }
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){

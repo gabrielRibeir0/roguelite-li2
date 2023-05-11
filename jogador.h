@@ -3,7 +3,7 @@
 #ifndef JOGADOR_H
 #define JOGADOR_H
 
-int fazJogador(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
+void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros);
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino);
 

@@ -8,65 +8,27 @@
 #include "mapa.h"
 #include "monstros.h"
 
-/**
- *
- * Falta muita coisa, incluindo por exemplo:
- * - o mapa
- * - os monstros
- * - a fila de prioridade para saber quem se move
- * - o que está em cada casa
- *
- */
-/*typedef struct state {
-	int playerX;
-	int playerY;
-	struct Mapa;
-	int scoreMax;
-} STATE;
-
-
-*
- *
- * Um pequeno exemplo que mostra o que se pode fazer
- *
-void do_movement_action(STATE *st, int dx, int dy) {
-	st->playerX += dx;
-	st->playerY += dy;
-}
-
-void update(STATE *st) {
-	int key = getch();
-
-	mvaddch(st->playerX, st->playerY, ' ');
-	switch(key) {
-		case KEY_A1:
-		case '7': do_movement_action(st, -1, -1); break;
-		case KEY_UP:
-		case '8': do_movement_action(st, -1, +0); break;
-		case KEY_A3:
-		case '9': do_movement_action(st, -1, +1); break;
-		case KEY_LEFT:
-		case '4': do_movement_action(st, +0, -1); break;
-		case KEY_B2:
-		case '5': break;
-		case KEY_RIGHT:
-		case '6': do_movement_action(st, +0, +1); break;
-		case KEY_C1:
-		case '1': do_movement_action(st, +1, -1); break;
-		case KEY_DOWN:
-		case '2': do_movement_action(st, +1, +0); break;
-		case KEY_C3:
-		case '3': do_movement_action(st, +1, +1); break;
-		case 'q': endwin(); exit(0); break;
-	}
-}*/
-
 int main() {
 	//inicializar coisas
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
 	int yMAX, xMAX, nVazias, nAcessiveis = 0;
 	getmaxyx(wnd,yMAX,xMAX);
+	start_color();
+	cbreak();
+	noecho();
+	nonl();
+	curs_set(0);
+	intrflush(stdscr, false);
+	keypad(stdscr, true);
+
+    use_default_colors();
+    init_pair(1, COLOR_RED, -1);
+	init_pair(2, COLOR_BLACK, -1); 
+	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
+    init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
+	init_pair(COLOR_CYAN, COLOR_GREEN, COLOR_BLACK);
 
 	yMAX -= 3;
 	//inicializar mapa
@@ -74,6 +36,9 @@ int main() {
 	for(int i = 0; i < yMAX; i++){
 		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
+	
+	int nMonstros = 0;
+	MONSTRO *listaMonstros = NULL;
 
 	//enquanto pelo menos 70% das casas vazias não forem acessíveis, continua a gerar um mapa
 	do{
@@ -92,13 +57,18 @@ int main() {
 			xRAND = rand() % xMAX;
 		}
 		verificaAcesso(mapa, yRAND, xRAND, &nAcessiveis);
-	} while((nAcessiveis)<=(nVazias*0.7));
-	gerarObjetos(mapa,yMAX,xMAX);
-	iniciaMonstros(mapa, 1, yMAX, xMAX);
+	} while(nAcessiveis <= (nVazias * 0.7));
+	//mapa[yMAX-2][24].obs = MURO;
+	//mapa[yMAX-2][24].acessivel = 0;
+
+	nMonstros = iniciaMonstros(mapa, &listaMonstros, 1, yMAX, xMAX);
+	//gerarObjetos(mapa,yMAX,xMAX);
 	
 	//cria o jogador
+
 	JOGADOR jogador = malloc(sizeof(struct jogador));
-	fazJogador(mapa, jogador, yMAX, xMAX);
+
+	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 
 	start_color();
 	cbreak();
@@ -119,7 +89,7 @@ int main() {
 	//escrever o inicio e loop
 	
 	calcularVisivel(mapa,jogador,yMAX,xMAX);
-	escreveMapa(mapa,jogador,yMAX,xMAX);
+	escreveMapa(mapa,listaMonstros,yMAX,xMAX,nMonstros);
 	escreveJogador(jogador);	
 
 	int input;
@@ -148,9 +118,9 @@ int main() {
 			default:
 				break;		
 		}
-		moveMonstros(mapa,jogador,yMAX,xMAX);
+		//moveMonstros(mapa,jogador,yMAX,xMAX);
 		calcularVisivel(mapa,jogador,yMAX,xMAX);
-		escreveMapa(mapa,jogador,yMAX,xMAX);
+		escreveMapa(mapa,listaMonstros,yMAX,xMAX,nMonstros);
 		escreveJogador(jogador);
 		danoTrap(mapa,jogador,yMAX);
 		//moveMonstros(mapa,jogador,yMAX,xMAX);
