@@ -29,7 +29,7 @@ void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, 
 }
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
-	if(destino.acessivel == 1){
+	if(destino.acessivel == 1 && destino.obs != MURO){
 		jogador->posX += dx;
 		jogador->posY += dy;
 	}
@@ -41,7 +41,8 @@ void escreveJogador(JOGADOR jogador){
 
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	if (mapa[jogador->posY][jogador->posX].obs == TRAP || mapa[jogador->posY][jogador->posX].obs == LAVA){
-		if (jogador->vida<10);
+		if (jogador->vida<=10)
+			return;
 		else{ 
 			jogador->vida-=10;
 			mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);

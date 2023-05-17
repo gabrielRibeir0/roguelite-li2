@@ -12,12 +12,13 @@ int main() {
 	//inicializar coisas
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
-	int yMAX, xMAX, nVazias, nAcessiveis = 0;
-	getmaxyx(wnd,yMAX,xMAX);
+	int yMAX, xMAX;
+	getmaxyx(wnd, yMAX, xMAX);
 	start_color();
 	cbreak();
 	noecho();
 	nonl();
+	nodelay(stdscr, true);
 	curs_set(0);
 	intrflush(stdscr, false);
 	keypad(stdscr, true);
@@ -37,7 +38,7 @@ int main() {
 		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
 	
-	int nMonstros = 0;
+	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
 	MONSTRO *listaMonstros = NULL;
 
 	//enquanto pelo menos 70% das casas vazias não forem acessíveis, continua a gerar um mapa
@@ -58,38 +59,18 @@ int main() {
 		}
 		verificaAcesso(mapa, yRAND, xRAND, &nAcessiveis);
 	} while(nAcessiveis <= (nVazias * 0.7));
-	//mapa[yMAX-2][24].obs = MURO;
-	//mapa[yMAX-2][24].acessivel = 0;
 
 	nMonstros = iniciaMonstros(mapa, &listaMonstros, 1, yMAX, xMAX);
-	//gerarObjetos(mapa,yMAX,xMAX);
+	gerarObjetos(mapa,yMAX,xMAX);
 	
 	//cria o jogador
-
 	JOGADOR jogador = malloc(sizeof(struct jogador));
-
 	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
-
-	start_color();
-	cbreak();
-	noecho();
-	nonl();
-	curs_set(0);
-	intrflush(stdscr, false);
-	keypad(stdscr, true);
-
-    use_default_colors();
-    init_pair(1, COLOR_RED, -1);
-	init_pair(2, COLOR_BLACK, -1); 
-	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
-    init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
-	init_pair(COLOR_CYAN, COLOR_GREEN, COLOR_BLACK);
 
 	//escrever o inicio e loop
 	
-	calcularVisivel(mapa,jogador,yMAX,xMAX);
-	escreveMapa(mapa,listaMonstros,yMAX,xMAX,nMonstros);
+	calcularVisivel(mapa, jogador, yMAX, xMAX);
+	escreveMapa(mapa, jogador, yMAX, xMAX);
 	escreveJogador(jogador);	
 
 	int input;
@@ -119,10 +100,10 @@ int main() {
 				break;		
 		}
 		//moveMonstros(mapa,jogador,yMAX,xMAX);
-		calcularVisivel(mapa,jogador,yMAX,xMAX);
-		escreveMapa(mapa,listaMonstros,yMAX,xMAX,nMonstros);
+		calcularVisivel(mapa, jogador, yMAX, xMAX);
+		escreveMapa(mapa, jogador, yMAX, xMAX);
 		escreveJogador(jogador);
-		danoTrap(mapa,jogador,yMAX);
+		danoTrap(mapa, jogador, yMAX);
 		//moveMonstros(mapa,jogador,yMAX,xMAX);
 
 		if(jogador->vida<=0){

@@ -11,11 +11,9 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase);
 
 void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis);
 
-char obstac(int y, int x, CASA **mapa); //tmp
-
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX);
 
-void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, int yMAX , int xMAX, int nMonstros);
+void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX);
 
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino);
 

@@ -40,7 +40,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
             yRand = rand() % yMAX;
             xRand = rand() % xMAX;
         }while(mapa[yRand][xRand].obs != VAZIO || mapa[yRand][xRand].acessivel == 0 || monstrosPerto(*listaMonstros, yRand, xRand, i));
-        mapa[yRand][xRand].acessivel = 0;
+        mapa[yRand][xRand].obs = MONST;
         (*listaMonstros)[i].posX = xRand;
         (*listaMonstros)[i].posY = yRand;
         //inicializar stats do monstros

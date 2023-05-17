@@ -233,28 +233,60 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     
     return 0;
 }
-char obstac(int y, int x, CASA **mapa){
-    if(mapa[y][x].obs == MURO)
-        return 'M';
-    if(mapa[y][x].obs == VAZIO)
-        return 'V';
-    if(mapa[y][x].obs == TRAP)
-        return 'T';
-    if(mapa[y][x].obs == BAU)
-        return 'B';
-    /*if(mapa[x][x].obs == LAVA)
-        return 'X';
-    */
-    else  
-        return 'S';
-
-}
 
 //função para escrever o mapa
-void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, /*JOGADOR jogador,*/ int yMAX , int xMAX, int nMonstros){  
+void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
-            if(mapa[i][j].acessivel == 1){
+            if(mapa[i][j].obs == MURO){
+                if(mapa[i][j].visivel == 1){
+                    attron(COLOR_PAIR(COLOR_WHITE));
+                    mvaddch(i, j, '#');
+                    attroff(COLOR_PAIR(COLOR_WHITE));
+                }
+                else{
+                    attron(COLOR_PAIR(COLOR_BLACK));
+                    mvaddch(i, j, '#');
+                    attroff(COLOR_PAIR(COLOR_BLACK));
+                }
+            }
+            else{
+                if(mapa[i][j].visivel == 1){
+                    switch (mapa[i][j].obs){
+                        case VAZIO:
+                            attron(COLOR_PAIR(COLOR_YELLOW));
+                            mvaddch(i, j, '.');
+                            attroff(COLOR_PAIR(COLOR_YELLOW));  
+                            break;
+                        case TRAP:
+                            attron(COLOR_PAIR(COLOR_RED));
+                            mvaddch(i, j, 'T');
+                            attroff(COLOR_PAIR(COLOR_RED));
+                            break;
+                        case BAU:
+                            attron(COLOR_PAIR(COLOR_BLUE));
+                            mvaddch(i, j, 'B');
+                            attroff(COLOR_PAIR(COLOR_BLUE));
+                            break;
+                        case LAVA:
+                            attron(COLOR_PAIR(COLOR_YELLOW));
+                            mvaddch(i, j, 'X');
+                            attroff(COLOR_PAIR(COLOR_YELLOW));
+                            break;
+                        case MONST:
+                            attron(COLOR_PAIR(COLOR_CYAN));
+                            mvaddch(i, j, 'M');
+                            attroff(COLOR_PAIR(COLOR_CYAN));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                    mvaddch(i, j, ' ');
+            }
+
+            /*if(mapa[i][j].acessivel == 1){
                  if(mapa[i][j].obs == TRAP){
                     attron(COLOR_PAIR(1));
                     mvaddch(i, j, 'T');
@@ -292,23 +324,18 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, /*JOGADOR jogador,*/ int y
                     attron(COLOR_PAIR(COLOR_WHITE));
                     mvaddch(i, j, '.');
                     attroff(COLOR_PAIR(COLOR_WHITE)); 
-                }
-            }    
+                }*/
+             
         }
     }
 
     //desenhar monstros
-    attron(COLOR_PAIR(COLOR_CYAN));
-    for(int i = 0; i < nMonstros; i++){
-        mvaddch(listaMonstros[i].posY, listaMonstros[i].posX, 'M');
-    }
-    attroff(COLOR_PAIR(COLOR_CYAN));
 
     attron(COLOR_PAIR(COLOR_WHITE));
-   // mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
-    //mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
-    //mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
-    mvprintw(0, 0, "Cima: obs:%c/vis:%s/aces:%s", obstac(yMAX-2,24, mapa), mapa[yMAX-2][24].visivel == 1 ? "V" : "NV",mapa[yMAX-2][24].acessivel == 1 ? "A" : "NA");
+    mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
+    mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
+    //mvprintw(0, 0, "Cima: obs:%c/vis:%s/aces:%s", obstac(yMAX-2,24, mapa), mapa[yMAX-2][24].visivel == 1 ? "V" : "NV",mapa[yMAX-2][24].acessivel == 1 ? "A" : "NA");
     //mvprintw(0, 50, "Baxi: obs:%c / vis:%s / aces:%s", obstac(jogador->posY+1,jogador->posX, mapa), mapa[jogador->posY+1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY+1][jogador->posX].acessivel == 1 ? "A" : "NA");
     //mvprintw(yMAX-1, 0, "Dir: obs:%c / vis:%s / aces:%s", obstac(jogador->posY,jogador->posX+1, mapa), mapa[jogador->posY][jogador->posX+1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX+1].acessivel == 1 ? "A" : "NA");
    // mvprintw(yMAX-1, 50, "Esq: obs:%c / vis:%s / aces:%s", obstac(jogador->posY,jogador->posX-1, mapa), mapa[jogador->posY][jogador->posX-1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX-1].acessivel == 1 ? "A" : "NA");
@@ -351,14 +378,12 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
 //Arranjar para a primeira linha do muro ser visivel (?)
 int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
-        for (int j = 0;j < xMAX; j++){
+        for (int j = 0; j < xMAX; j++){
+            mapa[i][j].visivel = 0;
             int distancia = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
-            if(distancia < 9){ 
-                mapa[i][j].visivel = 0;
+            if(distancia < 10){ 
                 linhaVisao(mapa, jogador->posX, jogador->posY, j, i);
             }
-            else
-                mapa[i][j].visivel = 0;
         }
     }
 

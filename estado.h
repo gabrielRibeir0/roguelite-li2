@@ -12,21 +12,24 @@ typedef struct jogador{
     int vidaMax; //vida max
     int expAtual; //exp no momento
     int lvl; //nivel do jogador
+    int combate;
 } *JOGADOR;
 
 typedef struct monstro{
     int posX;
     int posY;
     int vida;
+    int combate;
 } MONSTRO;
 //DADOS DO MAPA
 //tipo de dados para representar obstáculos que uma casa pode ter
-typedef enum{
+typedef enum obs{
     MURO, //a casa pode ter um muro
     VAZIO, //não ter obstáculos (pode ter um mob na mesma, não quer dizer que está totalmente vazio)
     TRAP,
     BAU,
-    LAVA
+    LAVA,
+    MONST
 } OBSTACULO;
 
 //uma casa do mapa tem um obstaculo (ou falta dele), um tipo de terreno, um tipo de ambiente e flags que dizem se é visivel e se é acessivel
