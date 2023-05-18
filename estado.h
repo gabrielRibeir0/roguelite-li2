@@ -29,6 +29,8 @@ typedef enum obs{
     TRAP,
     BAU,
     LAVA,
+    TOCHA,
+    ESCADA,
     MONST
 } OBSTACULO;
 

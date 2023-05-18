@@ -126,6 +126,20 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
         }
     }
 
+    int nTochasGeradas = 0;
+    int yto, xto;
+
+    while(nTochasGeradas<5){
+        yto = rand() % (yMAX - 2) + 1;
+        xto = rand() % (xMAX - 2) + 1;
+
+        if(mapa[yto][xto].obs==VAZIO && mapa[yto][xto].acessivel == 1){
+            mapa[yto][xto].obs = TOCHA;
+            mapa[yto][xto].visivel = 1;
+            nTochasGeradas++;
+        }
+    }
+
     //baus, a maneira como está gerada é fraca
     int nBausGerados = 0;
     int yb,xb;
@@ -134,7 +148,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
         yb = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
         xb = rand() % (xMAX - 2) + 1;
 
-        if(mapa[yb][xb].obs == VAZIO && mapa[yb][xb].obs != TRAP && mapa[yb][xb].acessivel == 1){
+        if(mapa[yb][xb].obs == VAZIO && mapa[yb][xb].acessivel == 1){
             mapa[yb][xb].obs = BAU;
             mapa[yb][xb].acessivel = 0;
             nBausGerados++;
@@ -142,25 +156,25 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     }
     // lava
     int nLavaGerada1 = 0;
-    int yl1, xl1;
+    int yl1, xl1;                      
 
     while (nLavaGerada1 < 8) {
         yl1 = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
         xl1 = rand() % (xMAX - 2) + 1;
 
         if (mapa[yl1][xl1].obs == VAZIO && mapa[yl1][xl1].acessivel == 1) {
-             if (mapa[yl1 - 1][xl1].obs != BAU && mapa[yl1 - 1][xl1].obs != TRAP && mapa[yl1-1][xl1].acessivel ==1 &&
-                mapa[yl1 + 1][xl1].obs != BAU && mapa[yl1 + 1][xl1].obs != TRAP && mapa[yl1+1][xl1].acessivel ==1 &&
-                mapa[yl1][xl1 - 1].obs != BAU && mapa[yl1][xl1 - 1].obs != TRAP && mapa[yl1][xl1-1].acessivel ==1 &&
-                mapa[yl1][xl1 + 1].obs != BAU && mapa[yl1][xl1 + 1].obs != TRAP && mapa[yl1][xl1+1].acessivel ==1 &&
-                mapa[yl1 + 1][xl1 + 1].obs != BAU && mapa[yl1 + 1][xl1 + 1].obs != TRAP && mapa[yl1 + 1][xl1+1].acessivel ==1 &&
-                mapa[yl1 - 1][xl1 + 1].obs != BAU && mapa[yl1 - 1][xl1 + 1].obs != TRAP && mapa[yl1 - 1][xl1+1].acessivel ==1 &&
-                mapa[yl1 + 1][xl1 - 1].obs != BAU && mapa[yl1 + 1][xl1 - 1].obs != TRAP && mapa[yl1 + 1][xl1-1].acessivel ==1 &&
-                mapa[yl1- 1][xl1 - 1].obs != BAU && mapa[yl1 - 1][xl1 - 1].obs != TRAP && mapa[yl1- 1][xl1-1].acessivel ==1 && 
-                mapa[yl1][xl1 +2].obs != BAU && mapa[yl1][xl1 + 2].obs != TRAP && mapa[yl1][xl1+2].acessivel ==1 &&
-                mapa[yl1][xl1 -2].obs != BAU && mapa[yl1][xl1 -2].obs != TRAP && mapa[yl1][xl1-2].acessivel ==1 && 
-                mapa[yl1 + 2][xl1].obs != BAU && mapa[yl1 + 2][xl1].obs != TRAP && mapa[yl1 + 2][xl1].acessivel ==1 && 
-                mapa[yl1 - 2][xl1].obs != BAU && mapa[yl1 - 2][xl1].obs != TRAP && mapa[yl1- 2][xl1].acessivel ==1){
+             if (mapa[yl1 - 1][xl1].obs != BAU && mapa[yl1 - 1][xl1].obs != TRAP && mapa[yl1 - 1][xl1].obs != TOCHA && mapa[yl1-1][xl1].acessivel ==1 &&
+                mapa[yl1 + 1][xl1].obs != BAU && mapa[yl1 + 1][xl1].obs != TRAP && mapa[yl1 + 1][xl1].obs != TOCHA && mapa[yl1+1][xl1].acessivel ==1 &&
+                mapa[yl1][xl1 - 1].obs != BAU && mapa[yl1][xl1 - 1].obs != TRAP && mapa[yl1][xl1 - 1].obs != TOCHA && mapa[yl1][xl1-1].acessivel ==1 &&
+                mapa[yl1][xl1 + 1].obs != BAU && mapa[yl1][xl1 + 1].obs != TRAP && mapa[yl1][xl1 + 1].obs != TOCHA && mapa[yl1][xl1+1].acessivel ==1 &&
+                mapa[yl1 + 1][xl1 + 1].obs != BAU && mapa[yl1 + 1][xl1 + 1].obs != TRAP && mapa[yl1 + 1][xl1 + 1].obs != TOCHA && mapa[yl1+1][xl1+1].acessivel ==1 &&
+                mapa[yl1 - 1][xl1 + 1].obs != BAU && mapa[yl1 - 1][xl1 + 1].obs != TRAP && mapa[yl1 -1][xl1 + 1].obs != TOCHA && mapa[yl1-1][xl1+1].acessivel ==1 &&
+                mapa[yl1 + 1][xl1 - 1].obs != BAU && mapa[yl1 + 1][xl1 - 1].obs != TRAP && mapa[yl1 + 1][xl1 - 1].obs != TOCHA && mapa[yl1+1][xl1-1].acessivel ==1 &&
+                mapa[yl1- 1][xl1 - 1].obs != BAU && mapa[yl1 - 1][xl1 - 1].obs != TRAP && mapa[yl1 - 1][xl1 - 1].obs != TOCHA && mapa[yl1-1][xl1-1].acessivel ==1 && 
+                mapa[yl1][xl1 + 2].obs != BAU && mapa[yl1][xl1 + 2].obs != TRAP && mapa[yl1][xl1+2].obs != TOCHA && mapa[yl1][xl1+2].acessivel ==1 &&
+                mapa[yl1][xl1 - 2].obs != BAU && mapa[yl1][xl1 - 2].obs != TRAP && mapa[yl1][xl1 - 2].obs != TOCHA && mapa[yl1][xl1-2].acessivel ==1 && 
+                mapa[yl1 + 2][xl1].obs != BAU && mapa[yl1 + 2][xl1].obs != TRAP && mapa[yl1 + 2][xl1].obs != TOCHA && mapa[yl1 + 2][xl1].acessivel ==1 && 
+                mapa[yl1 - 2][xl1].obs != BAU && mapa[yl1 - 2][xl1].obs != TRAP && mapa[yl1 - 2][xl1].obs != TOCHA && mapa[yl1- 2][xl1].acessivel ==1){
             
             
                 mapa[yl1][xl1].obs = LAVA;
@@ -190,24 +204,23 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
         yl2 = rand() % (yMAX - 2) + 1; // evitar gerar em bordas
         xl2 = rand() % (xMAX - 2) + 1;
 
-        if (mapa[yl2][xl2].obs == VAZIO && mapa[yl2][xl2].acessivel == 1) {
-             if (mapa[yl2 - 1][xl2].obs != BAU && mapa[yl2 - 1][xl2].obs != TRAP && mapa[yl2-1][xl2].acessivel ==1 &&
-                mapa[yl2 + 1][xl2].obs != BAU && mapa[yl2 + 1][xl2].obs != TRAP && mapa[yl2+1][xl2].acessivel ==1 &&
-                mapa[yl2][xl2 - 1].obs != BAU && mapa[yl2][xl2 - 1].obs != TRAP && mapa[yl2][xl2-1].acessivel ==1 &&
-                mapa[yl2][xl2 + 1].obs != BAU && mapa[yl2][xl2 + 1].obs != TRAP && mapa[yl2][xl2+1].acessivel ==1 &&
-                mapa[yl2 + 1][xl2 + 1].obs != BAU && mapa[yl2 + 1][xl2 + 1].obs != TRAP && mapa[yl2 + 1][xl2+1].acessivel ==1 &&
-                mapa[yl2 - 1][xl2 + 1].obs != BAU && mapa[yl2 - 1][xl2 + 1].obs != TRAP && mapa[yl2 - 1][xl2+1].acessivel ==1 &&
-                mapa[yl2 + 1][xl2 - 1].obs != BAU && mapa[yl2 + 1][xl2 - 1].obs != TRAP && mapa[yl2 + 1][xl2-1].acessivel ==1 &&
-                mapa[yl2][xl2 +2].obs != BAU && mapa[yl2][xl2 + 2].obs != TRAP && mapa[yl2][xl2+2].acessivel ==1 &&
-                mapa[yl2-1][xl2 +2].obs != BAU && mapa[yl2-1][xl2 +2].obs != TRAP && mapa[yl2-1][xl2 +2].acessivel ==1 && 
-                mapa[yl2 -2][xl2+2].obs != BAU && mapa[yl2 -2][xl2+2].obs != TRAP && mapa[yl2 -2][xl2+2].acessivel ==1 && 
-                mapa[yl2 - 2][xl2+1].obs != BAU && mapa[yl2 - 2][xl2+1].obs != TRAP && mapa[yl2 - 2][xl2+1].acessivel ==1 &&
-                mapa[yl2 -3][xl2+3].obs != BAU && mapa[yl2 -3][xl2+3].obs != TRAP && mapa[yl2 -3][xl2+3].acessivel ==1 &&
-                mapa[yl2 -2][xl2+3].obs != BAU && mapa[yl2 -2][xl2+3].obs != TRAP && mapa[yl2 -2][xl2+3].acessivel ==1 &&
-                mapa[yl2 -1][xl2+3].obs != BAU && mapa[yl2 -1][xl2+3].obs != TRAP && mapa[yl2 -1][xl2+3].acessivel ==1){
+        if (mapa[yl2][xl2].obs == VAZIO && mapa[yl2][xl2].acessivel == 1){
+             if (mapa[yl2 - 1][xl2].obs != BAU && mapa[yl2 - 1][xl2].obs != TRAP && mapa[yl2 - 1][xl2].obs != TOCHA && mapa[yl2-1][xl2].acessivel ==1 &&
+                mapa[yl2 + 1][xl2].obs != BAU && mapa[yl2 + 1][xl2].obs != TRAP && mapa[yl2 + 1][xl2].obs != TOCHA && mapa[yl2+1][xl2].acessivel ==1 &&
+                mapa[yl2][xl2 - 1].obs != BAU && mapa[yl2][xl2 - 1].obs != TRAP && mapa[yl2][xl2 - 1].obs != TOCHA && mapa[yl2][xl2-1].acessivel ==1 &&
+                mapa[yl2][xl2 + 1].obs != BAU && mapa[yl2][xl2 + 1].obs != TRAP && mapa[yl2][xl2 + 1].obs != TOCHA && mapa[yl2][xl2+1].acessivel ==1 &&
+                mapa[yl2 + 1][xl2 + 1].obs != BAU && mapa[yl2 + 1][xl2 + 1].obs != TRAP && mapa[yl2 + 1][xl2 + 1].obs != TOCHA && mapa[yl2+1][xl2+1].acessivel ==1 &&
+                mapa[yl2 - 1][xl2 + 1].obs != BAU && mapa[yl2 - 1][xl2 + 1].obs != TRAP && mapa[yl2  - 1][xl2 + 1].obs != TOCHA && mapa[yl2-1][xl2+1].acessivel ==1 &&
+                mapa[yl2 + 1][xl2 - 1].obs != BAU && mapa[yl2 + 1][xl2 - 1].obs != TRAP && mapa[yl2 + 1][xl2 - 1].obs != TOCHA && mapa[yl2+1][xl2-1].acessivel ==1 &&
+                mapa[yl2][xl2 + 2].obs != BAU && mapa[yl2][xl2 + 2].obs != TRAP && mapa[yl2][xl2 + 2].obs != TOCHA && mapa[yl2][xl2+2].acessivel ==1 &&
+                mapa[yl2 - 1][xl2 + 2].obs != BAU && mapa[yl2 - 1][xl2 + 2].obs != TRAP && mapa[yl2 - 1][xl2 + 2].obs != TOCHA && mapa[yl2-1][xl2+2].acessivel ==1 && 
+                mapa[yl2 - 2][xl2 + 2].obs != BAU && mapa[yl2 - 2][xl2 + 2].obs != TRAP && mapa[yl2 - 2][xl2 + 2].obs != TOCHA && mapa[yl2-2][xl2+2].acessivel ==1 && 
+                mapa[yl2 - 2][xl2 + 1].obs != BAU && mapa[yl2 - 2][xl2 + 1].obs != TRAP && mapa[yl2 - 2][xl2 + 1].obs != TOCHA && mapa[yl2-2][xl2+1].acessivel ==1 &&
+                mapa[yl2 - 3][xl2 + 3].obs != BAU && mapa[yl2 - 3][xl2 + 3].obs != TRAP && mapa[yl2 - 3][xl2 + 3].obs != TOCHA && mapa[yl2-3][xl2+3].acessivel ==1 &&
+                mapa[yl2 - 2][xl2 + 3].obs != BAU && mapa[yl2 - 2][xl2 + 3].obs != TRAP && mapa[yl2 - 2][xl2 + 3].obs != TOCHA && mapa[yl2-2][xl2+3].acessivel ==1 &&
+                mapa[yl2 - 1][xl2 + 3].obs != BAU && mapa[yl2 - 1][xl2 + 3].obs != TRAP && mapa[yl2 - 1][xl2 + 3].obs != TOCHA && mapa[yl2-1][xl2+3].acessivel ==1){
 
-            
-            
+
                 mapa[yl2][xl2].obs = LAVA;
                 mapa[yl2-1][xl2].obs = LAVA;
                 mapa[yl2+1][xl2].obs = LAVA;
@@ -221,14 +234,29 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
                 mapa[yl2-2][xl2+2].obs = LAVA;
                 mapa[yl2-2][xl2+1].obs = LAVA;
                 mapa[yl2-3][xl2+3].obs =LAVA;
-                 mapa[yl2-2][xl2+3].obs =LAVA;
-                  mapa[yl2-1][xl2+3].obs =LAVA;
+                mapa[yl2-2][xl2+3].obs =LAVA;
+                mapa[yl2-1][xl2+3].obs =LAVA;
 
-            
-
-            nLavaGerada2 ++;
-                }
+                nLavaGerada2 ++;
+            }
         }
+    }
+    /*fazer com que a escada seja gerada no ínicio, mas só depois na função monstro é que colocamos que ela fica acessivel
+    quando não tiver mais monstros no mapa */
+    
+    int escadaGerada = 0;
+    int ye, xe;
+    
+    while(escadaGerada < 1){
+        ye = rand() % (yMAX -2) + 1;
+        xe = rand() % (xMAX -2) + 1;
+        
+        if(mapa[ye][xe].obs==VAZIO && mapa[ye][xe].acessivel == 1){
+            mapa[ye][xe].obs = ESCADA;
+            mapa[ye][xe].acessivel = 0;
+            escadaGerada++;
+        }
+        
     }
     
     return 0;
@@ -263,6 +291,11 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                             mvaddch(i, j, 'T');
                             attroff(COLOR_PAIR(COLOR_RED));
                             break;
+                        case TOCHA:
+                            attron(COLOR_PAIR(COLOR_YELLOW));
+                            mvaddch(i,j,'I');
+                            attroff(COLOR_PAIR(COLOR_YELLOW));
+                            break;
                         case BAU:
                             attron(COLOR_PAIR(COLOR_BLUE));
                             mvaddch(i, j, 'B');
@@ -272,6 +305,11 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                             attron(COLOR_PAIR(COLOR_YELLOW));
                             mvaddch(i, j, 'X');
                             attroff(COLOR_PAIR(COLOR_YELLOW));
+                            break;
+                        case ESCADA:
+                            attron(COLOR_PAIR(COLOR_CYAN));
+                            mvaddch(i, j, 'H');
+                            attroff(COLOR_PAIR(COLOR_CYAN));
                             break;
                         case MONST:
                             attron(COLOR_PAIR(COLOR_CYAN));
@@ -380,15 +418,30 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
             mapa[i][j].visivel = 0;
-            int distancia = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
+            int distancia = sqrt(((jogador->posX-j)*(jogador->posX-j)) + ((jogador->posY-i)*(jogador->posY-i)));
             if(distancia < 10){ 
                 linhaVisao(mapa, jogador->posX, jogador->posY, j, i);
             }
+            /*
+            implementar variavel para a posicao das tochas? 
+            if(mapa[i][j].obs==TOCHA){
+                int ptx=i;
+                int pty=j;
+                int distancia2 = sqrt((pty-j)*(pty-j) + (ptx-i)*(ptx-i));
+
+            }
+            */
         }
     }
 
+    
+
     return 0;
 }
+
+
+
+
 
 
 

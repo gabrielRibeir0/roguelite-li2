@@ -9,4 +9,6 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
 
 //void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX);
 
+void modoCombate(CASA **mapa, JOGADOR jogador,MONSTRO *listaMonstros);
+
 #endif

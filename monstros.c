@@ -49,46 +49,52 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
     return nMonstros;
 }
 
-/*void moveMonstros(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
-    
-    for(int i = 0; i < yMAX ; i++){
-        for (int j = 0; j < xMAX ; j++){    
-            int dist = sqrt(((jogador->posX - j)*(jogador->posX - j)) + ((jogador->posY - i)*(jogador->posY - i)));
-            
-            if(mapa[i][j].temMonstro && dist<=5 && jogador->posX>j && mapa[i][j+1].obs == VAZIO){ //mexe pra direita
-                //CASA aux=mapa[i][j];
-                mapa[i][j].visivel = 1;
-                mapa[i][j].temMonstro = 0;
-                mapa[i][j+1].temMonstro = 1;
-                mapa[i][j+1].acessivel = 0;
-                //sleep (1);
-            }
-            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posX<j && mapa[i][j-1].obs == VAZIO){ // mexe pra esquerda
-                //CASA aux=mapa[i][j];
-                mapa[i][j].visivel = 1;
-                mapa[i][j].temMonstro = 0;
-                mapa[i][j-1].temMonstro = 1;
-                mapa[i][j-1].acessivel = 0;
-                //sleep (1);            
-            }
-            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY>i && mapa[i+1][j].obs == VAZIO){ //
-               // CASA aux=mapa[i][j];    
-                mapa[i][j].visivel = 1;
-                mapa[i][j].temMonstro = 0;
-                mapa[i+1][j].temMonstro = 1;
-                mapa[i+1][j].acessivel = 0;
-                //sleep (1);
-            }
-            else if(mapa[i][j].temMonstro && dist<=5 && jogador->posY<i && mapa[i-1][j].obs == VAZIO){
-               // CASA aux=mapa[i][j];
-                mapa[i][j].visivel = 1;
-                mapa[i][j].temMonstro = 0;
-                mapa[i-1][j].temMonstro = 1;
-                mapa[i-1][j].acessivel = 0;
-                //sleep(1);
-            }
-        }
-    }   
-}*/
+void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, int **listaProximidade, JOGADOR jogador, int yMAX , int xMAX, int nMonstros){
+    int casasLado[4];
+    for(int i = 0; i < nMonstros; i++){
+        int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
 
-// void ataquedeMonstro(CASA **mapa, JOGADOR jogador, )
+        if(dist < 5){
+            casasLado[0] = listaProximidade[listaMonstros[i].posY + 1][listaMonstros[i].posX];
+            casasLado[1] = listaProximidade[listaMonstros[i].posY - 1][listaMonstros[i].posX];
+            casasLado[2] = listaProximidade[listaMonstros[i].posY][listaMonstros[i].posX + 1];
+            casasLado[3] = listaProximidade[listaMonstros[i].posY][listaMonstros[i].posX - 1];
+        }
+    }
+
+}
+
+void modoCombate(CASA **mapa, JOGADOR jogador,MONSTRO *listaMonstros){
+    for(int i = 0; i < nMonstros; i++){                                   
+        int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
+
+        while(dist < 2){
+            nodelay(stdscr, false);
+            jogador->combate = 1;
+            if(jogador->vida <= 0) break;
+            if(monstro[i]->vida <= 0) break;
+             
+            switch(input){
+                case "z":
+                    int x = rand () % 100;
+                    if (x <= 90) monstro[i]->vida -= 10;
+                default:
+                    break;
+            
+            }
+
+            int y = rand () % 100;
+            if (y <= 85) jogador->vida -= 5;
+
+            dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
+        }
+
+        if(jogador->vida <= 0) break;
+        if(monstro->vida <= 0) break;
+
+    }
+    jogador->combate = 0;
+    
+    nodelay(stdscr, true);
+}
+    

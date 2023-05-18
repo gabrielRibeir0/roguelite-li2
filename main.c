@@ -8,8 +8,11 @@
 #include "mapa.h"
 #include "monstros.h"
 
+
+
 int main() {
 	//inicializar coisas
+	
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
 	int yMAX, xMAX;
@@ -24,6 +27,7 @@ int main() {
 	keypad(stdscr, true);
 
     use_default_colors();
+	init_color(COLOR_MAGENTA, 545, 270, 74);
     init_pair(1, COLOR_RED, -1);
 	init_pair(2, COLOR_BLACK, -1); 
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
@@ -37,6 +41,11 @@ int main() {
 	for(int i = 0; i < yMAX; i++){
 		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
+
+	/*int *listaProximidade[yMAX];
+	for(int i = 0; i < yMAX; i++){
+		listaProximidade[i] = malloc(sizeof(int) * xMAX);
+	} */
 	
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
 	MONSTRO *listaMonstros = NULL;
@@ -67,6 +76,7 @@ int main() {
 	JOGADOR jogador = malloc(sizeof(struct jogador));
 	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 
+	//initMapaProximidade(mapa, listaProximidade, 0, jogador->posY, jogador->posX, yMAX, xMAX);
 	//escrever o inicio e loop
 	
 	calcularVisivel(mapa, jogador, yMAX, xMAX);

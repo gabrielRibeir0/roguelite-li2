@@ -13,4 +13,6 @@ void danoTrap(CASA **mapa, JOGADOR jogador, int yMAX);
 
 void abreBau(CASA **mapa, JOGADOR jogador, int yMAX);
 
+//void initMapaProximidade(CASA **mapa, int **listaProximidade, int passos, int i, int j, int yMax , int xMax);
+
 #endif

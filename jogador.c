@@ -40,13 +40,15 @@ void escreveJogador(JOGADOR jogador){
 }
 
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
-	if (mapa[jogador->posY][jogador->posX].obs == TRAP || mapa[jogador->posY][jogador->posX].obs == LAVA){
+	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
 		if (jogador->vida<=10)
 			return;
 		else{ 
 			jogador->vida-=10;
 			mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
 			mvprintw(yMAX, 35, "Patada na boca     	");
+			mapa[jogador->posY][jogador->posX].obs=VAZIO;
+			mapa[jogador->posY][jogador->posX].acessivel=1;
 		}
 	}
 }
@@ -197,4 +199,85 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		mapa[jogador->posY + 1 ][jogador->posX + 1].obs = VAZIO;
 		mapa[jogador->posY + 1 ][jogador->posX + 1].acessivel = 1;
 	}   
+}
+
+void initMapaProximidade(CASA **mapa, int **listaProximidade, int passos, int i, int j, int yMax , int xMax){
+	if(i >= yMax || i < 0 ||  j >= xMax || j < 0)
+		return;
+	
+	if(mapa[i][j].obs == MURO || mapa[i][j].obs == BAU)
+		listaProximidade[i][j] = -1;
+	else
+		listaProximidade[i][j] = passos;
+
+	passos++;
+
+	initMapaProximidade(mapa, listaProximidade, passos, i+1, j, yMax, xMax);
+	initMapaProximidade(mapa, listaProximidade, passos, i-1, j, yMax, xMax);
+	initMapaProximidade(mapa, listaProximidade, passos, i, j+1, yMax, xMax);
+	initMapaProximidade(mapa, listaProximidade, passos, i, j-1, yMax, xMax);
+}
+
+//chamar casa vez que o jogador se mexe
+void atualizarProximidade(int **listaProximidade, char move, int newY, int newX, int yMAX, int xMAX){
+	switch (move){
+		case 'U':
+			for(int i = 0; i < yMAX; i++){
+				for(int j = 0; j < xMAX; j++){
+					if(i <= newY){
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]--;
+					}
+					else{
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]++;
+					}
+				}
+			}
+			break;
+		case 'D':
+			for(int i = 0; i < yMAX; i++){
+				for(int j = 0; j < xMAX; j++){
+					if(i >= newY){
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]--;
+					}
+					else{
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]++;
+					}
+				}
+			}
+			break;
+		case 'R':
+			for(int i = 0; i < yMAX; i++){
+				for(int j = 0; j < xMAX; j++){
+					if(j >= newX){
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]--;
+					}
+					else{
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]++;
+					}
+				}
+			}	
+			break;
+		case 'L':
+			for(int i = 0; i < yMAX; i++){
+				for(int j = 0; j < xMAX; j++){
+					if(j <= newX){
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]--;
+					}
+					else{
+						if(listaProximidade[i][j] >= 0)
+							listaProximidade[i][j]++;
+					}
+				}
+			}
+			break;
+		default:
+			break;
+	}
 }
