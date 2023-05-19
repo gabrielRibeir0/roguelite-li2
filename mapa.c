@@ -265,9 +265,7 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                     attroff(COLOR_PAIR(COLOR_WHITE));
                 }
                 else{
-                    attron(COLOR_PAIR(COLOR_BLACK));
-                    mvaddch(i, j, '#');
-                    attroff(COLOR_PAIR(COLOR_BLACK));
+                    mvaddch(i,j,' ');
                 }
             }
             else{
@@ -299,9 +297,9 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                             attroff(COLOR_PAIR(COLOR_YELLOW));
                             break;
                         case ESCADA:
-                            attron(COLOR_PAIR(COLOR_CYAN));
+                            attron(COLOR_PAIR(COLOR_MAGENTA));
                             mvaddch(i, j, 'H');
-                            attroff(COLOR_PAIR(COLOR_CYAN));
+                            attroff(COLOR_PAIR(COLOR_MAGENTA));
                             break;
                         case MONST:
                             attron(COLOR_PAIR(COLOR_CYAN));
@@ -341,8 +339,10 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
 
     while(1){
         //se encontrar um muro para
-        if(mapa[yAtual][xAtual].obs == MURO)
+        if(mapa[yAtual][xAtual].obs == MURO){
+            mapa[yAtual][xAtual].visivel = 1;
             break;
+        }
         
         /*se chegarmos ao destino, marca a casa como visível e para, 
         não é preciso ir marcando a linha em si, pois a função já é chamada para os pontos da linha, logo já estão marcados*/
@@ -370,7 +370,7 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
         for (int j = 0; j < xMAX; j++){
             mapa[i][j].visivel = 0;
             int distancia = sqrt(((jogador->posX-j)*(jogador->posX-j)) + ((jogador->posY-i)*(jogador->posY-i)));
-            if(distancia < 10){ 
+            if(distancia < 15){ 
                 linhaVisao(mapa, jogador->posX, jogador->posY, j, i);
             }
             /*

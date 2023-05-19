@@ -56,7 +56,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
 void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMonstros, double *ultimoTempo){
     double tempoAtual = clock() / CLOCKS_PER_SEC;
     if(*ultimoTempo >= 0){
-        if(tempoAtual -  *ultimoTempo < 0.5)
+        if(tempoAtual -  *ultimoTempo < 0.3)
             return;
     }
     
@@ -76,7 +76,7 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
         }
 
         haVisao = visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, jogador->posX, jogador->posY, &newPosX, &newPosY);
-        if(!haVisao || distSpawn > 10){
+        if(!haVisao || distSpawn > 15){
             if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
                 mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
                 listaMonstros[i].posY = listaMonstros[i].spawnY;
@@ -85,7 +85,7 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
             }
         }
         else{
-            if(distSpawn <= 5 && listaMonstros[i].vida == listaMonstros[i].vidaMax){
+            if(distSpawn <= 7 && listaMonstros[i].vida == listaMonstros[i].vidaMax){
                 if(jogador->posY != newPosY && jogador->posX != newPosX){
                     mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
                     listaMonstros[i].posY = newPosY;

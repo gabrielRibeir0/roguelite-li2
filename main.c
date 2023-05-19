@@ -25,6 +25,7 @@ int main() {
 
     use_default_colors();
 	init_color(COLOR_MAGENTA, 545, 270, 74);
+	init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(1, COLOR_RED, -1);
 	init_pair(2, COLOR_BLACK, -1); 
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
