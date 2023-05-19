@@ -3,8 +3,6 @@
 #include "estado.h"
 #include "mapa.h"
 
-//Mudar o tipo das funções para int para aproveitar códigos de erro ou deixar void (?)
-
 //função para criar o mapa random com muros à volta
 void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     //prencher o 'interior' com VAZIO ou MURO, 43% chance de ser MURO
@@ -90,28 +88,21 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
     return nVazias;
 }
 
-/*Chamar com um y, x random em que o obstáculo nessa casa é VAZIO
-Ver como fazer isto sem recursiva (?)
-Ao spawnar o jogador e outras coisas tem de ser em casas com .obs = VAZIO e .acessivel = 1
-Verificar se todas as casas vazias estão acessiveis se for para preencher essas casas com muros, ou só evitar gerar coisas nessas casas
-*/
-void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis){
-        if(mapa[y][x].obs != VAZIO || mapa[y][x].acessivel == 1)
-			return;
-		
-		mapa[y][x].acessivel = 1;
-        (*nAcessiveis)++;
-		
-		verificaAcesso(mapa, y + 1, x,nAcessiveis);
-		verificaAcesso(mapa, y - 1, x,nAcessiveis);
-		verificaAcesso(mapa, y, x + 1,nAcessiveis);
-		verificaAcesso(mapa, y, x - 1,nAcessiveis);
+void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
+    if(mapa[y][x].obs != VAZIO || mapa[y][x].acessivel == 1)
+        return;
+    
+    mapa[y][x].acessivel = 1;
+    (*nAcessiveis)++;
+    
+    verificaAcesso(mapa, y + 1, x, nAcessiveis);
+    verificaAcesso(mapa, y - 1, x, nAcessiveis);
+    verificaAcesso(mapa, y, x + 1, nAcessiveis);
+    verificaAcesso(mapa, y, x - 1, nAcessiveis);
 }
 
 //função para adicionar os objetos do mapa
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
-
-
     //traps, por enquanto tenta-se gerar só 10 traps, depois coloca-se uma percentagem
     int nTrapsGeradas = 0;
     int yt, xt;
@@ -263,6 +254,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 }
 
 //função para escrever o mapa
+// TODO mudar muros não visíveis
 void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
@@ -323,47 +315,6 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                 else
                     mvaddch(i, j, ' ');
             }
-
-            /*if(mapa[i][j].acessivel == 1){
-                 if(mapa[i][j].obs == TRAP){
-                    attron(COLOR_PAIR(1));
-                    mvaddch(i, j, 'T');
-                    attroff(COLOR_PAIR(1));
-                }
-                else if (mapa[i][j].obs == LAVA){
-                    attron(COLOR_PAIR(COLOR_YELLOW));
-                    mvaddch(i, j, 'X');
-                    attroff(COLOR_PAIR(COLOR_YELLOW));
-                }
-                
-                else if(mapa[i][j].visivel == 1){
-                    attron(COLOR_PAIR(COLOR_YELLOW));
-                    mvaddch(i, j, '.');
-                    attroff(COLOR_PAIR(COLOR_YELLOW));    
-                }
-                else{
-                    attron(COLOR_PAIR(2));
-                    mvaddch(i, j, '.');
-                    attroff(COLOR_PAIR(2));
-                }
-            }
-            else{
-                if(mapa[i][j].obs == MURO){
-                    attron(COLOR_PAIR(COLOR_WHITE));
-                    mvaddch(i, j, '#');
-                    attroff(COLOR_PAIR(COLOR_WHITE));                    
-                }
-                else if(mapa[i][j].obs == BAU){
-                    attron(COLOR_PAIR(COLOR_BLUE));
-                    mvaddch(i, j, 'B');
-                    attroff(COLOR_PAIR(COLOR_BLUE));
-                }
-                else{
-                    attron(COLOR_PAIR(COLOR_WHITE));
-                    mvaddch(i, j, '.');
-                    attroff(COLOR_PAIR(COLOR_WHITE)); 
-                }*/
-             
         }
     }
 
@@ -413,7 +364,7 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
-//Arranjar para a primeira linha do muro ser visivel (?)
+//TODO Arranjar para a primeira linha do muro ser visivel (?)
 int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
@@ -438,10 +389,3 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
 
     return 0;
 }
-
-
-
-
-
-
-

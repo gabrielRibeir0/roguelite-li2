@@ -12,14 +12,21 @@ typedef struct jogador{
     int vidaMax; //vida max
     int expAtual; //exp no momento
     int lvl; //nivel do jogador
-    int combate;
+    int precisao;
+    int ataque;
+    int defesa;
 } *JOGADOR;
 
 typedef struct monstro{
     int posX;
     int posY;
+    int spawnX;
+    int spawnY;
     int vida;
-    int combate;
+    int vidaMax;
+    int precisao;
+    int ataque;
+    int defesa;
 } MONSTRO;
 //DADOS DO MAPA
 //tipo de dados para representar obstáculos que uma casa pode ter

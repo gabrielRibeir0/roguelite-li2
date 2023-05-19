@@ -8,11 +8,8 @@
 #include "mapa.h"
 #include "monstros.h"
 
-
-
 int main() {
 	//inicializar coisas
-	
 	srand(time(NULL));
 	WINDOW *wnd = initscr();
 	int yMAX, xMAX;
@@ -41,11 +38,6 @@ int main() {
 	for(int i = 0; i < yMAX; i++){
 		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
-
-	/*int *listaProximidade[yMAX];
-	for(int i = 0; i < yMAX; i++){
-		listaProximidade[i] = malloc(sizeof(int) * xMAX);
-	} */
 	
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
 	MONSTRO *listaMonstros = NULL;
@@ -76,7 +68,6 @@ int main() {
 	JOGADOR jogador = malloc(sizeof(struct jogador));
 	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 
-	//initMapaProximidade(mapa, listaProximidade, 0, jogador->posY, jogador->posX, yMAX, xMAX);
 	//escrever o inicio e loop
 	
 	calcularVisivel(mapa, jogador, yMAX, xMAX);
@@ -84,6 +75,7 @@ int main() {
 	escreveJogador(jogador);	
 
 	int input;
+	double ultimoTempoMov = -1.0;
 	while(1){
 		move(jogador->posY, jogador->posX);
 		
@@ -109,12 +101,12 @@ int main() {
 			default:
 				break;		
 		}
-		//moveMonstros(mapa,jogador,yMAX,xMAX);
+		moveMonstros(mapa, listaMonstros, jogador, nMonstros, &ultimoTempoMov);
+		verificaCombate(jogador, listaMonstros, nMonstros, yMAX);
 		calcularVisivel(mapa, jogador, yMAX, xMAX);
 		escreveMapa(mapa, jogador, yMAX, xMAX);
 		escreveJogador(jogador);
 		danoTrap(mapa, jogador, yMAX);
-		//moveMonstros(mapa,jogador,yMAX,xMAX);
 
 		if(jogador->vida<=0){
 			clear();
