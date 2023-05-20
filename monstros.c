@@ -47,7 +47,11 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
         (*listaMonstros)[i].posY = yRand;
         (*listaMonstros)[i].spawnX = xRand;
         (*listaMonstros)[i].spawnY = yRand;
-        //inicializar stats do monstros
+        (*listaMonstros)[i].vida = 30;
+        (*listaMonstros)[i].vidaMax = 30;
+        (*listaMonstros)[i].ataque = 6;
+        (*listaMonstros)[i].defesa = 4;
+        (*listaMonstros)[i].precisao = 80;
     }
 
     return nMonstros;
@@ -174,18 +178,19 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
                 mvprintw(yMAX, 35, "Conseguiu fugir da luta!");
                 break;
             default:
+                mvprintw(yMAX+2, 35, "Teste");
                 break;
         }
         
-        //turno do monstro
+        mvprintw(yMAX+1, 53, "Turno do Monstro!");
         y = rand () % 100;
         if(y <= monstro->precisao){
             int dmg = monstro->ataque - (0.20 * jogador->defesa);
             jogador->vida -= dmg;
-            mvprintw(yMAX, 35, "Sofreu %d dano!", dmg);
+            mvprintw(yMAX+1, 35, "Sofreu %d dano!", dmg);
         }
         else
-            mvprintw(yMAX, 35, "O monstro falhou o ataque!");
+            mvprintw(yMAX+1, 35, "O monstro falhou o ataque!");
     }
     nodelay(stdscr, true);
     if(jogador->vida <= 0)
@@ -194,17 +199,30 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
         return 1; //codigo se o monstro foi derrotado
     if(fugir)
         return 2; //codigo se o jogador fugiu
-    return 2;
+    return 3;
 }
 
-int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int nMonstros, int yMAX){
-    for(int i = 0; i < nMonstros; i++){
+int verificaCombate(CASA **mapa, JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX){
+    for(int i = 0; i < (*nMonstros); i++){
         int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
         int resultado;
-        if(dist <= 2){
+        if(dist <= 1){
             resultado = modoCombate(jogador, &(listaMonstros[i]), yMAX);
+            if(resultado == 1){
+                mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
+                (*nMonstros)--;
+                for(int j = i; j < (*nMonstros); j++) {
+                    listaMonstros[j] = listaMonstros[j + 1];
+                }
+
+                jogador->expAtual += 6;
+                if(jogador->expAtual >= 20 + jogador->lvl*5){
+                    jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
+                    jogador->lvl++;
+                }
+            }
             return resultado;
         }
     }
-    return 2;
+    return 3;
 }

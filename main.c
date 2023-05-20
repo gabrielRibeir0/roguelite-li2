@@ -75,7 +75,7 @@ int main() {
 	escreveMapa(mapa, jogador, yMAX, xMAX);
 	escreveJogador(jogador);	
 
-	int input;
+	int input, resultado;
 	double ultimoTempoMov = -1.0;
 	while(1){
 		move(jogador->posY, jogador->posX);
@@ -103,10 +103,17 @@ int main() {
 				break;		
 		}
 		moveMonstros(mapa, listaMonstros, jogador, nMonstros, &ultimoTempoMov);
-		verificaCombate(jogador, listaMonstros, nMonstros, yMAX);
 		calcularVisivel(mapa, jogador, yMAX, xMAX);
 		escreveMapa(mapa, jogador, yMAX, xMAX);
 		escreveJogador(jogador);
+		resultado = verificaCombate(mapa, jogador, listaMonstros, &nMonstros, yMAX);
+		if(resultado == 0){
+			clear();
+			mvaddstr(yMAX/2,xMAX/2,"NAO");
+		}
+		else if(resultado == 2){
+			ultimoTempoMov += 0.4;
+		}
 		danoTrap(mapa, jogador, yMAX);
 
 		if(jogador->vida<=0){

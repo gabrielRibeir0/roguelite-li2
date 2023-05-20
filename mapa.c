@@ -254,7 +254,6 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 }
 
 //função para escrever o mapa
-// TODO mudar muros não visíveis
 void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
@@ -320,12 +319,8 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
 
     attron(COLOR_PAIR(COLOR_WHITE));
     mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
-    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //ver o scale do xp
+    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //TODO ver o scale do xp
     mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
-    //mvprintw(0, 0, "Cima: obs:%c/vis:%s/aces:%s", obstac(yMAX-2,24, mapa), mapa[yMAX-2][24].visivel == 1 ? "V" : "NV",mapa[yMAX-2][24].acessivel == 1 ? "A" : "NA");
-    //mvprintw(0, 50, "Baxi: obs:%c / vis:%s / aces:%s", obstac(jogador->posY+1,jogador->posX, mapa), mapa[jogador->posY+1][jogador->posX].visivel == 1 ? "V" : "NV",mapa[jogador->posY+1][jogador->posX].acessivel == 1 ? "A" : "NA");
-    //mvprintw(yMAX-1, 0, "Dir: obs:%c / vis:%s / aces:%s", obstac(jogador->posY,jogador->posX+1, mapa), mapa[jogador->posY][jogador->posX+1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX+1].acessivel == 1 ? "A" : "NA");
-   // mvprintw(yMAX-1, 50, "Esq: obs:%c / vis:%s / aces:%s", obstac(jogador->posY,jogador->posX-1, mapa), mapa[jogador->posY][jogador->posX-1].visivel == 1 ? "V" : "NV",mapa[jogador->posY][jogador->posX-1].acessivel == 1 ? "A" : "NA");
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 

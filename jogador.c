@@ -26,6 +26,9 @@ void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, 
 	jogador->vida=50;
 	jogador->vidaMax=50;
 	jogador->lvl = 1;
+	jogador->ataque = 10;
+	jogador->defesa = 6;
+	jogador->precisao = 90;
 }
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
