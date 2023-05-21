@@ -8,6 +8,20 @@
 #include "mapa.h"
 #include "monstros.h"
 
+/*
+ver porque os monstros nao se mexem mesmo para as casas ao lado do jogador
+dano lava
+iluminação tochas
+menus
+gameloop em si
+ver melhor a organização do código
+ver o scale do xp -> criar novo parametro maxExp ?
+ver inicialização dos stats dos monstros em função do nível
+melhorar parte de escrever as coisas
+por o delay depois de fugir do combate a funcionar
+aumentar os stats do jogador quando sobe de nível
+-mudar as funções de combate para um combate.c?*/
+
 int main() {
 	//inicializar coisas
 	srand(time(NULL));
@@ -70,9 +84,8 @@ int main() {
 	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 
 	//escrever o inicio e loop
-	
 	calcularVisivel(mapa, jogador, yMAX, xMAX);
-	escreveMapa(mapa, jogador, yMAX, xMAX);
+	escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 	escreveJogador(jogador);	
 
 	int input, resultado;
@@ -104,9 +117,9 @@ int main() {
 		}
 		moveMonstros(mapa, listaMonstros, jogador, nMonstros, &ultimoTempoMov);
 		calcularVisivel(mapa, jogador, yMAX, xMAX);
-		escreveMapa(mapa, jogador, yMAX, xMAX);
+		escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 		escreveJogador(jogador);
-		resultado = verificaCombate(mapa, jogador, listaMonstros, &nMonstros, yMAX);
+		resultado = verificaCombate(jogador, listaMonstros, &nMonstros, yMAX);
 		if(resultado == 0){
 			clear();
 			mvaddstr(yMAX/2,xMAX/2,"NAO");

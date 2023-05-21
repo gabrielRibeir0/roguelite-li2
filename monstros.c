@@ -42,7 +42,6 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
             yRand = rand() % yMAX;
             xRand = rand() % xMAX;
         }while(mapa[yRand][xRand].obs != VAZIO || mapa[yRand][xRand].acessivel == 0 || monstrosPerto(*listaMonstros, yRand, xRand, i));
-        mapa[yRand][xRand].obs = MONST;
         (*listaMonstros)[i].posX = xRand;
         (*listaMonstros)[i].posY = yRand;
         (*listaMonstros)[i].spawnX = xRand;
@@ -55,61 +54,6 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
     }
 
     return nMonstros;
-}
-
-void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMonstros, double *ultimoTempo){
-    double tempoAtual = clock() / CLOCKS_PER_SEC;
-    if(*ultimoTempo >= 0){
-        if(tempoAtual -  *ultimoTempo < 0.3)
-            return;
-    }
-    
-    int newPosY; int newPosX; int haVisao;
-    for(int i = 0; i < nMonstros; i++){
-        int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
-        if(dist <= 1) return;
-
-        int distSpawn = sqrt(((listaMonstros[i].spawnX - jogador->posX)*(listaMonstros[i].spawnX - jogador->posX)) + ((listaMonstros[i].spawnY - jogador->posY)*(listaMonstros[i].spawnY - jogador->posY)));
-        //aproveitar que esta função processa os monstros todos para regenerar a vida (50% da vida em falta) caso eles estejam na posição inicial
-        if(listaMonstros[i].posY == listaMonstros[i].spawnY && listaMonstros[i].posX == listaMonstros[i].spawnX && listaMonstros[i].vida !=  listaMonstros[i].vidaMax){
-            int dif = listaMonstros[i].vidaMax -  listaMonstros[i].vida;
-            if(dif <= 2)
-                listaMonstros[i].vida = listaMonstros[i].vidaMax;
-            else
-                listaMonstros[i].vida += dif / 2;
-        }
-
-        haVisao = visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, jogador->posX, jogador->posY, &newPosX, &newPosY);
-        if(!haVisao || distSpawn > 15){
-            if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
-                mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
-                listaMonstros[i].posY = listaMonstros[i].spawnY;
-                listaMonstros[i].posX = listaMonstros[i].spawnX;
-                mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = MONST;
-            }
-        }
-        else{
-            if(distSpawn <= 7 && listaMonstros[i].vida == listaMonstros[i].vidaMax){
-                if(jogador->posY != newPosY && jogador->posX != newPosX){
-                    mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
-                    listaMonstros[i].posY = newPosY;
-                    listaMonstros[i].posX = newPosX;
-                    mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = MONST;
-                }
-            }
-            else{
-                if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
-                    visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, listaMonstros[i].spawnX , listaMonstros[i].spawnY, &newPosX, &newPosY);
-                    mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
-                    listaMonstros[i].posY = newPosY;
-                    listaMonstros[i].posX = newPosX;
-                    mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = MONST;
-                }
-            }
-        }
-    }
-
-    *ultimoTempo = clock() / CLOCKS_PER_SEC;
 }
 
 int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJogador, int *newPosX, int *newPosY){
@@ -152,18 +96,67 @@ int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJog
     }
 }
 
+void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMonstros, double *ultimoTempo){
+    double tempoAtual = clock() / CLOCKS_PER_SEC;
+    if(*ultimoTempo >= 0){
+        if(tempoAtual -  *ultimoTempo < 0.4)
+            return;
+    }
+    
+    int newPosY; int newPosX; int haVisao;
+    for(int i = 0; i < nMonstros; i++){
+        int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
+        if(dist <= 1) return;
+
+        int distSpawn = sqrt(((listaMonstros[i].spawnX - jogador->posX)*(listaMonstros[i].spawnX - jogador->posX)) + ((listaMonstros[i].spawnY - jogador->posY)*(listaMonstros[i].spawnY - jogador->posY)));
+        //aproveitar que esta função processa os monstros todos para regenerar a vida (50% da vida em falta) caso eles estejam na posição inicial
+        if(listaMonstros[i].posY == listaMonstros[i].spawnY && listaMonstros[i].posX == listaMonstros[i].spawnX && listaMonstros[i].vida !=  listaMonstros[i].vidaMax){
+            int dif = listaMonstros[i].vidaMax -  listaMonstros[i].vida;
+            if(dif <= 2)
+                listaMonstros[i].vida = listaMonstros[i].vidaMax;
+            else
+                listaMonstros[i].vida += dif / 2;
+        }
+
+        haVisao = visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, jogador->posX, jogador->posY, &newPosX, &newPosY);
+        if(!haVisao || distSpawn > 15){
+            if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
+                listaMonstros[i].posY = listaMonstros[i].spawnY;
+                listaMonstros[i].posX = listaMonstros[i].spawnX;
+            }
+        }
+        else{
+            if(distSpawn <= 7 && listaMonstros[i].vida == listaMonstros[i].vidaMax){
+                if(jogador->posY != newPosY && jogador->posX != newPosX){
+                    listaMonstros[i].posY = newPosY;
+                    listaMonstros[i].posX = newPosX;
+                }
+            }
+            else{
+                if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
+                    visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, listaMonstros[i].spawnX , listaMonstros[i].spawnY, &newPosX, &newPosY);
+                    listaMonstros[i].posY = newPosY;
+                    listaMonstros[i].posX = newPosX;
+                }
+            }
+        }
+    }
+
+    *ultimoTempo = clock() / CLOCKS_PER_SEC;
+}
+
 int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     nodelay(stdscr, false);
-    int x,y;
+    int x, y, input;
     int fugir = 0;
     while(jogador->vida > 0 && monstro->vida > 0 && !fugir){
         mvprintw(yMAX-1, 35, "Turno do jogador!");
-        int input = getch();
-        while(input != 'a' && input != 'r'){
+
+        do{
             input = getch();
-        }         
-        switch(input){
-            case 'a':
+        }while(input != 'a' && input != 'r');   
+
+        if(input == 'a'){
                 x = rand() % 100;
                 if(x <= jogador->precisao){
                     int dano = jogador->ataque - (0.15 *  monstro->defesa);
@@ -172,14 +165,10 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
                 }
                 else
                     mvprintw(yMAX, 35, "Falhou o ataque");
-                break;
-            case 'r':
+        }
+        else if(input == 'r'){
                 fugir = 1;
                 mvprintw(yMAX, 35, "Conseguiu fugir da luta!");
-                break;
-            default:
-                mvprintw(yMAX+2, 35, "Teste");
-                break;
         }
         
         mvprintw(yMAX+1, 53, "Turno do Monstro!");
@@ -202,14 +191,13 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     return 3;
 }
 
-int verificaCombate(CASA **mapa, JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX){
+int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX){
     for(int i = 0; i < (*nMonstros); i++){
         int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
         int resultado;
         if(dist <= 1){
             resultado = modoCombate(jogador, &(listaMonstros[i]), yMAX);
             if(resultado == 1){
-                mapa[listaMonstros[i].posY][listaMonstros[i].posX].obs = VAZIO;
                 (*nMonstros)--;
                 for(int j = i; j < (*nMonstros); j++) {
                     listaMonstros[j] = listaMonstros[j + 1];
@@ -219,6 +207,9 @@ int verificaCombate(CASA **mapa, JOGADOR jogador, MONSTRO *listaMonstros, int *n
                 if(jogador->expAtual >= 20 + jogador->lvl*5){
                     jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
                     jogador->lvl++;
+                    jogador->ataque += 3;  //ver scale dos valores
+                    jogador->defesa += 3;
+                    jogador->precisao++;
                 }
             }
             return resultado;

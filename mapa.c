@@ -254,7 +254,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 }
 
 //função para escrever o mapa
-void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){  
+void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX , int xMAX, int nMonstros){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
             if(mapa[i][j].obs == MURO){
@@ -300,11 +300,6 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
                             mvaddch(i, j, 'H');
                             attroff(COLOR_PAIR(COLOR_MAGENTA));
                             break;
-                        case MONST:
-                            attron(COLOR_PAIR(COLOR_CYAN));
-                            mvaddch(i, j, 'M');
-                            attroff(COLOR_PAIR(COLOR_CYAN));
-                            break;
                         default:
                             break;
                     }
@@ -316,6 +311,12 @@ void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX){
     }
 
     //desenhar monstros
+    attron(COLOR_PAIR(COLOR_CYAN));
+    for(int i = 0; i < nMonstros; i++){
+        if(mapa[listaMonstros[i].posY][listaMonstros[i].posX].visivel == 1)
+            mvaddch(listaMonstros[i].posY, listaMonstros[i].posX, 'M');
+    }
+    attroff(COLOR_PAIR(COLOR_CYAN));
 
     attron(COLOR_PAIR(COLOR_WHITE));
     mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
@@ -359,8 +360,8 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
-//TODO Arranjar para a primeira linha do muro ser visivel (?)
-int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
+//TODO Iluminação das tochas
+void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
             mapa[i][j].visivel = 0;
@@ -379,8 +380,4 @@ int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
             */
         }
     }
-
-    
-
-    return 0;
 }

@@ -38,7 +38,6 @@ typedef enum obs{
     LAVA,
     TOCHA,
     ESCADA,
-    MONST
 } OBSTACULO;
 
 //uma casa do mapa tem um obstaculo (ou falta dele), um tipo de terreno, um tipo de ambiente e flags que dizem se é visivel e se é acessivel

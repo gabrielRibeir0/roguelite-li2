@@ -13,6 +13,6 @@ int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJog
 
 int modoCombate(JOGADOR jogador, MONSTRO *listaMonstros, int yMAX);
 
-int verificaCombate(CASA **mapa, JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX);
+int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX);
 
 #endif

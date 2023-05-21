@@ -13,10 +13,10 @@ void verificaAcesso(CASA **mapa, int y, int x,int *nAcessiveis);
 
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX);
 
-void escreveMapa(CASA **mapa, JOGADOR jogador, int yMAX , int xMAX);
+void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX , int xMAX, int nMonstros);
 
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino);
 
-int calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
+void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX);
 
 #endif
