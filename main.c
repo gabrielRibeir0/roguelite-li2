@@ -84,7 +84,7 @@ int main() {
 	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 
 	//escrever o inicio e loop
-	calcularVisivel(mapa, jogador, yMAX, xMAX);
+	calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
 	escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 	escreveJogador(jogador);	
 
@@ -116,7 +116,7 @@ int main() {
 				break;		
 		}
 		moveMonstros(mapa, listaMonstros, jogador, nMonstros, &ultimoTempoMov);
-		calcularVisivel(mapa, jogador, yMAX, xMAX);
+		calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
 		escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 		escreveJogador(jogador);
 		resultado = verificaCombate(jogador, listaMonstros, &nMonstros, yMAX);

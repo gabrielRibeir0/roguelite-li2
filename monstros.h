@@ -15,4 +15,6 @@ int modoCombate(JOGADOR jogador, MONSTRO *listaMonstros, int yMAX);
 
 int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX);
 
+int fimdeNivel (MONSTRO *listaMonstros, int *nMonstros);
+
 #endif

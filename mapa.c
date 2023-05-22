@@ -183,7 +183,6 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
                 mapa[yl1-2][xl1].obs = LAVA;
 
             
-
             nLavaGerada1 ++;
                 }
         }
@@ -361,7 +360,7 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
 }
 
 //TODO Iluminação das tochas
-void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
+void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
             mapa[i][j].visivel = 0;
@@ -369,15 +368,38 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX){
             if(distancia < 15){ 
                 linhaVisao(mapa, jogador->posX, jogador->posY, j, i);
             }
-            /*
-            implementar variavel para a posicao das tochas? 
-            if(mapa[i][j].obs==TOCHA){
-                int ptx=i;
-                int pty=j;
-                int distancia2 = sqrt((pty-j)*(pty-j) + (ptx-i)*(ptx-i));
-
+            //visibilidade das tochas de raio 2
+            if(mapa[i][j].obs == TOCHA){
+                for(int v= i-3;v < i + 3; v++){
+                    for(int w = j -3; w < j + 3; w++){
+                        mapa[v][w].visivel = 1;
+                    }
+                }
             }
-            */
+            if (nMonstros == 0 && mapa[i][j].obs == ESCADA){
+                for(int v= i-5;v < i + 5; v++){
+                    for(int w = j - 5; w < j + 5; w++){
+                        mapa[v][w].visivel = 1;
+                    }
+                }      
+            }
+
+        }
+    }
+}
+
+void HVisivel (CASA **mapa, int yMAX, int xMAX){
+    for (int i = 0; i < yMAX; i++){
+        for (int j = 0; j < xMAX; j++){
+            if(mapa[i][j].obs == ESCADA){
+                for(int v= i-5;v < i + 5; v++){
+                    for(int w = j - 5; w < j + 5; w++){
+                        mapa[v][w].visivel = 1;
+                    }
+                }   
+                //return;
+            }
+
         }
     }
 }

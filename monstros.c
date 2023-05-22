@@ -217,3 +217,10 @@ int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int
     }
     return 3;
 }
+
+int fimdeNivel (MONSTRO *listaMonstros, int *nMonstros){
+    for(int i = 0 ;i < (*nMonstros); i++){
+        if (listaMonstros[i].vida > 0) return 1;
+    }
+    return 0;
+}
