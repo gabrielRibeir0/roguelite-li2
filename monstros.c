@@ -105,8 +105,8 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
     
     int newPosY; int newPosX; int haVisao;
     for(int i = 0; i < nMonstros; i++){
-        int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
-        if(dist <= 1) return;
+        float dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
+        if(roundf(dist) <= 1) return;
 
         int distSpawn = sqrt(((listaMonstros[i].spawnX - jogador->posX)*(listaMonstros[i].spawnX - jogador->posX)) + ((listaMonstros[i].spawnY - jogador->posY)*(listaMonstros[i].spawnY - jogador->posY)));
         //aproveitar que esta função processa os monstros todos para regenerar a vida (50% da vida em falta) caso eles estejam na posição inicial
@@ -119,20 +119,20 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
         }
 
         haVisao = visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, jogador->posX, jogador->posY, &newPosX, &newPosY);
-        if(!haVisao || distSpawn > 15){
+        if(!haVisao || distSpawn > 15){ //se o jogador não conseguir ver o monstro
             if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
                 listaMonstros[i].posY = listaMonstros[i].spawnY;
                 listaMonstros[i].posX = listaMonstros[i].spawnX;
             }
         }
         else{
-            if(distSpawn <= 7 && listaMonstros[i].vida == listaMonstros[i].vidaMax){
-                if(jogador->posY != newPosY && jogador->posX != newPosX){
+            if(distSpawn <= 5 && listaMonstros[i].vida == listaMonstros[i].vidaMax){ //se o jogador entrou dentro da area de deteção do monstro e este tem a vida cheia
+                if(jogador->posY != newPosY || jogador->posX != newPosX){ //se a próxima posição não é a mesma que a do jogador (já estão lado a lado), move-se
                     listaMonstros[i].posY = newPosY;
                     listaMonstros[i].posX = newPosX;
                 }
             }
-            else{
+            else{//se o jogador consegue ver o monstro, mas nao está dentro do raio ou o monstro está ferido, este volta para a sua posição inicial
                 if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
                     visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, listaMonstros[i].spawnX , listaMonstros[i].spawnY, &newPosX, &newPosY);
                     listaMonstros[i].posY = newPosY;

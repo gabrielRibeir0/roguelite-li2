@@ -364,42 +364,46 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMons
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
             mapa[i][j].visivel = 0;
-            int distancia = sqrt(((jogador->posX-j)*(jogador->posX-j)) + ((jogador->posY-i)*(jogador->posY-i)));
-            if(distancia < 15){ 
+
+            float distancia = sqrt(((jogador->posX-j)*(jogador->posX-j)) + ((jogador->posY-i)*(jogador->posY-i)));
+            if(roundf(distancia) < 15)
                 linhaVisao(mapa, jogador->posX, jogador->posY, j, i);
-            }
-            //visibilidade das tochas de raio 2
+        }
+    }
+
+    for(int i = 1; i < yMAX-1; i++){
+        for(int j = 1; j < xMAX-1; j++){
             if(mapa[i][j].obs == TOCHA){
-                for(int v= i-3;v < i + 3; v++){
-                    for(int w = j -3; w < j + 3; w++){
-                        mapa[v][w].visivel = 1;
+                int menorY = i-3 > 0 ? i-3 : 0;
+                int maiorY = i+3 < yMAX ? i+3 : yMAX-1; 
+                int menorX = j-3 > 0 ? j-3 : 0;
+                int maiorX = j+3 < xMAX ? j+3 : xMAX-1;
+                float raio;
+
+                for(int v = menorY; v <= maiorY; v++){
+                    for(int w = menorX; w <= maiorX; w++){
+                        raio = sqrt(((j-w)*(j-w)) + ((i-v)*(i-v)));
+                        if(roundf(raio) <= 3)
+                            linhaVisao(mapa, j, i, w, v);
                     }
                 }
             }
-            if (nMonstros == 0 && mapa[i][j].obs == ESCADA){
-                for(int v= i-5;v < i + 5; v++){
-                    for(int w = j - 5; w < j + 5; w++){
-                        mapa[v][w].visivel = 1;
+            else if(nMonstros == 0 && mapa[i][j].obs == ESCADA){
+                int menorY = i-5 > 0 ? i-5 : 0;
+                int maiorY = i+5 < yMAX ? i+5 : yMAX-1; 
+                int menorX = j-5 > 0 ? j-5 : 0;
+                int maiorX = j+5 < xMAX ? j+5 : xMAX-1;
+                float raio;
+
+                for(int v = menorY; v <= maiorY; v++){
+                    for(int w = menorX; w <= maiorX; w++){
+                        raio = sqrt(((j-w)*(j-w)) + ((i-v)*(i-v)));
+                        if(roundf(raio) <= 5)
+                            linhaVisao(mapa, j, i, w, v);
                     }
                 }      
             }
-
         }
     }
-}
 
-void HVisivel (CASA **mapa, int yMAX, int xMAX){
-    for (int i = 0; i < yMAX; i++){
-        for (int j = 0; j < xMAX; j++){
-            if(mapa[i][j].obs == ESCADA){
-                for(int v= i-5;v < i + 5; v++){
-                    for(int w = j - 5; w < j + 5; w++){
-                        mapa[v][w].visivel = 1;
-                    }
-                }   
-                //return;
-            }
-
-        }
-    }
 }
