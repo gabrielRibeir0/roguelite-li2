@@ -37,16 +37,14 @@ int main() {
 	intrflush(stdscr, false);
 	keypad(stdscr, true);
 
-    use_default_colors();
-	init_color(COLOR_MAGENTA, 545, 270, 74);
+	init_color(COLOR_MAGENTA, 545, 270, 74); //castanho
 	init_color(COLOR_BLACK, 0,0,0);
-	init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(1, COLOR_RED, -1);
-	init_pair(2, COLOR_BLACK, -1); 
+	init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
+	init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK); 
 	init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
-	init_pair(COLOR_CYAN, COLOR_GREEN, COLOR_BLACK);
+	init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
 
 	yMAX -= 3;
 	//inicializar mapa
@@ -55,7 +53,7 @@ int main() {
 		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
 	
-	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
+	int nMonstros = 0, nVazias = 0, nAcessiveis = 0, nivel = 1;
 	MONSTRO *listaMonstros = NULL;
 
 	//enquanto pelo menos 70% das casas vazias não forem acessíveis, continua a gerar um mapa

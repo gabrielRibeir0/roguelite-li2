@@ -29,9 +29,10 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
             nMonstros = rand() % 4 + 8;
             break;
         case 3:
-            nMonstros = rand() % 3 + 12;
+            nMonstros = rand() % 3 + 11;
             break;
         default:
+            nMonstros = rand() % 4 + 12;
             break;
     }
 
@@ -46,11 +47,40 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
         (*listaMonstros)[i].posY = yRand;
         (*listaMonstros)[i].spawnX = xRand;
         (*listaMonstros)[i].spawnY = yRand;
-        (*listaMonstros)[i].vida = 30;
-        (*listaMonstros)[i].vidaMax = 30;
-        (*listaMonstros)[i].ataque = 6;
-        (*listaMonstros)[i].defesa = 4;
-        (*listaMonstros)[i].precisao = 80;
+        switch(nivel){
+            case 1:
+                int vida = rand() % 4 + 27;
+                (*listaMonstros)[i].vida = vida;
+                (*listaMonstros)[i].vidaMax = vida;
+                (*listaMonstros)[i].ataque = rand() % 3 + 4;
+                (*listaMonstros)[i].defesa = rand() % 3 + 3;
+                (*listaMonstros)[i].precisao = rand() % 4 + 77;
+                break;
+            case 2:
+                int vida = rand() % 4 + 32;
+                (*listaMonstros)[i].vida = vida;
+                (*listaMonstros)[i].vidaMax = vida;
+                (*listaMonstros)[i].ataque = rand() % 3 + 6;
+                (*listaMonstros)[i].defesa = rand() % 3 + 5;
+                (*listaMonstros)[i].precisao = rand() % 4 + 81;
+                break;
+            case 3:
+                int vida = rand() % 4 + 39;
+                (*listaMonstros)[i].vida = vida;
+                (*listaMonstros)[i].vidaMax = vida;
+                (*listaMonstros)[i].ataque = rand() % 3 + 9;
+                (*listaMonstros)[i].defesa = rand() % 3 + 7;
+                (*listaMonstros)[i].precisao = rand() % 4 + 85;
+                break;
+            default:
+                int vida = rand() % 5 + 46;
+                (*listaMonstros)[i].vida = vida;
+                (*listaMonstros)[i].vidaMax = vida;
+                (*listaMonstros)[i].ataque = rand() % 3 + 13;
+                (*listaMonstros)[i].defesa = rand() % 3 + 10;
+                (*listaMonstros)[i].precisao = rand() % 5 + 90;
+                break;
+        }
     }
 
     return nMonstros;
@@ -206,14 +236,56 @@ int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int
                 for(int j = i; j < (*nMonstros); j++) {
                     listaMonstros[j] = listaMonstros[j + 1];
                 }
-
-                jogador->expAtual += 6;
-                if(jogador->expAtual >= 20 + jogador->lvl*5){
-                    jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
-                    jogador->lvl++;
-                    jogador->ataque += 3;  //ver scale dos valores
-                    jogador->defesa += 3;
-                    jogador->precisao++;
+                
+                switch(jogador->lvl){
+                    case 1:
+                        jogador->expAtual += rand() % 3 + 5;
+                        if(jogador->expAtual >= 20 + jogador->lvl*5){
+                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
+                            jogador->lvl++;
+                            jogador->ataque += 3;
+                            jogador->defesa += 3;
+                            jogador->precisao++;
+                            jogador->vidaMax += 5;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                        }
+                        break;
+                    case 2:
+                        jogador->expAtual += rand() % 3 + 8;
+                        if(jogador->expAtual >= 20 + jogador->lvl*5){
+                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
+                            jogador->lvl++;
+                            jogador->ataque += 5;
+                            jogador->defesa += 5;
+                            jogador->precisao++;
+                            jogador->vidaMax += 7;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                        }
+                        break;
+                    case 3:
+                        jogador->expAtual += rand() % 3 + 10;
+                        if(jogador->expAtual >= 20 + jogador->lvl*5){
+                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
+                            jogador->lvl++;
+                            jogador->ataque += 7;
+                            jogador->defesa += 7;
+                            jogador->precisao++;
+                            jogador->vidaMax += 10;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                        }
+                        break;
+                    default:
+                        jogador->expAtual += rand() % 3 + 12;
+                        if(jogador->expAtual >= 20 + jogador->lvl*5){
+                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
+                            jogador->lvl++;
+                            jogador->ataque += 10;
+                            jogador->defesa += 10;
+                            jogador->precisao++;
+                            jogador->vidaMax += 13;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                        }
+                        break;
                 }
             }
             else if(resultado == 2)

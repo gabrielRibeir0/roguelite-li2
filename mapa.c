@@ -311,17 +311,27 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
     }
 
     //desenhar monstros
-    attron(COLOR_PAIR(COLOR_CYAN));
+    attron(COLOR_PAIR(COLOR_GREEN));
     for(int i = 0; i < nMonstros; i++){
         if(mapa[listaMonstros[i].posY][listaMonstros[i].posX].visivel == 1)
             mvaddch(listaMonstros[i].posY, listaMonstros[i].posX, 'M');
     }
-    attroff(COLOR_PAIR(COLOR_CYAN));
+    attroff(COLOR_PAIR(COLOR_GREEN));
 
     attron(COLOR_PAIR(COLOR_WHITE));
-    mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
-    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //TODO ver o scale do xp
-    mvprintw(yMAX + 2, 1, "Score: %d", jogador->score);
+    mvprintw(yMAX, 1, "HP: ");
+    if(jogador->vida > 0.2 * jogador->vidaMax){
+        attron(COLOR_PAIR(COLOR_GREEN));
+        mvprintw(yMAX, 5, "%d/%d  ", jogador->vida, jogador->vidaMax);
+        attroff(COLOR_PAIR(COLOR_GREEN));
+    }
+    else{
+        attron(COLOR_PAIR(COLOR_RED));
+        mvprintw(yMAX, 5, "%d/%d  ", jogador->vida, jogador->vidaMax);
+        attroff(COLOR_PAIR(COLOR_RED));
+    }
+    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d  ", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //TODO ver o scale do xp
+    mvprintw(yMAX + 2, 1, "Score: %d  ", jogador->score);
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 
