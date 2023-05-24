@@ -20,7 +20,7 @@ int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
 
 //TODO balancear valores e iniciar resto dos stats
 int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, int xMAX){
-    int nMonstros, yRand, xRand;
+    int nMonstros = 0, yRand, xRand;
     switch(nivel){
         case 1:
             nMonstros = rand() % 3 + 5;
@@ -98,12 +98,12 @@ int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJog
 
 void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMonstros, double *ultimoTempo){
     double tempoAtual = clock() / CLOCKS_PER_SEC;
-    if(*ultimoTempo >= 0){
-        if(tempoAtual -  *ultimoTempo < 0.4)
-            return;
-    }
+    if(*ultimoTempo >= 0 && tempoAtual -  *ultimoTempo < 0.4)
+        return;
     
-    int newPosY; int newPosX; int haVisao;
+    int newPosY;
+    int newPosX;
+    int haVisao;
     for(int i = 0; i < nMonstros; i++){
         float dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
         if(roundf(dist) <= 1) return;
@@ -191,7 +191,11 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     return 3;
 }
 
-int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX){
+int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX, double *delayFugir){
+    double tempoAtual = clock() / CLOCKS_PER_SEC;
+    if(*delayFugir >= 0 && tempoAtual - *delayFugir < 1.0)
+        return 3;
+    
     for(int i = 0; i < (*nMonstros); i++){
         int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
         int resultado;
@@ -212,15 +216,12 @@ int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int
                     jogador->precisao++;
                 }
             }
+            else if(resultado == 2)
+                *delayFugir = clock() / CLOCKS_PER_SEC;
+
             return resultado;
         }
     }
+    
     return 3;
-}
-
-int fimdeNivel (MONSTRO *listaMonstros, int *nMonstros){
-    for(int i = 0 ;i < (*nMonstros); i++){
-        if (listaMonstros[i].vida > 0) return 1;
-    }
-    return 0;
 }

@@ -45,7 +45,7 @@ int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros 
 int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
     CASA mapaAux[yMAX][xMAX];
-    int nMuros, nEspacos, nVazias;
+    int nMuros, nEspacos, nVazias = 0;
 
     if(fase == 1){
        for (int i = 1; i < yMAX - 1; i++){
@@ -63,7 +63,6 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
         }
     }
     else{
-        nVazias=0;
         for (int i = 1; i < yMAX - 1; i++){
             for (int j = 1; j < xMAX - 1; j++){
                 nMuros = contarObstaculo(mapa, i, j, MURO);

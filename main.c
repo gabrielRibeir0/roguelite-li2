@@ -90,6 +90,7 @@ int main() {
 
 	int input, resultado;
 	double ultimoTempoMov = -1.0;
+	double delayFugir = -1.0;
 	while(1){
 		move(jogador->posY, jogador->posX);
 		
@@ -119,7 +120,7 @@ int main() {
 		calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
 		escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 		escreveJogador(jogador);
-		resultado = verificaCombate(jogador, listaMonstros, &nMonstros, yMAX);
+		resultado = verificaCombate(jogador, listaMonstros, &nMonstros, yMAX, &delayFugir);
 		if(resultado == 0){
 			clear();
 			mvaddstr(yMAX/2,xMAX/2,"NAO");
