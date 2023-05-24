@@ -125,6 +125,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 
         if(mapa[yto][xto].obs==VAZIO && mapa[yto][xto].acessivel == 1){
             mapa[yto][xto].obs = TOCHA;
+            mapa[yto][xto].acessivel = 0;
             mapa[yto][xto].visivel = 1;
             nTochasGeradas++;
         }
@@ -302,8 +303,9 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
                             break;
                     }
                 }
-                else
-                    mvaddch(i, j, ' ');
+                else{
+                    mvaddch(i,j,' ');
+                }
             }
         }
     }

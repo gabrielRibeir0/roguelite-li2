@@ -5,7 +5,7 @@
 #include "mapa.h"
 #include "monstros.h"
 
-//função para incializar o jogador numa posição válida
+//função para inicializar o jogador numa posição válida
 void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
 	int posInvalida = 1;
 
@@ -49,7 +49,9 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 		else{ 
 			jogador->vida-=10;
 			mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+			mvprintw(yMAX+1, 35, "			     	");
 			mvprintw(yMAX, 35, "Patada na boca     	");
+			mvprintw(yMAX-1, 35, "			     	");
 			mapa[jogador->posY][jogador->posX].obs=VAZIO;
 			mapa[jogador->posY][jogador->posX].acessivel=1;
 		}
@@ -64,11 +66,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY - 1 ][jogador->posX - 1].obs = VAZIO;
@@ -80,11 +86,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY - 1 ][jogador->posX + 0].obs = VAZIO;
@@ -96,11 +106,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY - 1 ][jogador->posX + 1].obs = VAZIO;
@@ -112,11 +126,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY + 0 ][jogador->posX - 1].obs = VAZIO;
@@ -128,11 +146,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY + 0 ][jogador->posX + 0].obs = VAZIO;
@@ -144,11 +166,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY + 0 ][jogador->posX + 1].obs = VAZIO;
@@ -160,11 +186,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY + 1 ][jogador->posX - 1].obs = VAZIO;
@@ -176,11 +206,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY + 1 ][jogador->posX + 0].obs = VAZIO;
@@ -192,11 +226,15 @@ void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 		temp=((rand()%5)*10);
 		if(jogador->vida+temp>jogador->vidaMax){
 			jogador->vida=jogador->vidaMax;
-			mvprintw(yMAX,35,"vida máxima");
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX,35,"vida máxima			");
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 		else{ 
 			jogador->vida+=temp;
-			mvprintw(yMAX, 35, "bonus de %d pontos", temp);
+			mvprintw(yMAX-1, 35, "                 	");
+			mvprintw(yMAX, 35, "bonus de %d pontos		", temp);
+			mvprintw(yMAX+1, 35, "                 	");
 		}
 
 		mapa[jogador->posY + 1 ][jogador->posX + 1].obs = VAZIO;

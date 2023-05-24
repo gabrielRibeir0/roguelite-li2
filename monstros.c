@@ -161,22 +161,22 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
                 if(x <= jogador->precisao){
                     int dano = jogador->ataque - (0.15 *  monstro->defesa);
                     monstro->vida -= dano;
-                    mvprintw(yMAX, 35, "Causou %d dano!", dano);
+                    mvprintw(yMAX, 35, "Causou %d dano!         ", dano);
                 }
                 else
-                    mvprintw(yMAX, 35, "Falhou o ataque");
+                    mvprintw(yMAX, 35, "Falhou o ataque         ");
         }
         else if(input == 'r'){
                 fugir = 1;
                 mvprintw(yMAX, 35, "Conseguiu fugir da luta!");
         }
         
-        mvprintw(yMAX+1, 53, "Turno do Monstro!");
+        mvprintw(yMAX+1, 35, "Turno do Monstro!             ");
         y = rand () % 100;
         if(y <= monstro->precisao){
             int dmg = monstro->ataque - (0.20 * jogador->defesa);
             jogador->vida -= dmg;
-            mvprintw(yMAX+1, 35, "Sofreu %d dano!", dmg);
+            mvprintw(yMAX+1, 35, "Sofreu %d dano!       ", dmg);
         }
         else
             mvprintw(yMAX+1, 35, "O monstro falhou o ataque!");
