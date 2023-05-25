@@ -5,6 +5,7 @@
 #include "estado.h"
 #include "combate.h"
 
+//a103993
 int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     nodelay(stdscr, false);
     int x, y, input;

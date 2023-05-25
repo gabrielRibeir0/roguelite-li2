@@ -17,7 +17,6 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
             mapa[i][j].acessivel = 0; 
         }
     }
-
     //Colocar MURO nas bordas do mapa
     for(int i = 0; i < yMAX; i++){
         mapa[i][0].obs = mapa[i][xMAX - 1].obs = MURO;
@@ -101,9 +100,10 @@ void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
     verificaAcesso(mapa, y, x - 1, nAcessiveis);
 }
 
+//a103993
 //função para adicionar os objetos do mapa
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
-    //traps, por enquanto tenta-se gerar só 10 traps, depois coloca-se uma percentagem
+
     int nTrapsGeradas = 0;
     int yt, xt;
     
@@ -132,7 +132,6 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
         }
     }
 
-    //baus, a maneira como está gerada é fraca
     int nBausGerados = 0;
     int yb,xb;
 
@@ -146,7 +145,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
             nBausGerados++;
         }
     }
-    // lava
+
     int nLavaGerada1 = 0;
     int yl1, xl1;                      
 
@@ -232,8 +231,6 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
             }
         }
     }
-    /*fazer com que a escada seja gerada no ínicio, mas só depois na função monstro é que colocamos que ela fica acessivel
-    quando não tiver mais monstros no mapa */
     
     int escadaGerada = 0;
     int ye, xe;
@@ -253,6 +250,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     return 0;
 }
 
+//a103993
 //função para escrever o mapa
 void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX , int xMAX, int nMonstros){  
     for(int i = 0; i < yMAX; i++){
@@ -371,6 +369,7 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
+//a103993
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
@@ -416,4 +415,19 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMons
             }
         }
     }
+}
+
+//a103993
+int escadaAcessivel(CASA **mapa, int yMAX, int xMAX, int nMonstros){
+    if(nMonstros==0){
+        for(int i=0;i<yMAX;i++){
+            for(int j=0;j<xMAX;j++){
+                if(mapa[i][j].obs==ESCADA){
+                    mapa[i][j].acessivel=1;
+                }
+            }
+        }
+    }
+
+    return 0;
 }

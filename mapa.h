@@ -19,4 +19,6 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
 
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros);
 
+int escadaAcessivel(CASA **mapa, int yMAX, int xMAX, int nMonstros);
+
 #endif

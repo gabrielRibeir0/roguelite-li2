@@ -44,6 +44,7 @@ void escreveJogador(JOGADOR jogador){
 	mvaddch(jogador->posY, jogador->posX, 'G');
 }
 
+//a103993
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
 		if (jogador->vida<=10)
@@ -60,6 +61,7 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	}
 }
 
+//a103993
 void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 
 	int temp;

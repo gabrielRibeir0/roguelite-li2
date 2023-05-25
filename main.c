@@ -9,6 +9,53 @@
 #include "monstros.h"
 #include "combate.h"
 
+//a103993
+int desenharMenu(int yMAX, int xMAX){
+
+	WINDOW * janela = newwin(0,0,0,0);
+	box(janela,0,0);
+	refresh();
+	wrefresh(janela);
+	keypad(janela,true);
+
+	char escolha[2][5]={"JOGAR","SAIR"}; //string?
+
+	int pick;
+	int atual=0;
+
+	while(1){
+
+		for(int i=0;i<2;i++){
+			if(i==atual) wattron(janela,A_REVERSE);
+		mvwprintw(janela, i+1, 1, escolha[i]);
+		wattroff(janela,A_REVERSE);
+		}
+
+		pick=wgetch(janela);
+
+		switch (pick)
+		{
+		case KEY_UP:
+			atual--;
+			if(atual==-1) atual=0;
+			break;
+
+		case KEY_DOWN:
+			atual++;
+			if(atual==2) atual=1;
+			break;
+
+		default:
+			break;
+		}
+
+		if(pick==10) break;
+
+	}
+	
+	return 0;
+}
+
 int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX){
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
 
