@@ -11,8 +11,4 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
 
 int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJogador, int *newPosX, int *newPosY);
 
-int modoCombate(JOGADOR jogador, MONSTRO *listaMonstros, int yMAX);
-
-int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX, double *delayFugir);
-
 #endif

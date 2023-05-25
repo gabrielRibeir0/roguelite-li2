@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <math.h>
+#include <ncurses.h>
 #include "estado.h"
 #include "mapa.h"
 
@@ -330,7 +331,7 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
         mvprintw(yMAX, 5, "%d/%d  ", jogador->vida, jogador->vidaMax);
         attroff(COLOR_PAIR(COLOR_RED));
     }
-    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d  ", jogador->expAtual, 20 + jogador->lvl * 5,jogador->lvl); //TODO ver o scale do xp
+    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d  ", jogador->expAtual, jogador->lvl * jogador->lvl * 15 - jogador->lvl * 2,jogador->lvl);
     mvprintw(yMAX + 2, 1, "Score: %d  ", jogador->score);
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
@@ -370,7 +371,6 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
-//TODO Iluminação das tochas
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
@@ -416,5 +416,4 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMons
             }
         }
     }
-
 }

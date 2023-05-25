@@ -19,6 +19,4 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
 
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros);
 
-void HVisivel (CASA **mapa, int yMAX, int xMAX);
-
 #endif

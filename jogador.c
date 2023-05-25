@@ -1,12 +1,23 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <ncurses.h>
 #include "estado.h"
 #include "jogador.h"
 #include "mapa.h"
 #include "monstros.h"
 
-//função para inicializar o jogador numa posição válida
-void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
+void iniciaJogador(JOGADOR jogador){
+	jogador->score = 1;
+	jogador->expAtual = 0;
+	jogador->vida=50;
+	jogador->vidaMax=50;
+	jogador->lvl = 1;
+	jogador->ataque = 10;
+	jogador->defesa = 6;
+	jogador->precisao = 90;
+}
+
+void posicaoJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
 	int posInvalida = 1;
 
 	while(posInvalida){
@@ -19,16 +30,7 @@ void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, 
 
 			posInvalida = 0;
 		}
-
 	}
-
-	jogador->score = jogador->expAtual = 0;
-	jogador->vida=50;
-	jogador->vidaMax=50;
-	jogador->lvl = 1;
-	jogador->ataque = 10;
-	jogador->defesa = 6;
-	jogador->precisao = 90;
 }
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){

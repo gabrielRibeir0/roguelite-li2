@@ -3,7 +3,9 @@
 #ifndef JOGADOR_H
 #define JOGADOR_H
 
-void fazJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros);
+void iniciaJogador(JOGADOR jogador);
+
+void posicaoJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros);
 
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino);
 
@@ -13,7 +15,4 @@ void danoTrap(CASA **mapa, JOGADOR jogador, int yMAX);
 
 void abreBau(CASA **mapa, JOGADOR jogador, int yMAX);
 
-void initMapaProximidade(CASA **mapa, int **listaProximidade, int passos, int y, int x, int yMax , int xMax);
-
-void atualizarProximidade(int **listaProximidade, char move, int newY, int newX, int yMAX, int xMAX);
 #endif

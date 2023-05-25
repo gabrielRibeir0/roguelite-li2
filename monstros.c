@@ -2,12 +2,10 @@
 #include <ncurses.h>
 #include <math.h>
 #include <time.h>
-#include <stdio.h>
 #include "estado.h"
 #include "monstros.h"
 
 int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
-    //ajustar raio de procura de monstro
     for(int i = 0; i < nMonstros; i++){
         int dist = sqrt(((listaMonstros[i].posX - x)*(listaMonstros[i].posX - x)) + ((listaMonstros[i].posY - y)*(listaMonstros[i].posY - y)));
 
@@ -18,7 +16,7 @@ int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
     return 0;
 }
 
-//TODO balancear valores e iniciar resto dos stats
+
 int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, int xMAX){
     int nMonstros = 0, yRand, xRand;
     switch(nivel){
@@ -48,7 +46,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
         (*listaMonstros)[i].spawnX = xRand;
         (*listaMonstros)[i].spawnY = yRand;
         switch(nivel){
-            case 1:
+            case 0:
                 int vida = rand() % 4 + 27;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
@@ -56,7 +54,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
                 (*listaMonstros)[i].defesa = rand() % 3 + 3;
                 (*listaMonstros)[i].precisao = rand() % 4 + 77;
                 break;
-            case 2:
+            case 1:
                 int vida = rand() % 4 + 32;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
@@ -64,7 +62,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
                 (*listaMonstros)[i].defesa = rand() % 3 + 5;
                 (*listaMonstros)[i].precisao = rand() % 4 + 81;
                 break;
-            case 3:
+            case 2:
                 int vida = rand() % 4 + 39;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
@@ -139,16 +137,8 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
         if(roundf(dist) <= 1) return;
 
         int distSpawn = sqrt(((listaMonstros[i].spawnX - jogador->posX)*(listaMonstros[i].spawnX - jogador->posX)) + ((listaMonstros[i].spawnY - jogador->posY)*(listaMonstros[i].spawnY - jogador->posY)));
-        //aproveitar que esta função processa os monstros todos para regenerar a vida (50% da vida em falta) caso eles estejam na posição inicial
-        if(listaMonstros[i].posY == listaMonstros[i].spawnY && listaMonstros[i].posX == listaMonstros[i].spawnX && listaMonstros[i].vida !=  listaMonstros[i].vidaMax){
-            int dif = listaMonstros[i].vidaMax -  listaMonstros[i].vida;
-            if(dif <= 2)
-                listaMonstros[i].vida = listaMonstros[i].vidaMax;
-            else
-                listaMonstros[i].vida += dif / 2;
-        }
-
         haVisao = visaoMonstro(mapa, listaMonstros[i].posX, listaMonstros[i].posY, jogador->posX, jogador->posY, &newPosX, &newPosY);
+
         if(!haVisao || distSpawn > 15){ //se o jogador não conseguir ver o monstro
             if(listaMonstros[i].posY != listaMonstros[i].spawnY || listaMonstros[i].posX != listaMonstros[i].spawnX){
                 listaMonstros[i].posY = listaMonstros[i].spawnY;
@@ -173,127 +163,4 @@ void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMon
     }
 
     *ultimoTempo = clock() / CLOCKS_PER_SEC;
-}
-
-int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
-    nodelay(stdscr, false);
-    int x, y, input;
-    int fugir = 0;
-    while(jogador->vida > 0 && monstro->vida > 0 && !fugir){
-        mvprintw(yMAX-1, 35, "Turno do jogador!");
-
-        do{
-            input = getch();
-        }while(input != 'a' && input != 'r');   
-
-        if(input == 'a'){
-                x = rand() % 100;
-                if(x <= jogador->precisao){
-                    int dano = jogador->ataque - (0.15 *  monstro->defesa);
-                    monstro->vida -= dano;
-                    mvprintw(yMAX, 35, "Causou %d dano!         ", dano);
-                }
-                else
-                    mvprintw(yMAX, 35, "Falhou o ataque         ");
-        }
-        else if(input == 'r'){
-                fugir = 1;
-                mvprintw(yMAX, 35, "Conseguiu fugir da luta!");
-        }
-        
-        mvprintw(yMAX+1, 35, "Turno do Monstro!             ");
-        y = rand () % 100;
-        if(y <= monstro->precisao){
-            int dmg = monstro->ataque - (0.20 * jogador->defesa);
-            jogador->vida -= dmg;
-            mvprintw(yMAX+1, 35, "Sofreu %d dano!       ", dmg);
-        }
-        else
-            mvprintw(yMAX+1, 35, "O monstro falhou o ataque!");
-    }
-    nodelay(stdscr, true);
-    if(jogador->vida <= 0)
-        return 0; //codigo se o jogador morreu
-    if(monstro->vida <= 0)
-        return 1; //codigo se o monstro foi derrotado
-    if(fugir)
-        return 2; //codigo se o jogador fugiu
-    return 3;
-}
-
-int verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX, double *delayFugir){
-    double tempoAtual = clock() / CLOCKS_PER_SEC;
-    if(*delayFugir >= 0 && tempoAtual - *delayFugir < 1.0)
-        return 3;
-    
-    for(int i = 0; i < (*nMonstros); i++){
-        int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));
-        int resultado;
-        if(dist <= 1){
-            resultado = modoCombate(jogador, &(listaMonstros[i]), yMAX);
-            if(resultado == 1){
-                (*nMonstros)--;
-                for(int j = i; j < (*nMonstros); j++) {
-                    listaMonstros[j] = listaMonstros[j + 1];
-                }
-                
-                switch(jogador->lvl){
-                    case 1:
-                        jogador->expAtual += rand() % 3 + 5;
-                        if(jogador->expAtual >= 20 + jogador->lvl*5){
-                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
-                            jogador->lvl++;
-                            jogador->ataque += 3;
-                            jogador->defesa += 3;
-                            jogador->precisao++;
-                            jogador->vidaMax += 5;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
-                        }
-                        break;
-                    case 2:
-                        jogador->expAtual += rand() % 3 + 8;
-                        if(jogador->expAtual >= 20 + jogador->lvl*5){
-                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
-                            jogador->lvl++;
-                            jogador->ataque += 5;
-                            jogador->defesa += 5;
-                            jogador->precisao++;
-                            jogador->vidaMax += 7;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
-                        }
-                        break;
-                    case 3:
-                        jogador->expAtual += rand() % 3 + 10;
-                        if(jogador->expAtual >= 20 + jogador->lvl*5){
-                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
-                            jogador->lvl++;
-                            jogador->ataque += 7;
-                            jogador->defesa += 7;
-                            jogador->precisao++;
-                            jogador->vidaMax += 10;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
-                        }
-                        break;
-                    default:
-                        jogador->expAtual += rand() % 3 + 12;
-                        if(jogador->expAtual >= 20 + jogador->lvl*5){
-                            jogador->expAtual = jogador->expAtual - 20 + jogador->lvl*5;
-                            jogador->lvl++;
-                            jogador->ataque += 10;
-                            jogador->defesa += 10;
-                            jogador->precisao++;
-                            jogador->vidaMax += 13;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
-                        }
-                        break;
-                }
-            }
-            else if(resultado == 2)
-                *delayFugir = clock() / CLOCKS_PER_SEC;
-
-            return resultado;
-        }
-    }
-    
-    return 3;
 }

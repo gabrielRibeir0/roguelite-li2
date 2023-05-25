@@ -8,19 +8,92 @@
 #include "mapa.h"
 #include "monstros.h"
 
-/*
-ver porque os monstros nao se mexem mesmo para as casas ao lado do jogador
-dano lava
-iluminação tochas
-menus
-gameloop em si
-ver melhor a organização do código
-ver o scale do xp -> criar novo parametro maxExp ?
-ver inicialização dos stats dos monstros em função do nível
-melhorar parte de escrever as coisas
-por o delay depois de fugir do combate a funcionar
-aumentar os stats do jogador quando sobe de nível
--mudar as funções de combate para um combate.c?*/
+int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX){
+	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
+
+	do{
+		iniciarMapa(mapa, yMAX,xMAX);
+		for(int i = 0; i < 4; i++){
+			compactaMapa(mapa, yMAX, xMAX, 1);
+		}
+		for(int i = 0; i < 3; i++){
+			nVazias = compactaMapa(mapa, yMAX, xMAX, 2);
+		}
+
+		int yRAND = rand() % yMAX;
+		int xRAND = rand() % xMAX;
+		while(mapa[yRAND][xRAND].obs != VAZIO){
+			yRAND = rand() % yMAX;
+			xRAND = rand() % xMAX;
+		}
+		verificaAcesso(mapa, yRAND, xRAND, &nAcessiveis);
+	} while(nAcessiveis <= (nVazias * 0.7));
+
+	nMonstros = iniciaMonstros(mapa, &listaMonstros, jogador->score, yMAX, xMAX);
+	gerarObjetos(mapa,yMAX,xMAX);
+
+	posicaoJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
+
+	//escrever o inicio e loop
+	calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
+	escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
+	escreveJogador(jogador);	
+
+	int input, resultado;
+	double ultimoTempoMov = -1.0;
+	double delayFugir = -1.0;
+
+	while(jogador->vida > 0){
+		move(jogador->posY, jogador->posX);
+		
+		input = getch();
+		if(input == 27)
+			break;
+
+		switch(input){
+			case KEY_UP:
+				moverJogador(jogador, 0, -1, mapa[jogador->posY - 1][jogador->posX]);
+				break;
+			case KEY_DOWN:
+				moverJogador(jogador, 0, 1, mapa[jogador->posY + 1][jogador->posX]);
+				break;
+			case KEY_RIGHT:
+				moverJogador(jogador, 1, 0, mapa[jogador->posY][jogador->posX + 1]);
+				break;
+			case KEY_LEFT:
+				moverJogador(jogador, -1, 0, mapa[jogador->posY][jogador->posX - 1]);
+				break;
+			case ' ':
+				abreBau(mapa,jogador,yMAX);
+			/*case 'p':
+				int opc = desenharMenu();
+				if(opc == sair)
+					return 1; //o jogador saiu do jogo
+				else{
+					clear();
+					escrevemapa(); 
+					escreveJOgador();
+				}
+				break;*/
+			default:
+				break;		
+		}
+		moveMonstros(mapa, listaMonstros, jogador, nMonstros, &ultimoTempoMov);
+		calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
+		escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
+		escreveJogador(jogador);
+		verificaCombate(jogador, listaMonstros, &nMonstros, yMAX, &delayFugir);
+		danoTrap(mapa, jogador, yMAX);
+		//escadaAcessivel(mapa, nMonstros); <- ainda para fazer
+		
+		if(mapa[jogador->posY][jogador->posX].obs == ESCADA){
+			jogador->lvl++;
+			return gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX); //dar return do que acontece no prox nível
+		}
+	}
+
+	return 0; //o jogador morreu
+}
 
 int main() {
 	//inicializar coisas
@@ -47,94 +120,39 @@ int main() {
 	init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
 
 	yMAX -= 3;
-	//inicializar mapa
+	//inicializar mapa, jogador e listaMonstros
 	CASA *mapa[yMAX];
 	for(int i = 0; i < yMAX; i++){
 		mapa[i] = malloc(sizeof(CASA) * xMAX);
 	}
 	
-	int nMonstros = 0, nVazias = 0, nAcessiveis = 0, nivel = 1;
+	JOGADOR jogador = malloc(sizeof(struct jogador));
+	iniciaJogador(jogador);
+
 	MONSTRO *listaMonstros = NULL;
 
-	//enquanto pelo menos 70% das casas vazias não forem acessíveis, continua a gerar um mapa
-	do{
-		iniciarMapa(mapa, yMAX,xMAX);
-		for(int i = 0; i < 4; i++){
-			compactaMapa(mapa, yMAX, xMAX, 1);
-		}
-		for(int i = 0; i < 3; i++){
-			nVazias = compactaMapa(mapa, yMAX, xMAX, 2);
-		}
-
-		int yRAND = rand() % yMAX;
-		int xRAND = rand() % xMAX;
-		while(mapa[yRAND][xRAND].obs != VAZIO){
-			yRAND = rand() % yMAX;
-			xRAND = rand() % xMAX;
-		}
-		verificaAcesso(mapa, yRAND, xRAND, &nAcessiveis);
-	} while(nAcessiveis <= (nVazias * 0.7));
-
-	nMonstros = iniciaMonstros(mapa, &listaMonstros, 1, yMAX, xMAX);
-	gerarObjetos(mapa,yMAX,xMAX);
-	
-	//cria o jogador
-	JOGADOR jogador = malloc(sizeof(struct jogador));
-	fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
-
-	//escrever o inicio e loop
-	calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
-	escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
-	escreveJogador(jogador);	
-
-	int input, resultado;
-	double ultimoTempoMov = -1.0;
-	double delayFugir = -1.0;
-	while(1){
-		move(jogador->posY, jogador->posX);
-		
-		input = getch();
-		if(input == 27)
-			break;
-
-		switch(input){
-			case KEY_UP:
-				moverJogador(jogador, 0, -1, mapa[jogador->posY - 1][jogador->posX]);
+	/*opcMenu = escreveMenu() inicial
+	//opções jogar e sair
+	//if opc == jogar{
+		int res;
+		while(1){
+			res = gameLoop
+			if(res == 0){
+				opcMEnu = escreveMenu() morreu
+				if(opcMEnu = jogar)
+					fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
+				else 
+					break;
+			}
+			else
 				break;
-			case KEY_DOWN:
-				moverJogador(jogador, 0, 1, mapa[jogador->posY + 1][jogador->posX]);
-				break;
-			case KEY_RIGHT:
-				moverJogador(jogador, 1, 0, mapa[jogador->posY][jogador->posX + 1]);
-				break;
-			case KEY_LEFT:
-				moverJogador(jogador, -1, 0, mapa[jogador->posY][jogador->posX - 1]);
-				break;
-			case ' ':
-				abreBau(mapa,jogador,yMAX);
-			default:
-				break;		
-		}
-		moveMonstros(mapa, listaMonstros, jogador, nMonstros, &ultimoTempoMov);
-		calcularVisivel(mapa, jogador, yMAX, xMAX, nMonstros);
-		escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
-		escreveJogador(jogador);
-		resultado = verificaCombate(jogador, listaMonstros, &nMonstros, yMAX, &delayFugir);
-		if(resultado == 0){
-			clear();
-			mvaddstr(yMAX/2,xMAX/2,"NAO");
-		}
-		else if(resultado == 2){
-			ultimoTempoMov += 0.4;
-		}
-		danoTrap(mapa, jogador, yMAX);
-
-		if(jogador->vida<=0){
-			clear();
-			mvaddstr(yMAX/2,xMAX/2,"NAO");
-		}
 	}
+	*/
 
-
+	free(jogador);
+	free(listaMonstros);
+	for(int i = 0; i < yMAX; i++){
+		free(mapa[i]);
+	}
 	return 0;
 }
