@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "estado.h"
 #include "combate.h"
 
@@ -58,7 +59,7 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
 void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX, double *delayFugir){
     double tempoAtual = clock() / CLOCKS_PER_SEC;
     if(*delayFugir >= 0 && tempoAtual - *delayFugir < 1.2)
-        return 3;
+        return;
     
     for(int i = 0; i < (*nMonstros); i++){
         int dist = sqrt(((listaMonstros[i].posX - jogador->posX)*(listaMonstros[i].posX - jogador->posX)) + ((listaMonstros[i].posY - jogador->posY)*(listaMonstros[i].posY - jogador->posY)));

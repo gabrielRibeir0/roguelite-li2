@@ -7,6 +7,7 @@
 #include "jogador.h"
 #include "mapa.h"
 #include "monstros.h"
+#include "combate.h"
 
 int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX){
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
@@ -39,7 +40,7 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 	escreveMapa(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
 	escreveJogador(jogador);	
 
-	int input, resultado;
+	int input;
 	double ultimoTempoMov = -1.0;
 	double delayFugir = -1.0;
 

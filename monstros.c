@@ -45,9 +45,10 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
         (*listaMonstros)[i].posY = yRand;
         (*listaMonstros)[i].spawnX = xRand;
         (*listaMonstros)[i].spawnY = yRand;
+        int vida;
         switch(nivel){
             case 0:
-                int vida = rand() % 4 + 27;
+                vida = rand() % 4 + 27;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
                 (*listaMonstros)[i].ataque = rand() % 3 + 4;
@@ -55,7 +56,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
                 (*listaMonstros)[i].precisao = rand() % 4 + 77;
                 break;
             case 1:
-                int vida = rand() % 4 + 32;
+                vida = rand() % 4 + 32;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
                 (*listaMonstros)[i].ataque = rand() % 3 + 6;
@@ -63,7 +64,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
                 (*listaMonstros)[i].precisao = rand() % 4 + 81;
                 break;
             case 2:
-                int vida = rand() % 4 + 39;
+                vida = rand() % 4 + 39;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
                 (*listaMonstros)[i].ataque = rand() % 3 + 9;
@@ -71,7 +72,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
                 (*listaMonstros)[i].precisao = rand() % 4 + 85;
                 break;
             default:
-                int vida = rand() % 5 + 46;
+                vida = rand() % 5 + 46;
                 (*listaMonstros)[i].vida = vida;
                 (*listaMonstros)[i].vidaMax = vida;
                 (*listaMonstros)[i].ataque = rand() % 3 + 13;
