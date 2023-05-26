@@ -42,10 +42,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
     }
 
     if(*listaMonstros != NULL){
-        MONSTRO **temp;
-        temp = listaMonstros;
-        *listaMonstros = NULL;
-        free(temp);
+        free(*listaMonstros);
     }
     
     *listaMonstros = malloc(sizeof(struct monstro) * nMonstros);
