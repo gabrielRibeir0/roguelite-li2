@@ -7,6 +7,7 @@
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+a104532 - Tomás Sousa Barbosa
 Função para criar um mapa com obstáculos aleatórios (VAZIO ou MURO)
 */
 void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
