@@ -87,6 +87,7 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
     return nVazias;
 }
 
+
 void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
     if(mapa[y][x].obs != VAZIO || mapa[y][x].acessivel == 1)
         return;
@@ -336,7 +337,7 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 
-//a104274
+
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino){
     int dx = abs(xDestino - xAtual);
     int dy = -abs(yDestino  - yAtual);
@@ -421,7 +422,6 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMons
     }
 }
 
-//a104274
 //a103993
 int escadaAcessivel(CASA **mapa, int yMAX, int xMAX, int nMonstros){
     if(nMonstros==0){

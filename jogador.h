@@ -13,6 +13,8 @@ void escreveJogador(JOGADOR jogador);
 
 void danoTrap(CASA **mapa, JOGADOR jogador, int yMAX);
 
+void danoLava(CASA** mapa,JOGADOR jogador,int yMAX, double *ultimoTempo);
+
 void abreBau(CASA **mapa, JOGADOR jogador, int yMAX);
 
 #endif

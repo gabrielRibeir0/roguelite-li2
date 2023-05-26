@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <ncurses.h>
 #include <time.h>
 #include "estado.h"
@@ -12,11 +10,6 @@
 //a103993
 //a104532
 int desenharMenu(int yMAX, int xMAX){
-	//iniciar a biblioteca do ncurses para criar esta janela
-	initscr();
-	curs_set(0);
-	noecho();
-	cbreak();
 
 	WINDOW * janela = newwin(yMAX,xMAX,0,0);
 	box(janela,0,0);
@@ -25,15 +18,15 @@ int desenharMenu(int yMAX, int xMAX){
 	keypad(janela,true);
 
 	char escolha[2][6]={"JOGAR","SAIR"}; //string?
-	int pick;
+	int pick;                                                            
 	int atual=0;
 
 	while(1){
 
 		for(int i=0;i<2;i++){
 			if(i==atual) wattron(janela,A_REVERSE);
-		mvwprintw(janela, i+1,1,"%s", escolha[i]);
-		wattroff(janela,A_REVERSE);
+			mvwprintw(janela, i+1,1,"%s", escolha[i]);
+			wattroff(janela,A_REVERSE);
 		}
 
 		pick=wgetch(janela);
@@ -57,8 +50,6 @@ int desenharMenu(int yMAX, int xMAX){
 		if(pick==10) break;
 
 	}
-
-	endwin();
 	
 	return 0;
 }
@@ -98,6 +89,7 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 	int input;
 	double ultimoTempoMov = -1.0;
 	double delayFugir = -1.0;
+	double ultimoTempoLava = -1.0;
 
 	while(jogador->vida > 0){
 		move(jogador->posY, jogador->posX);
@@ -140,7 +132,8 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 		escreveJogador(jogador);
 		verificaCombate(jogador, listaMonstros, &nMonstros, yMAX, &delayFugir);
 		danoTrap(mapa, jogador, yMAX);
-		//escadaAcessivel(mapa, nMonstros); <- ainda para fazer
+		danoLava(mapa, jogador, yMAX, &ultimoTempoLava);
+		escadaAcessivel(mapa, yMAX, xMAX, nMonstros);
 		
 		if(mapa[jogador->posY][jogador->posX].obs == ESCADA){
 			jogador->lvl++;
@@ -187,28 +180,26 @@ int main() {
 
 	MONSTRO *listaMonstros = NULL;
 
-	/*opcMenu = escreveMenu() inicial
-	//opções jogar e sair
-	//if opc == jogar{
+	int opcMenu = desenharMenu(yMAX, xMAX);
+	if(opcMenu == 0){
 		int res;
 		while(1){
-			res = gameLoop
+			res = gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX);
 			if(res == 0){
-				opcMEnu = escreveMenu() morreu
-				if(opcMEnu = jogar)
-					fazJogador(mapa, listaMonstros, jogador, yMAX, xMAX, nMonstros);
-				else 
+				int opc = desenharMenu(yMAX, xMAX);
+				if(opc == 1)
 					break;
 			}
 			else
 				break;
+		}
 	}
-	*/
 
 	free(jogador);
 	free(listaMonstros);
 	for(int i = 0; i < yMAX; i++){
 		free(mapa[i]);
 	}
+
 	return 0;
 }	
