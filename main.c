@@ -45,6 +45,7 @@ int desenharMenu(int yMAX, int xMAX, char tipo){
 			mvwprintw(janela, (yMAX/2)-7 ,(xMAX/2)-8,"Mover : Setas");
 			mvwprintw(janela, (yMAX/2)-6 ,(xMAX/2)-8,"Abrir Bau : ESPACO");
 			mvwprintw(janela, (yMAX/2)-5 ,(xMAX/2)-8,"Atacar : A");
+			mvwprintw(janela, (yMAX/2)-4 ,(xMAX/2)-8,"Fugir da luta : R");
 			wattroff(janela,A_BOLD);
 			wattroff(janela,A_REVERSE);
 			
