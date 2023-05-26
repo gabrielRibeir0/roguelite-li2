@@ -7,8 +7,8 @@
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função para criar um mapa com obstáculos aleatórios (VAZIO ou MURO)
 */
-//função para criar o mapa random com muros à volta
 void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     //prencher o 'interior' com VAZIO ou MURO, 43% chance de ser MURO
     for(int i = 1; i < yMAX - 1; i++){
@@ -34,8 +34,8 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função para contar o número de um tipo de obstáculo num quadrado 3x3
 */
-//função para contar os muros no quadrado 3x3
 int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
     int nObstaculo = 0;
 
@@ -51,6 +51,7 @@ int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função para processar o mapa, compactá-lo e torná-lo jogável
 */
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros 
 int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
@@ -99,6 +100,7 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função para marcar as casas vazias acessíveis como acessíveis
 */
 void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
     if(mapa[y][x].obs != VAZIO || mapa[y][x].acessivel == 1)
@@ -113,9 +115,11 @@ void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
     verificaAcesso(mapa, y, x - 1, nAcessiveis);
 }
 
-//a103993
-//a104532 - Tomás Sousa Barbosa
-//função para adicionar os objetos do mapa
+/*
+a103993 - Júlia Costa
+a104532 - Tomás Sousa Barbosa
+Função para adicionar os objetos do mapa
+*/
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 
     int nTrapsGeradas = 0;
@@ -264,9 +268,11 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
     return 0;
 }
 
-//a103993
-//a104532 - Tomás Sousa Barbosa
-//função para escrever o mapa
+/*
+a103993 - Júlia Costa
+a104532 - Tomás Sousa Barbosa
+Função para escrever o mapa
+*/
 void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX , int xMAX, int nMonstros){  
     for(int i = 0; i < yMAX; i++){
         for(int j = 0; j < xMAX; j++){
@@ -344,13 +350,14 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
         mvprintw(yMAX, 5, "%d/%d  ", jogador->vida, jogador->vidaMax);
         attroff(COLOR_PAIR(COLOR_RED));
     }
-    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nível %d  ", jogador->expAtual, jogador->lvl * jogador->lvl * 15 - jogador->lvl * 2,jogador->lvl);
+    mvprintw(yMAX + 1, 1, "EXP: %d/%d Nivel: %d ",jogador->expAtual, jogador->lvl * jogador->lvl * 15 - jogador->lvl * 4, jogador->lvl);
     mvprintw(yMAX + 2, 1, "Score: %d  ", jogador->score);
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função que cria uma linha de visão entre 2 posições, se for possível chegar ao destino, marca a casa como visível
 */
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino){
     int dx = abs(xDestino - xAtual);
@@ -387,8 +394,11 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
-//a104274 - João Miguel
-//a103993
+/*
+a104274 - João Miguel
+a103993 - Júlia Costa
+Função para calcular a visibilidade das casas - em torno do jogador, tochas e escada, se necessário
+*/
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
     for (int i = 0; i < yMAX; i++){
         for (int j = 0; j < xMAX; j++){
@@ -436,7 +446,10 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMons
     }
 }
 
-//a103993
+/*
+a103993 - Júlia Costa
+Função que torna a escada acessível se não houver mais monstros
+*/
 int escadaAcessivel(CASA **mapa, int yMAX, int xMAX, int nMonstros){
     if(nMonstros==0){
         for(int i=0;i<yMAX;i++){

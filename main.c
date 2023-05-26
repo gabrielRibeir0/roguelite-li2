@@ -7,10 +7,13 @@
 #include "monstros.h"
 #include "combate.h"
 
-//a103993
-//a104532 - Tomás Sousa Barbosa
-//a104274 - João Miguel
-int desenharMenu(int yMAX, int xMAX){
+/*
+a103993 - Júlia Costa
+a104532 - Tomás Sousa Barbosa
+a104274 - João Miguel
+Função que desenha o menu
+*/
+int desenharMenu(int yMAX, int xMAX, char tipo){
 
 	WINDOW * janela = newwin(yMAX,xMAX,0,0);
 	box(janela,0,0);
@@ -30,6 +33,7 @@ int desenharMenu(int yMAX, int xMAX){
 			mvwprintw(janela, i+(yMAX/2),(xMAX/2)-2,"%s", escolha[i]);
 			wattroff(janela,A_REVERSE);
 			wattron(janela,A_BOLD);
+			if(tipo == 'm') mvwprintw(janela, (yMAX/2)-2, (xMAX/2)-4,"Morreste!");
 			mvwprintw(janela, (yMAX/2)+3 ,(xMAX/2)-18,"Pressione ESPACO para escolher a opcão");
 			wattroff(janela,A_BOLD);
 			wattroff(janela,A_REVERSE);
@@ -63,6 +67,7 @@ int desenharMenu(int yMAX, int xMAX){
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+O jogo em si - inicialização das coisas e processamento dos acontecimentos
 */
 int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX){
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
@@ -122,16 +127,6 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 				break;
 			case ' ':
 				abreBau(mapa,jogador,yMAX);
-			/*case 'p':
-				int opc = desenharMenu();
-				if(opc == sair)
-					return 1; //o jogador saiu do jogo
-				else{
-					clear();
-					escrevemapa(); 
-					escreveJOgador();
-				}
-				break;*/
 			default:
 				break;		
 		}
@@ -145,7 +140,7 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 		escadaAcessivel(mapa, yMAX, xMAX, nMonstros);
 		
 		if(mapa[jogador->posY][jogador->posX].obs == ESCADA){
-			jogador->lvl++;
+			jogador->score++;
 			return gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX); //dar return do que acontece no prox nível
 		}
 	}
@@ -156,6 +151,7 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 /*
 a104171 - Gabriel Pereira Ribeiro
 a104532 - Tomás Sousa Barbosa
+Função main - declaração das coisas e loop dos menus
 */
 int main() {
 	//inicializar coisas
@@ -189,23 +185,15 @@ int main() {
 	}
 	
 	JOGADOR jogador = malloc(sizeof(struct jogador));
-	iniciaJogador(jogador);
 
 	MONSTRO *listaMonstros = NULL;
 
-	int opcMenu = desenharMenu(yMAX+3, xMAX);
-	if(opcMenu == 0){
-		//int res;
-		int opc = 0;
-		while(opc == 0){
-			 gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX);
-			//if(res == 0){
-				opc = desenharMenu(yMAX+3, xMAX);
-		}
-			//else
-			//	break;
-		}
-	
+	int opcMenu = desenharMenu(yMAX+3, xMAX, 'i');
+	while(opcMenu == 0){
+		iniciaJogador(jogador);
+		gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX);
+		opcMenu = desenharMenu(yMAX+3, xMAX, 'm');
+	}
 
 	free(jogador);
 	free(listaMonstros);

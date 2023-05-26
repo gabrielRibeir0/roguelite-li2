@@ -9,6 +9,7 @@
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função que inicializa os atributos do jogador
 */
 void iniciaJogador(JOGADOR jogador){
 	jogador->score = 1;
@@ -23,6 +24,7 @@ void iniciaJogador(JOGADOR jogador){
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função para inicializar a posição do jogador
 */
 void posicaoJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
 	int posInvalida = 1;
@@ -39,19 +41,28 @@ void posicaoJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yM
 		}
 	}
 }
-//a104532 - Tomás Sousa Barbosa
+/*
+a104532 - Tomás Sousa Barbosa
+Função que move o jogador se for possível
+*/
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
 	if(destino.acessivel == 1 && destino.obs != MURO){
 		jogador->posX += dx;
 		jogador->posY += dy;
 	}
 }
-//a104274 - João Miguel
+/*
+a104274 - João Miguel
+Função que escreve o jogador
+*/
 void escreveJogador(JOGADOR jogador){
 	mvaddch(jogador->posY, jogador->posX, 'G');
 }
 
-//a103993
+/*
+a103993 - Júlia Costa
+Função para as traps causarem dano
+*/
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
 		if (jogador->vida<=10)
@@ -68,7 +79,10 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	}
 }
 
-//a104532 - Tomás Sousa Barbosa
+/*
+a104532 - Tomás Sousa Barbosa
+Função para a lava dar dano
+*/
 void danoLava(CASA **mapa, JOGADOR jogador, int yMAX, double *ultimoTempo){
 	double tempoAtual = clock() / CLOCKS_PER_SEC;
 	if(*ultimoTempo < 0 || tempoAtual - *ultimoTempo >= 2){
@@ -89,8 +103,11 @@ void danoLava(CASA **mapa, JOGADOR jogador, int yMAX, double *ultimoTempo){
 	}
 }
 
-//a104274 - João Miguel
-//a103993
+/*
+a104274 - João Miguel
+a103993 - Júlia Costa
+Função para abrir os baús e dar o bónus de vida
+*/
 void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 
 	int temp;

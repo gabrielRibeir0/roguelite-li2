@@ -5,7 +5,10 @@
 #include "estado.h"
 #include "monstros.h"
 
-//a104274 - João Miguel
+/*
+a104274 - João Miguel
+Função que verifica se um monstro está perto de uma dada posição
+*/
 int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
     for(int i = 0; i < nMonstros; i++){
         int dist = sqrt(((listaMonstros[i].posX - x)*(listaMonstros[i].posX - x)) + ((listaMonstros[i].posY - y)*(listaMonstros[i].posY - y)));
@@ -19,6 +22,7 @@ int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função que inicia a lista de monstros e os seus dados em função do nível
 */
 int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, int xMAX){
     int nMonstros = 0, yRand, xRand;
@@ -36,9 +40,13 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
             nMonstros = rand() % 4 + 11;
             break;
     }
-    
-    if(*listaMonstros != NULL)
-        free(*listaMonstros);
+
+    if(*listaMonstros != NULL){
+        MONSTRO **temp;
+        temp = listaMonstros;
+        *listaMonstros = NULL;
+        free(temp);
+    }
     
     *listaMonstros = malloc(sizeof(struct monstro) * nMonstros);
 
@@ -93,6 +101,7 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função que verifica se existe uma linha de visão entre o monstro e o jogador e calcula a primeira posição a percorrer nessa linha
 */
 int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJogador, int *newPosX, int *newPosY){
     int dx = abs(xJogador - xMonstro);
@@ -136,6 +145,7 @@ int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJog
 
 /*
 a104171 - Gabriel Pereira Ribeiro
+Função que realiza o movimento dos monstros
 */
 void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMonstros, double *ultimoTempo){
     double tempoAtual = clock() / CLOCKS_PER_SEC;

@@ -6,9 +6,10 @@
 #include "combate.h"
 
 /*
-a103993
+a103993 - Júlia Costa
 a104171 - Gabriel Pereira Ribeiro
-a104272 - João Miguel 
+a104272 - João Miguel
+Função para fazer o combate por turnos 
 */
 int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     nodelay(stdscr, false);
@@ -43,14 +44,14 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
         if(y <= monstro->precisao){
             int dmg = monstro->ataque - (0.20 * jogador->defesa);
             jogador->vida -= dmg;
-            mvprintw(yMAX+1, 35, "Sofreu %d dano!       ", dmg);
+            mvprintw(yMAX+1, 35, "Sofreu %d dano!           ", dmg);
         }
         else
             mvprintw(yMAX+1, 35, "O monstro falhou o ataque!");
     }
 
     nodelay(stdscr, true);
-
+    mvprintw(yMAX+1, 35, "                          ");
     if(jogador->vida <= 0)
         return 0; //codigo se o jogador morreu
     if(monstro->vida <= 0)
@@ -64,6 +65,7 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
 /*
 a104171 - Gabriel Pereira Ribeiro
 a104274 - João Miguel
+Função que verifica se algum dos monstros está perto do jogador e começa o combate em caso afirmativo e processa o resultado da luta
 */
 void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX, double *delayFugir){
     double tempoAtual = clock() / CLOCKS_PER_SEC;
@@ -81,7 +83,7 @@ void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, in
                     listaMonstros[j] = listaMonstros[j + 1];
                 }
 
-                int maxExp = jogador->lvl * jogador->lvl * 15 - jogador->lvl * 2;
+                int maxExp = jogador->lvl * jogador->lvl * 15 - jogador->lvl * 5;
                 
                 switch(jogador->score){
                     case 0:
@@ -93,7 +95,7 @@ void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, in
                             jogador->defesa += 3;
                             jogador->precisao++;
                             jogador->vidaMax += 5;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax * 0.75;
                         }
                         break;
                     case 1:
@@ -105,7 +107,7 @@ void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, in
                             jogador->defesa += 5;
                             jogador->precisao++;
                             jogador->vidaMax += 7;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax * 0.75;
                         }
                         break;
                     case 2:
@@ -117,7 +119,7 @@ void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, in
                             jogador->defesa += 7;
                             jogador->precisao++;
                             jogador->vidaMax += 10;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax * 0.75;
                         }
                         break;
                     default:
@@ -129,7 +131,7 @@ void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, in
                             jogador->defesa += 10;
                             jogador->precisao++;
                             jogador->vidaMax += 13;
-                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax;
+                            jogador->vida = jogador->vida > 0.75 * jogador->vidaMax ? jogador->vida : jogador->vidaMax * 0.75;
                         }
                         break;
                 }
