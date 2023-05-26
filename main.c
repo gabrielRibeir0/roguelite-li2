@@ -10,16 +10,21 @@
 #include "combate.h"
 
 //a103993
+//a104532
 int desenharMenu(int yMAX, int xMAX){
+	//iniciar a biblioteca do ncurses para criar esta janela
+	initscr();
+	curs_set(0);
+	noecho();
+	cbreak();
 
-	WINDOW * janela = newwin(0,0,0,0);
+	WINDOW * janela = newwin(yMAX,xMAX,0,0);
 	box(janela,0,0);
 	refresh();
 	wrefresh(janela);
 	keypad(janela,true);
 
-	char escolha[2][5]={"JOGAR","SAIR"}; //string?
-
+	char escolha[2][6]={"JOGAR","SAIR"}; //string?
 	int pick;
 	int atual=0;
 
@@ -27,7 +32,7 @@ int desenharMenu(int yMAX, int xMAX){
 
 		for(int i=0;i<2;i++){
 			if(i==atual) wattron(janela,A_REVERSE);
-		mvwprintw(janela, i+1, 1, escolha[i]);
+		mvwprintw(janela, i+1,1,"%s", escolha[i]);
 		wattroff(janela,A_REVERSE);
 		}
 
@@ -52,6 +57,8 @@ int desenharMenu(int yMAX, int xMAX){
 		if(pick==10) break;
 
 	}
+
+	endwin();
 	
 	return 0;
 }

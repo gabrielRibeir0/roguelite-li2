@@ -101,6 +101,7 @@ void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
 }
 
 //a103993
+//a104532
 //função para adicionar os objetos do mapa
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 
@@ -251,6 +252,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 }
 
 //a103993
+//a104532
 //função para escrever o mapa
 void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX , int xMAX, int nMonstros){  
     for(int i = 0; i < yMAX; i++){
