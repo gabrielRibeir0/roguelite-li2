@@ -5,7 +5,7 @@
 #include "estado.h"
 #include "monstros.h"
 
-//a104274
+//a104274 - João Miguel
 int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
     for(int i = 0; i < nMonstros; i++){
         int dist = sqrt(((listaMonstros[i].posX - x)*(listaMonstros[i].posX - x)) + ((listaMonstros[i].posY - y)*(listaMonstros[i].posY - y)));
@@ -17,24 +17,29 @@ int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
     return 0;
 }
 
-
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, int xMAX){
     int nMonstros = 0, yRand, xRand;
     switch(nivel){
         case 1:
-            nMonstros = rand() % 3 + 5;
+            nMonstros = rand() % 3 + 4;
             break;
         case 2:
-            nMonstros = rand() % 4 + 8;
+            nMonstros = rand() % 4 + 7;
             break;
         case 3:
-            nMonstros = rand() % 3 + 11;
+            nMonstros = rand() % 3 + 9;
             break;
         default:
-            nMonstros = rand() % 4 + 12;
+            nMonstros = rand() % 4 + 11;
             break;
     }
-
+    
+    if(*listaMonstros != NULL)
+        free(*listaMonstros);
+    
     *listaMonstros = malloc(sizeof(struct monstro) * nMonstros);
 
     for(int i = 0; i < nMonstros; i++){
@@ -86,6 +91,9 @@ int iniciaMonstros(CASA **mapa, MONSTRO **listaMonstros, int nivel, int yMAX, in
     return nMonstros;
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJogador, int *newPosX, int *newPosY){
     int dx = abs(xJogador - xMonstro);
     int dy = -abs(yJogador  - yMonstro);
@@ -126,6 +134,9 @@ int visaoMonstro(CASA **mapa, int xMonstro, int yMonstro, int xJogador, int yJog
     }
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 void moveMonstros(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int nMonstros, double *ultimoTempo){
     double tempoAtual = clock() / CLOCKS_PER_SEC;
     if(*ultimoTempo >= 0 && tempoAtual -  *ultimoTempo < 0.4)

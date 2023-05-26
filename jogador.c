@@ -7,6 +7,9 @@
 #include "mapa.h"
 #include "monstros.h"
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 void iniciaJogador(JOGADOR jogador){
 	jogador->score = 1;
 	jogador->expAtual = 0;
@@ -18,6 +21,9 @@ void iniciaJogador(JOGADOR jogador){
 	jogador->precisao = 90;
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 void posicaoJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
 	int posInvalida = 1;
 
@@ -33,14 +39,14 @@ void posicaoJogador(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yM
 		}
 	}
 }
-
+//a104532 - Tomás Sousa Barbosa
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
 	if(destino.acessivel == 1 && destino.obs != MURO){
 		jogador->posX += dx;
 		jogador->posY += dy;
 	}
 }
-
+//a104274 - João Miguel
 void escreveJogador(JOGADOR jogador){
 	mvaddch(jogador->posY, jogador->posX, 'G');
 }
@@ -62,32 +68,26 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	}
 }
 
-//a104532
+//a104532 - Tomás Sousa Barbosa
 void danoLava(CASA **mapa, JOGADOR jogador, int yMAX, double *ultimoTempo){
 	double tempoAtual = clock() / CLOCKS_PER_SEC;
 	if(*ultimoTempo < 0 || tempoAtual - *ultimoTempo >= 2){
 		if(mapa[jogador->posY][jogador->posX].obs == LAVA){
-			if (jogador->vida<=0)
-				return;
 
 			while (mapa[jogador->posY][jogador->posX].obs == LAVA && jogador->vida > 0) {
 				jogador->vida -= 5;
-				mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
 				mvprintw(yMAX+1, 35, "                                ");
-				mvprintw(yMAX, 35, "Estás na lava, sai o mais rápido!         ");
+				mvprintw(yMAX, 35, "Estás na lava, sai o mais rápido possível!         ");
 				mvprintw(yMAX-1, 35, "                                ");
-				mapa[jogador->posY][jogador->posX].obs = VAZIO;
-				mapa[jogador->posY][jogador->posX].acessivel = 1;
-
-				
 			}
 		}
+
 
 		*ultimoTempo = clock() / CLOCKS_PER_SEC;
 	}
 }
 
-//a104274
+//a104274 - João Miguel
 //a103993
 void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 

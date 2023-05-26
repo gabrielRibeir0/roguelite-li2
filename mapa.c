@@ -4,6 +4,10 @@
 #include "estado.h"
 #include "mapa.h"
 
+
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 //função para criar o mapa random com muros à volta
 void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     //prencher o 'interior' com VAZIO ou MURO, 43% chance de ser MURO
@@ -28,6 +32,9 @@ void iniciarMapa(CASA **mapa, int yMAX, int xMAX){
     }
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 //função para contar os muros no quadrado 3x3
 int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
     int nObstaculo = 0;
@@ -42,6 +49,9 @@ int contarObstaculo(CASA **mapa, int y, int x, OBSTACULO obst){
     return nObstaculo;
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 //função para processar o mapa, apenas trabalha no 'interior' já que as bordas têm de ser muros 
 int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
     CASA mapaAux[yMAX][xMAX];
@@ -87,7 +97,9 @@ int compactaMapa(CASA **mapa, int yMAX, int xMAX, int fase){
     return nVazias;
 }
 
-
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
     if(mapa[y][x].obs != VAZIO || mapa[y][x].acessivel == 1)
         return;
@@ -102,7 +114,7 @@ void verificaAcesso(CASA **mapa, int y, int x, int *nAcessiveis){
 }
 
 //a103993
-//a104532
+//a104532 - Tomás Sousa Barbosa
 //função para adicionar os objetos do mapa
 int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 
@@ -253,7 +265,7 @@ int gerarObjetos(CASA **mapa, int yMAX, int xMAX){
 }
 
 //a103993
-//a104532
+//a104532 - Tomás Sousa Barbosa
 //função para escrever o mapa
 void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX , int xMAX, int nMonstros){  
     for(int i = 0; i < yMAX; i++){
@@ -337,7 +349,9 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 
-
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino){
     int dx = abs(xDestino - xAtual);
     int dy = -abs(yDestino  - yAtual);
@@ -373,7 +387,7 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
-//a104274
+//a104274 - João Miguel
 //a103993
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
     for (int i = 0; i < yMAX; i++){

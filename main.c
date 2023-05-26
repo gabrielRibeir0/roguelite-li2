@@ -8,14 +8,16 @@
 #include "combate.h"
 
 //a103993
-//a104532
+//a104532 - Tomás Sousa Barbosa
+//a104274 - João Miguel
 int desenharMenu(int yMAX, int xMAX){
 
 	WINDOW * janela = newwin(yMAX,xMAX,0,0);
 	box(janela,0,0);
-	refresh();
 	wrefresh(janela);
 	keypad(janela,true);
+	nodelay(janela, false);
+	cbreak();
 
 	char escolha[2][6]={"JOGAR","SAIR"}; //string?
 	int pick;                                                            
@@ -25,36 +27,43 @@ int desenharMenu(int yMAX, int xMAX){
 
 		for(int i=0;i<2;i++){
 			if(i==atual) wattron(janela,A_REVERSE);
-			mvwprintw(janela, i+1,1,"%s", escolha[i]);
+			mvwprintw(janela, i+(yMAX/2),(xMAX/2)-2,"%s", escolha[i]);
+			wattroff(janela,A_REVERSE);
+			wattron(janela,A_BOLD);
+			mvwprintw(janela, (yMAX/2)+3 ,(xMAX/2)-18,"Pressione ESPACO para escolher a opcão");
+			wattroff(janela,A_BOLD);
 			wattroff(janela,A_REVERSE);
 		}
 
 		pick=wgetch(janela);
+		
+		switch (pick){
+			case KEY_UP:
+				atual--;
+				if(atual==-1) atual=0;
+				break;
 
-		switch (pick)
-		{
-		case KEY_UP:
-			atual--;
-			if(atual==-1) atual=0;
-			break;
-
-		case KEY_DOWN:
-			atual++;
-			if(atual==2) atual=1;
-			break;
-
-		default:
-			break;
+			case KEY_DOWN:
+				atual++;
+				if(atual==2) atual=1;
+				break;
+			case ' ': 
+				endwin();
+				return atual;
+			default:
+				break;
 		}
 
 		if(pick==10) break;
 
 	}
-	
-	return 0;
+	endwin();
+	return 1;
 }
 
-
+/*
+a104171 - Gabriel Pereira Ribeiro
+*/
 int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX){
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
 
@@ -144,6 +153,10 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 	return 0; //o jogador morreu
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+a104532 - Tomás Sousa Barbosa
+*/
 int main() {
 	//inicializar coisas
 	srand(time(NULL));
@@ -180,26 +193,26 @@ int main() {
 
 	MONSTRO *listaMonstros = NULL;
 
-	int opcMenu = desenharMenu(yMAX, xMAX);
+	int opcMenu = desenharMenu(yMAX+3, xMAX);
 	if(opcMenu == 0){
-		int res;
-		while(1){
-			res = gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX);
-			if(res == 0){
-				int opc = desenharMenu(yMAX, xMAX);
-				if(opc == 1)
-					break;
-			}
-			else
-				break;
+		//int res;
+		int opc = 0;
+		while(opc == 0){
+			 gameLoop(mapa, listaMonstros, jogador, yMAX, xMAX);
+			//if(res == 0){
+				opc = desenharMenu(yMAX+3, xMAX);
 		}
-	}
+			//else
+			//	break;
+		}
+	
 
 	free(jogador);
 	free(listaMonstros);
 	for(int i = 0; i < yMAX; i++){
 		free(mapa[i]);
 	}
-
+	
+	endwin();
 	return 0;
 }	

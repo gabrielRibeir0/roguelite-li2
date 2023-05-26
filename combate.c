@@ -5,7 +5,11 @@
 #include "estado.h"
 #include "combate.h"
 
-//a103993
+/*
+a103993
+a104171 - Gabriel Pereira Ribeiro
+a104272 - João Miguel 
+*/
 int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     nodelay(stdscr, false);
     int x, y, input;
@@ -19,18 +23,18 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
         }while(input != 'a' && input != 'r');   
 
         if(input == 'a'){
-                x = rand() % 100;
-                if(x <= jogador->precisao){
-                    int dano = jogador->ataque - (0.15 *  monstro->defesa);
-                    monstro->vida -= dano;
-                    mvprintw(yMAX, 35, "Causou %d dano!         ", dano);
-                }
-                else
-                    mvprintw(yMAX, 35, "Falhou o ataque         ");
+            x = rand() % 100;
+            if(x <= jogador->precisao){
+                int dano = jogador->ataque - (0.15 *  monstro->defesa);
+                monstro->vida -= dano;
+                mvprintw(yMAX, 35, "Causou %d dano!         ", dano);
+            }
+            else
+                mvprintw(yMAX, 35, "Falhou o ataque         ");
         }
         else if(input == 'r'){
-                fugir = 1;
-                mvprintw(yMAX, 35, "Conseguiu fugir da luta!");
+            fugir = 1;
+            mvprintw(yMAX, 35, "Conseguiu fugir da luta!");
         }
         
         mvprintw(yMAX+1, 35, "Turno do Monstro!             ");
@@ -57,6 +61,10 @@ int modoCombate(JOGADOR jogador, MONSTRO *monstro, int yMAX){
     return 3;
 }
 
+/*
+a104171 - Gabriel Pereira Ribeiro
+a104274 - João Miguel
+*/
 void verificaCombate(JOGADOR jogador, MONSTRO *listaMonstros, int *nMonstros, int yMAX, double *delayFugir){
     double tempoAtual = clock() / CLOCKS_PER_SEC;
     if(*delayFugir >= 0 && tempoAtual - *delayFugir < 1.2)
