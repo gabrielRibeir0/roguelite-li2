@@ -81,7 +81,7 @@ Função para a lava dar dano
 */
 void danoLava(CASA **mapa, JOGADOR jogador, int yMAX, double *ultimoTempo){
 	double tempoAtual = clock() / CLOCKS_PER_SEC;
-	if(*ultimoTempo < 0 || tempoAtual - *ultimoTempo >= 2){
+	if(*ultimoTempo < 0 || tempoAtual - *ultimoTempo >= 1.3){
 		if(mapa[jogador->posY][jogador->posX].obs == LAVA && jogador->vida > 0){
 
 			

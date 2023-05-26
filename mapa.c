@@ -339,6 +339,9 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
     attroff(COLOR_PAIR(COLOR_GREEN));
 
     attron(COLOR_PAIR(COLOR_WHITE));
+    mvaddch(yMAX, 0, '|');
+    mvaddch(yMAX+1, 0, '|');
+    mvaddch(yMAX+2, 0, '|');
     mvprintw(yMAX, 1, "HP: ");
     if(jogador->vida > 0.2 * jogador->vidaMax){
         attron(COLOR_PAIR(COLOR_GREEN));
@@ -353,6 +356,7 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
     mvprintw(yMAX + 1, 1, "EXP: %d/%d Nivel: %d ",jogador->expAtual, jogador->lvl * jogador->lvl * 15 - jogador->lvl * 4, jogador->lvl);
     mvprintw(yMAX + 2, 1, "Score: %d  ", jogador->score);
     attroff(COLOR_PAIR(COLOR_WHITE));
+
 }
 
 /*

@@ -21,6 +21,10 @@ int desenharMenu(int yMAX, int xMAX, char tipo){
 	keypad(janela,true);
 	nodelay(janela, false);
 	cbreak();
+	start_color();
+
+	init_color(COLOR_BLACK, 0,0,0);
+	init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
 
 	char escolha[2][6]={"JOGAR","SAIR"}; //string?
 	int pick;                                                            
@@ -33,10 +37,18 @@ int desenharMenu(int yMAX, int xMAX, char tipo){
 			mvwprintw(janela, i+(yMAX/2),(xMAX/2)-2,"%s", escolha[i]);
 			wattroff(janela,A_REVERSE);
 			wattron(janela,A_BOLD);
-			if(tipo == 'm') mvwprintw(janela, (yMAX/2)-2, (xMAX/2)-4,"Morreste!");
+			wattron(janela,COLOR_PAIR(COLOR_RED)); 
+			if(tipo == 'm') mvwprintw(janela, (yMAX/2)-11, (xMAX/2)-4,"Morreste!");
+			wattroff(janela,COLOR_PAIR(COLOR_RED));
 			mvwprintw(janela, (yMAX/2)+3 ,(xMAX/2)-18,"Pressione ESPACO para escolher a opcão");
+			mvwprintw(janela, (yMAX/2)-9 ,(xMAX/2)-8,"Comandos do jogo:");
+			mvwprintw(janela, (yMAX/2)-7 ,(xMAX/2)-8,"Mover : Setas");
+			mvwprintw(janela, (yMAX/2)-6 ,(xMAX/2)-8,"Abrir Bau : ESPACO");
+			mvwprintw(janela, (yMAX/2)-5 ,(xMAX/2)-8,"Atacar : A");
 			wattroff(janela,A_BOLD);
 			wattroff(janela,A_REVERSE);
+			
+
 		}
 
 		pick=wgetch(janela);
@@ -52,6 +64,7 @@ int desenharMenu(int yMAX, int xMAX, char tipo){
 				if(atual==2) atual=1;
 				break;
 			case ' ': 
+				clear();
 				endwin();
 				return atual;
 			default:
@@ -61,6 +74,7 @@ int desenharMenu(int yMAX, int xMAX, char tipo){
 		if(pick==10) break;
 
 	}
+	clear();
 	endwin();
 	return 1;
 }
