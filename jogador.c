@@ -5,6 +5,7 @@
 #include "jogador.h"
 #include "mapa.h"
 #include "monstros.h"
+#include "unistd.h"
 
 void iniciaJogador(JOGADOR jogador){
 	jogador->score = 1;
@@ -58,6 +59,30 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 			mapa[jogador->posY][jogador->posX].obs=VAZIO;
 			mapa[jogador->posY][jogador->posX].acessivel=1;
 		}
+	}
+}
+
+//a104532
+void danoLava(CASA **mapa, JOGADOR jogador, int yMAX){
+	if(mapa[jogador->posY][jogador->posX].obs == LAVA){
+		if (jogador->vida<=0)
+			return;
+
+		int tempoEspera = 2000000; // tempo, objetivo é tirar dano de 2 em 2 segundos
+        int danoAposTempo = 5;
+        
+        while (mapa[jogador->posY][jogador->posX].obs == LAVA && jogador->vida > 0) {
+            jogador->vida -= danoAposTempo;
+            mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
+            mvprintw(yMAX+1, 35, "                                ");
+            mvprintw(yMAX, 35, "Estás na lava, sai o mais rápido!         ");
+            mvprintw(yMAX-1, 35, "                                ");
+            mapa[jogador->posY][jogador->posX].obs = VAZIO;
+            mapa[jogador->posY][jogador->posX].acessivel = 1;
+
+            // Aguarda o tempo de espera
+            usleep(tempoEspera);
+        }
 	}
 }
 

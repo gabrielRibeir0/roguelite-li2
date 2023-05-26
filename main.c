@@ -63,6 +63,7 @@ int desenharMenu(int yMAX, int xMAX){
 	return 0;
 }
 
+
 int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int xMAX){
 	int nMonstros = 0, nVazias = 0, nAcessiveis = 0;
 
