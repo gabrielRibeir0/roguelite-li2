@@ -72,18 +72,20 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 void danoLava(CASA **mapa, JOGADOR jogador, int yMAX, double *ultimoTempo){
 	double tempoAtual = clock() / CLOCKS_PER_SEC;
 	if(*ultimoTempo < 0 || tempoAtual - *ultimoTempo >= 2){
-		if(mapa[jogador->posY][jogador->posX].obs == LAVA){
+		if(mapa[jogador->posY][jogador->posX].obs == LAVA && jogador->vida > 0){
 
-			while (mapa[jogador->posY][jogador->posX].obs == LAVA && jogador->vida > 0) {
+			
 				jogador->vida -= 5;
 				mvprintw(yMAX+1, 35, "                                ");
 				mvprintw(yMAX, 35, "Estás na lava, sai o mais rápido possível!         ");
 				mvprintw(yMAX-1, 35, "                                ");
-			}
+			
 		}
+		else
+			mvprintw(yMAX, 35, "                                                 ");
 
 
-		*ultimoTempo = clock() / CLOCKS_PER_SEC;
+		*ultimoTempo = tempoAtual;
 	}
 }
 
