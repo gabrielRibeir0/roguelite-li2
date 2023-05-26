@@ -86,6 +86,7 @@ void danoLava(CASA **mapa, JOGADOR jogador, int yMAX){
 	}
 }
 
+//a104274
 //a103993
 void abreBau (CASA **mapa, JOGADOR jogador, int yMAX){
 

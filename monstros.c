@@ -5,6 +5,7 @@
 #include "estado.h"
 #include "monstros.h"
 
+//a104274
 int monstrosPerto(MONSTRO *listaMonstros, int y, int x, int nMonstros){
     for(int i = 0; i < nMonstros; i++){
         int dist = sqrt(((listaMonstros[i].posX - x)*(listaMonstros[i].posX - x)) + ((listaMonstros[i].posY - y)*(listaMonstros[i].posY - y)));

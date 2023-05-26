@@ -336,6 +336,7 @@ void escreveMapa(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX 
     attroff(COLOR_PAIR(COLOR_WHITE));
 }
 
+//a104274
 void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino){
     int dx = abs(xDestino - xAtual);
     int dy = -abs(yDestino  - yAtual);
@@ -371,6 +372,7 @@ void linhaVisao(CASA **mapa, int xAtual, int yAtual, int xDestino, int yDestino)
     }
 }
 
+//a104274
 //a103993
 void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMonstros){
     for (int i = 0; i < yMAX; i++){
@@ -419,6 +421,7 @@ void calcularVisivel(CASA **mapa, JOGADOR jogador, int yMAX, int xMAX, int nMons
     }
 }
 
+//a104274
 //a103993
 int escadaAcessivel(CASA **mapa, int yMAX, int xMAX, int nMonstros){
     if(nMonstros==0){

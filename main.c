@@ -211,4 +211,4 @@ int main() {
 		free(mapa[i]);
 	}
 	return 0;
-}
+}	
