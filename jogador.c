@@ -65,9 +65,6 @@ Função para as traps causarem dano
 */
 void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 	if (mapa[jogador->posY][jogador->posX].obs == TRAP){
-		if (jogador->vida<=10)
-			return;
-		else{ 
 			jogador->vida-=10;
 			mvprintw(yMAX, 1, "HP: %d/%d", jogador->vida, jogador->vidaMax);
 			mvprintw(yMAX+1, 35, "			     	");
@@ -75,7 +72,6 @@ void danoTrap (CASA **mapa, JOGADOR jogador, int yMAX){
 			mvprintw(yMAX-1, 35, "			     	");
 			mapa[jogador->posY][jogador->posX].obs=VAZIO;
 			mapa[jogador->posY][jogador->posX].acessivel=1;
-		}
 	}
 }
 
