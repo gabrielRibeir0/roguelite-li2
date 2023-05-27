@@ -122,8 +122,6 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 		move(jogador->posY, jogador->posX);
 		
 		input = getch();
-		if(input == 27)
-			break;
 
 		switch(input){
 			case KEY_UP:
