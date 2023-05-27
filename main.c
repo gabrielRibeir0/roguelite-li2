@@ -48,8 +48,6 @@ int desenharMenu(int yMAX, int xMAX, char tipo){
 			mvwprintw(janela, (yMAX/2)-4 ,(xMAX/2)-8,"Fugir da luta : R");
 			wattroff(janela,A_BOLD);
 			wattroff(janela,A_REVERSE);
-			
-
 		}
 
 		pick=wgetch(janela);
@@ -142,6 +140,10 @@ int gameLoop(CASA **mapa, MONSTRO *listaMonstros, JOGADOR jogador, int yMAX, int
 				break;
 			case ' ':
 				abreBau(mapa,jogador,yMAX);
+				break;
+			case 27:
+				return 0;
+				break;
 			default:
 				break;		
 		}

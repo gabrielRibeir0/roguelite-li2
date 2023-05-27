@@ -46,7 +46,7 @@ a104532 - Tomás Sousa Barbosa
 Função que move o jogador se for possível
 */
 void moverJogador(JOGADOR jogador, int dx, int dy, CASA destino){
-	if(destino.acessivel == 1 && destino.obs != MURO){
+	if((destino.acessivel == 1 && destino.obs != MURO) || destino.obs == VAZIO){
 		jogador->posX += dx;
 		jogador->posY += dy;
 	}
