@@ -5,11 +5,11 @@ Jogo do estilo Roguelite desenvolvido no âmbito da UC Laboratórios de Informá
 
 Requisitos:
 
-Sistema operativo `Linux`
++ Sistema operativo `Linux`
 
-Biblioteca ncurses - `sudo apt-get install libncurses-dev`
++ Biblioteca ncurses - `sudo apt-get install libncurses-dev`
 
-`Make`
++ `Make`
 
 Para compilar o código:
 
